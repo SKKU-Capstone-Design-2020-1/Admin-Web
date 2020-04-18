@@ -5,9 +5,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-
+import { useSelector } from "react-redux"
 const AdminAuth = () => {
     const classes = useStyles();
+    const authState = useSelector(state => state.auth);
+    console.log(authState);
     return (
         <Container maxWidth="md" className={classes.root}>
             <div className={classes.rootField}>
@@ -37,7 +39,7 @@ const AdminAuth = () => {
                         <Link href="#" className={classes.link} onClick={e => e.preventDefault}>
                             Sign Up
                         </Link>
-                    </Typography>                    
+                    </Typography>
                 </div>
                 <Button className={classes.button}
                     fullWidth
@@ -69,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         marginTop: theme.spacing(3),
-        height: 50, 
+        height: 50,
     },
     title: {
         fontSize: '1.2rem',
@@ -78,15 +80,15 @@ const useStyles = makeStyles(theme => ({
         margin: `${theme.spacing(5)}px 0px`
     },
     rootTextBtns: {
-        display: 'flex', 
-        marginTop: theme.spacing(1), 
+        display: 'flex',
+        marginTop: theme.spacing(1),
         maringBottm: theme.spacing(2),
-        justifyContent: 'flex-end' 
+        justifyContent: 'flex-end'
     },
     link: {
         marginLeft: theme.spacing(3),
         fontSize: '0.9rem',
-        color: 'grey' 
+        color: 'grey'
     },
     typoHint: {
         fontSize: '0.9rem',
