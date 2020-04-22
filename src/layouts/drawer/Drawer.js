@@ -29,7 +29,7 @@ const Drawer = ({ mobileOpen, handleDrawerToggle }) => {
             <Divider className={classes.divider} variant="middle" />
             <List className={classes.list}>
                 {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
+                    <ListItem className={classes.listItem} button key={text}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
