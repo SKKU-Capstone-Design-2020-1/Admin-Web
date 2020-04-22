@@ -6,6 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { useSelector } from "react-redux"
 import Grey from "@material-ui/core/colors/grey";
+import { Link as RouterLink } from "react-router-dom";
+
+const toSignUp = React.forwardRef((prop, ref) => (
+    <RouterLink ref={ref} to="/signup" {...prop} />
+))
 
 const AdminAuth = () => {
     const classes = useStyles();
@@ -37,7 +42,7 @@ const AdminAuth = () => {
                         <Link href="#" className={classes.link} onClick={e => e.preventDefault}>
                             Forgot Password?
                         </Link>
-                        <Link href="#" className={classes.link} onClick={e => e.preventDefault}>
+                        <Link component={toSignUp} className={classes.link} onClick={e => e.preventDefault}>
                             Sign Up
                         </Link>
                     </Typography>
@@ -61,7 +66,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        backgroundColor: Grey['100'], 
+        backgroundColor: Grey['100'],
     },
     textField: {
         width: 300,
@@ -70,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     rootField: {
         display: 'flex',
         flexDirection: 'column',
-        padding: theme.spacing(2), 
+        padding: theme.spacing(2),
         backgroundColor: 'white',
         border: `1.5px solid ${Grey['200']}`
     },
@@ -94,7 +99,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(3),
         fontSize: '0.9rem',
         color: 'grey',
-        "&:hover":{
+        "&:hover": {
             color: theme.palette.primary.main
         }
     },

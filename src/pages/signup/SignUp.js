@@ -5,7 +5,11 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
+import { Link as RouterLink } from "react-router-dom";
 
+const toSignIn = React.forwardRef((prop, ref) => (
+    <RouterLink ref={ref} to="/" {...prop} />
+))
 const SignUp = () => {
     const classes = useStyles();
     return (
@@ -49,7 +53,7 @@ const SignUp = () => {
                     Sign Up
                 </Button>
 
-                <Link href="#" className={classes.link}>
+                <Link component={toSignIn} className={classes.link}>
                     Have account?
                 </Link>
             </div>
@@ -88,12 +92,12 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         margin: `${theme.spacing(2)}px 0px`,
-        height: 50, 
+        height: 50,
     },
     link: {
         fontSize: '0.9rem',
         color: 'grey',
-        "&:hover":{
+        "&:hover": {
             color: theme.palette.primary.main
         }
     }
