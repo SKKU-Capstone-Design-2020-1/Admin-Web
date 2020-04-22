@@ -29,22 +29,21 @@ const AdminMain = () => {
     }
 
     const drawer = (
-        <div>
+        <div className={classes.drawerContents}>
             <div className={classes.toolbar} />
-            <Divider />
-            <List>
+            <List className={classes.list}>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
+                    <ListItem className={classes.listItem} button key={text}>
+                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
+                        <ListItemText style={{ fontSize: '0.9rem' }} primary={text} />
                     </ListItem>
                 ))}
             </List>
-            <Divider />
-            <List>
+            <Divider className={classes.divider} variant="middle" />
+            <List className={classes.list}>
                 {['All mail', 'Trash', 'Spam'].map((text, index) => (
                     <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
                 ))}
@@ -54,7 +53,7 @@ const AdminMain = () => {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar} >
+            <AppBar position="fixed" className={classes.appBar} elevation={1}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -64,7 +63,7 @@ const AdminMain = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography varaint="h6" noWrap>
+                    <Typography className={classes.title} varaint="h6" noWrap>
                         Admin Page
                     </Typography>
                 </Toolbar>
@@ -125,6 +124,8 @@ const useStyles = makeStyles(theme => ({
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
+        backgroundColor: 'white',
+        color: 'black',
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -141,5 +142,24 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
+    drawerContents: {
+        backgroundColor: '#1B2430',
+        height: '100%',
+    },
+    list: {
+        color: Grey['300'],
+    },
+    listItem: {
+        "&:hover": {
+            backgroundColor: '#2f3e52'
+        }
+    },
+    title: {
+        fontWeight: 600,
+        fontSize: '1.2rem'
+    },
+    divider: {
+        backgroundColor: Grey['300'],
+    }
 }))
 export default AdminMain
