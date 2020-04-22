@@ -1,17 +1,18 @@
 import React from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { useSelector } from "react-redux"
+import Grey from "@material-ui/core/colors/grey";
+
 const AdminAuth = () => {
     const classes = useStyles();
     const authState = useSelector(state => state.auth);
     console.log(authState);
     return (
-        <Container maxWidth="md" className={classes.root}>
+        <div className={classes.root}>
             <div className={classes.rootField}>
                 <Typography variant="body1" className={classes.title}>
                     Realtime Seat Reservation
@@ -49,7 +50,7 @@ const AdminAuth = () => {
                     Sign In
                 </Button>
             </div>
-        </Container>
+        </div>
     )
 }
 
@@ -60,6 +61,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        backgroundColor: Grey['100'], 
     },
     textField: {
         width: 300,
@@ -67,7 +69,10 @@ const useStyles = makeStyles(theme => ({
     },
     rootField: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        padding: theme.spacing(2), 
+        backgroundColor: 'white',
+        border: `1.5px solid ${Grey['200']}`
     },
     button: {
         marginTop: theme.spacing(3),
@@ -88,7 +93,10 @@ const useStyles = makeStyles(theme => ({
     link: {
         marginLeft: theme.spacing(3),
         fontSize: '0.9rem',
-        color: 'grey'
+        color: 'grey',
+        "&:hover":{
+            color: theme.palette.primary.main
+        }
     },
     typoHint: {
         fontSize: '0.9rem',
