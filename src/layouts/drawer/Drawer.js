@@ -100,5 +100,6 @@ const useStyles = makeStyles(theme => ({
             flexShrink: 0,
         },
     },
+    toolbar: theme.mixins.toolbar,
 }));
 export default Drawer;
