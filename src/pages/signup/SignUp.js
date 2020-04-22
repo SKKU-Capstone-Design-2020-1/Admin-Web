@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grey from "@material-ui/core/colors/grey";
 import Button from "@material-ui/core/Button";
@@ -12,6 +12,18 @@ const toSignIn = React.forwardRef((prop, ref) => (
 ))
 const SignUp = () => {
     const classes = useStyles();
+    const [authData, setAuthData] = useState({
+        email: '',
+        password: '',
+        confirm_password: '', 
+    })
+    const handleChange = e => {
+        setAuthData({
+            ...authData,
+            [e.target.id]: e.target.value
+        })
+    }
+
     return (
         <div className={classes.root}>
             <div className={classes.container} >
@@ -22,6 +34,8 @@ const SignUp = () => {
                     Sign up to deploy innovative seat management system to your places immediately.
                 </Typography>
                 <TextField
+                    onChange={handleChange}
+                    value={authData.email}
                     className={classes.textField}
                     fullWidth
                     variant="outlined"
@@ -29,6 +43,8 @@ const SignUp = () => {
                     type="email"
                     label="Email" />
                 <TextField
+                    onChange={handleChange}
+                    value={authData.password}
                     className={classes.textField}
                     fullWidth
                     variant="outlined"
@@ -36,6 +52,8 @@ const SignUp = () => {
                     type="password"
                     label="Password" />
                 <TextField
+                    onChange={handleChange}
+                    value={authData.confirm_password}
                     className={classes.textField}
                     fullWidth
                     variant="outlined"
