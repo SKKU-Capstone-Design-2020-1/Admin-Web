@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grey from "@material-ui/core/colors/grey";
 import Button from "@material-ui/core/Button";
@@ -15,7 +15,7 @@ const SignUp = () => {
     const [authData, setAuthData] = useState({
         email: '',
         password: '',
-        confirm_password: '', 
+        confirm_password: '',
     })
     const handleChange = e => {
         setAuthData({
