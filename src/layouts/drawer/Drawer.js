@@ -1,0 +1,104 @@
+import React from 'react'
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Divider from "@material-ui/core/Divider";
+import MDrawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MailIcon from '@material-ui/icons/Mail';
+import Grey from "@material-ui/core/colors/grey";
+import { DRAWER_WIDTH } from "../../libs/const";
+
+const Drawer = ({ mobileOpen, handleDrawerToggle }) => {
+    const classes = useStyles();
+
+    const drawer = (
+        <div className={classes.drawerContents}>
+            <div className={classes.toolbar} />
+            <List className={classes.list}>
+                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    <ListItem className={classes.listItem} button key={text}>
+                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
+                        <ListItemText style={{ fontSize: '0.9rem' }} primary={text} />
+                    </ListItem>
+                ))}
+            </List>
+            <Divider className={classes.divider} variant="middle" />
+            <List className={classes.list}>
+                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                    <ListItem button key={text}>
+                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+            </List>
+        </div>
+    )
+
+    return (
+        <nav className={classes.drawer}>
+            <Hidden smUp implementation="css">
+                <MDrawer
+                    variant="temporary"
+                    anchor={'left'}
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    ModalProps={{
+                        keepMounted: true, // Better open performance on mobile.
+                    }}
+                >
+                    {drawer}
+                </MDrawer>
+            </Hidden>
+            <Hidden xsDown implementation="css">
+                <MDrawer
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    variant="permanent"
+                    open
+                >
+                    {drawer}
+                </MDrawer>
+            </Hidden>
+        </nav>
+    )
+}
+
+const useStyles = makeStyles(theme => ({
+    drawerPaper: {
+        width: DRAWER_WIDTH,
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+    },
+    drawerContents: {
+        backgroundColor: '#1B2430',
+        height: '100%',
+    },
+    list: {
+        color: Grey['300'],
+    },
+    listItem: {
+        "&:hover": {
+            backgroundColor: '#2f3e52'
+        }
+    },
+    divider: {
+        backgroundColor: Grey['300'],
+    },
+    drawer: {
+        [theme.breakpoints.up('sm')]: {
+            width: DRAWER_WIDTH,
+            flexShrink: 0,
+        },
+    },
+}));
+export default Drawer;
