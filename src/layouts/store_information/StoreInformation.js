@@ -19,7 +19,7 @@ const StoreInformation = () => {
                     <Typography variant="body1">
                         Select your store's picture.
                     </Typography>
-                    <Button variant="contained" color="primary" disableElevation size="small">
+                    <Button variant="contained" disableElevation size="small">
                         Select
                     </Button>
                 </div>
@@ -33,7 +33,7 @@ const StoreInformation = () => {
                         label="Postal Code"
                         variant="outlined"
                     />
-                    <Button variant="contained" color="primary" disableElevation size="small">
+                    <Button variant="contained" disableElevation size="small">
                         Search
                      </Button>
                 </div>
