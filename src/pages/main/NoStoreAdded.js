@@ -3,6 +3,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import EventBusyIcon from "@material-ui/icons/EventBusy"
+import Link from "react-router-dom/Link";
+import URLS from "../../libs/urls";
 
 const NoStoreAdded = () => {
     const classes = useStyles();
@@ -13,7 +15,7 @@ const NoStoreAdded = () => {
                 <Typography variant="body1" gutterBottom>
                     Add your first store now!
                 </Typography>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" component={Link} to={URLS.addStore} color="primary">
                     Create
                 </Button>
             </div>
@@ -35,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     icon: {
         height: 100,
         width: 100,
-        marginBottom: theme.spacing(2), 
+        marginBottom: theme.spacing(2),
     }
 }))
 export default NoStoreAdded;
