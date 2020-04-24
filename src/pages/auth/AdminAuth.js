@@ -14,29 +14,30 @@ const toSignUp = React.forwardRef((prop, ref) => (
 
 const AdminAuth = () => {
     const classes = useStyles();
-    const authState = useSelector(state => state.auth);
-    console.log(authState);
+    // const authState = useSelector(state => state.auth);
+
     return (
         <div className={classes.root}>
             <div className={classes.rootField}>
                 <Typography variant="body1" className={classes.title}>
                     Realtime Seat Reservation
                 </Typography>
+                <Typography varaint="body1" className={classes.typoHint}>
+                    This page can be accessed only by admins.
+                </Typography>
                 <TextField
                     className={classes.textField}
                     id="email"
-                    label="email"
+                    label="Email"
                     type="email"
                     variant="outlined" />
                 <TextField
                     className={classes.textField}
                     id="password"
-                    label="password"
+                    label="Password"
                     type="password"
                     variant="outlined" />
-                <Typography varaint="body1" className={classes.typoHint}>
-                    This page can be accessed only by admin.
-                </Typography>
+
                 <div className={classes.rootTextBtns}>
                     <Typography>
                         <Link href="#" className={classes.link} onClick={e => e.preventDefault}>
@@ -87,12 +88,10 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1.2rem',
         fontWeight: 600,
         textAlign: 'center',
-        margin: `${theme.spacing(5)}px 0px`
+        marginTop: `${theme.spacing(5)}px`
     },
     rootTextBtns: {
         display: 'flex',
-        marginTop: theme.spacing(1),
-        maringBottm: theme.spacing(2),
         justifyContent: 'flex-end'
     },
     link: {
@@ -105,7 +104,9 @@ const useStyles = makeStyles(theme => ({
     },
     typoHint: {
         fontSize: '0.9rem',
-        color: 'grey'
+        color: 'grey',
+        marginBottom: theme.spacing(5), 
+        textAlign: 'center'
     }
 }));
 
