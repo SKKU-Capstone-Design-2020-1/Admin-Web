@@ -12,6 +12,15 @@ const StoreInformation = () => {
         file: null,
         ready: false,
     })
+    const [storeData, setStoreData] = useState({
+        postal_code: '',
+        address: '',
+        address_detail: '',
+        name: '', 
+        address_info: {
+
+        }
+    })
     const handleImg = e => {
         const file = e.target.files[0];
 
@@ -33,13 +42,36 @@ const StoreInformation = () => {
         }
     }
 
+    const onSearchAddress = () => {
+        new window.daum.Postcode({
+            onComplete: function (data) {
+                const { roadAddress, zonecode } = data;
+                setStoreData({
+                    ...storeData, 
+                    address: roadAddress, 
+                    postal_code: zonecode, 
+                    address_info: data, 
+                })
+            }
+        }).open();
+    }
+
+    const handleChange = e => {
+        setStoreData({
+            ...storeData,
+            [e.target.id]: e.target.value
+        })
+    }
     return (
         <div className={classes.root}>
             <TextField
                 variant="outlined"
                 label="Store Name"
+                id="name"
                 fullWidth
                 className={classes.textField}
+                onChange={handleChange}
+                value={storeData.name}
             />
             <div className={classes.picRoot}>
                 <div className={classes.picLabelRoot}>
@@ -77,8 +109,9 @@ const StoreInformation = () => {
                         className={classes.postalCode}
                         label="Postal Code"
                         variant="outlined"
+                        value={storeData.postal_code}
                     />
-                    <Button variant="contained" disableElevation size="small">
+                    <Button variant="contained" onClick={onSearchAddress} disableElevation size="small">
                         Search
                      </Button>
                 </div>
@@ -86,14 +119,18 @@ const StoreInformation = () => {
             <TextField
                 className={classes.textField}
                 label="Address"
+                value={storeData.address}
                 variant="outlined"
                 fullWidth
             />
             <TextField
                 className={classes.textField}
                 label="Address Detail"
+                value={storeData.address_detail}
                 variant="outlined"
+                id="address_detail"
                 fullWidth
+                onChange={handleChange}
             />
         </div>
     )
@@ -126,11 +163,11 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: 250,
         marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(1), 
+        marginBottom: theme.spacing(1),
         objectFit: 'none'
     },
     imgLabel: {
-        marginBottom: theme.spacing(2), 
+        marginBottom: theme.spacing(2),
     },
     postalCode: {
         width: 150,
