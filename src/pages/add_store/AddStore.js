@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -24,7 +23,7 @@ const AddStore = () => {
                 ))}
             </Stepper>
             <div className={classes.contents}>
-                {curStep == 0 && <StoreInformation />}
+                {curStep === 0 && <StoreInformation />}
             </div>
             <div className={classes.btnRoot}>
                 <Grid container spacing={3} justify="center">
