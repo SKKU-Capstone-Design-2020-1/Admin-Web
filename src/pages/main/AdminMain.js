@@ -5,7 +5,7 @@ import Toolbar from "../../layouts/toolbar/Toolbar";
 import Drawer from "../../layouts/drawer/Drawer";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import NoStoreAdded from "./NoStoreAdded";
 
 const AdminMain = () => {
     const classes = useStyles();
@@ -15,7 +15,10 @@ const AdminMain = () => {
         setMobileOpen(!mobileOpen);
     }
 
-
+    const getContents = () => {
+        
+        return <NoStoreAdded />
+    }
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -23,9 +26,7 @@ const AdminMain = () => {
             <Drawer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Typography>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci totam sapiente, molestias temporibus a vitae blanditiis autem, nihil reprehenderit obcaecati necessitatibus doloribus hic, rerum nesciunt ipsam praesentium earum placeat architecto!
-                </Typography>
+                {getContents()}
             </main>
         </div>
     )
@@ -33,7 +34,7 @@ const AdminMain = () => {
 const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: Grey['100'],
-        height: '100vh',
+        minHeight: '100vh',
         width: '100wh',
         display: 'flex'
     },
