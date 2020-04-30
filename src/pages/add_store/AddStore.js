@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 
 const AddStore = () => {
     const classes = useStyles();
-    const [curStep, setCurStep] = useState(0);
+    const [curStep, setCurStep] = useState(1);
 
     const handleStep = (value) => {
         setCurStep(curStep + value >= 0 ? curStep + value : curStep)
