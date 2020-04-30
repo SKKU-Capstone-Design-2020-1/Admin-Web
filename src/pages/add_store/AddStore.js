@@ -6,12 +6,16 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import { ADD_STORE_STEPS } from "../../libs/const";
 import StoreInformation from "../../layouts/store_information/StoreInformation";
+import MapBuilder from "../../layouts/map_builder/MapBuilder";
 import Grid from "@material-ui/core/Grid";
 
 const AddStore = () => {
     const classes = useStyles();
     const [curStep, setCurStep] = useState(0);
 
+    const handleStep = (value) => {
+        setCurStep(curStep + value >= 0 ? curStep + value : curStep)
+    }
 
     return (
         <div className={classes.root}>
@@ -24,16 +28,28 @@ const AddStore = () => {
             </Stepper>
             <div className={classes.contents}>
                 {curStep === 0 && <StoreInformation />}
+                {curStep === 1 && <MapBuilder />}
             </div>
             <div className={classes.btnRoot}>
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12} md={4}>
-                        <Button fullWidth className={classes.button} variant="contained" disableElevation>
+                        <Button
+                            onClick={() => handleStep(-1)}
+                            fullWidth
+                            className={classes.button}
+                            variant="contained"
+                            disableElevation>
                             Previous
                         </Button>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Button fullWidth className={classes.button} variant="contained" disableElevation color="primary">
+                        <Button
+                            onClick={() => handleStep(1)}
+                            fullWidth
+                            className={classes.button}
+                            variant="contained"
+                            disableElevation
+                            color="primary">
                             Next
                         </Button>
                     </Grid>
