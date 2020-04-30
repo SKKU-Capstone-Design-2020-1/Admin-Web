@@ -26,10 +26,12 @@ const AddStore = () => {
                     </Step>
                 ))}
             </Stepper>
-            <div className={classes.contents}>
+
+            <main>
                 {curStep === 0 && <StoreInformation />}
                 {curStep === 1 && <MapBuilder />}
-            </div>
+            </main>
+            
             <div className={classes.btnRoot}>
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12} md={4}>
@@ -68,7 +70,6 @@ const useStyles = makeStyles(theme => ({
         background: 'none'
     },
     contents: {
-        maxWidth: 500,
         margin: 'auto',
     },
     btnRoot: {

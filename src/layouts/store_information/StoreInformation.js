@@ -139,6 +139,8 @@ const StoreInformation = () => {
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
+        maxWidth: 500,
+        margin: 'auto'
     },
     textField: {
         maxWidth: 360,
