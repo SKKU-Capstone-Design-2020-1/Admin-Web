@@ -10,7 +10,7 @@ import { DRAWER_WIDTH } from "../../libs/const";
 const Toolbar = ({ handleDrawerToggle, title }) => {
     const classes = useStyles();
     return (
-        <AppBar position="fixed" className={classes.appBar} elevation={1}>
+        <AppBar position="fixed" className={classes.appBar} elevation={2}>
             <MToolbar>
                 <IconButton
                     color="inherit"
