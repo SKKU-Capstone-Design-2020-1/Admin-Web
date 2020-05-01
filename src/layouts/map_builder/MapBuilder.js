@@ -27,7 +27,7 @@ const MapBuilder = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default" elevation="1">
+            <AppBar position="static" color="default" elevation={1}>
                 <MapToolbar />
                 <MapTabs />
             </AppBar>
