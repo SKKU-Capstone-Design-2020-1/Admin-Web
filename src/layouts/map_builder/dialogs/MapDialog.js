@@ -19,9 +19,14 @@ const MapDialog = ({ open, handleDialog }) => {
     const handleChange = e => {
         setValues({
             ...values,
-            [e.target.id]: e.target.value
-        })
+            [e.target.id]: e.target.id === "name" ? e.target.value : Number(e.target.value),
+        });
     }
+    const handleSubmit = e => {
+        if (e) e.preventDefault();
+        handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values })
+    }
+
     return (
         <Dialog
             maxWidth="xs"
@@ -31,46 +36,49 @@ const MapDialog = ({ open, handleDialog }) => {
         >
             <DialogTitle>Create a new map</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    Enter name and size of a new map.
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Name of a map"
-                    value={values.name}
-                    fullWidth
-                    onChange={handleChange}
-                />
-                <div className={classes.sizeRoot}>
+                <form onSubmit={handleSubmit}>
+                    <DialogContentText>
+                        Enter name and size of a new map.
+                    </DialogContentText>
                     <TextField
+                        autoFocus
                         margin="dense"
-                        id="height"
-                        label="Height"
-                        type="number"
-                        className={classes.sizeText}
-                        style={{marginRight: 8}}
-                        value={values.height}
+                        id="name"
+                        label="Name of a map"
+                        value={values.name}
+                        fullWidth
                         onChange={handleChange}
                     />
-                    <TextField
-                        margin="dense"
-                        id="width"
-                        label="Width"
-                        type="number"
-                        className={classes.sizeText}
-                        style={{marginLeft: 8}}
-                        value={values.width}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <div className={classes.sizeRoot}>
+                        <TextField
+                            margin="dense"
+                            id="height"
+                            label="Height"
+                            type="number"
+                            className={classes.sizeText}
+                            style={{ marginRight: 8 }}
+                            value={values.height}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            margin="dense"
+                            id="width"
+                            label="Width"
+                            type="number"
+                            className={classes.sizeText}
+                            style={{ marginLeft: 8 }}
+                            value={values.width}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <button style={{ display: 'none' }} type="submit" onSubmit={handleSubmit} />
+                </form>
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleDialog({ type: MAP_DIALOGS.CLOSE_MAP })}>
                     Cancel
                 </Button>
-                <Button color="primary">
+                <Button color="primary" onClick={handleSubmit}>
                     Add
                 </Button>
             </DialogActions>
