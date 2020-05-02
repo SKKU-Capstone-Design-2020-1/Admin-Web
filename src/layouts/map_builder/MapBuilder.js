@@ -14,11 +14,14 @@ const MapBuilder = () => {
     useLayoutEffect(() => {
         const updateSize = () => {
             const width = window.innerWidth;
-
+            let adjustedWidth;
             if (width > theme.breakpoints.values['sm'])
-                setWidth(width - DRAWER_WIDTH - theme.spacing(10) - 2);
+                adjustedWidth = width - DRAWER_WIDTH - theme.spacing(8) - 2;
             else //when drawer is hidden 
-                setWidth(width - theme.spacing(8))
+                adjustedWidth = width - theme.spacing(8);
+
+            if (adjustedWidth > 480) setWidth(adjustedWidth);
+            else setWidth(480)            
         }
         window.addEventListener("resize", updateSize);
         updateSize();

@@ -42,7 +42,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: Grey['100'],
         minHeight: '100vh',
-        width: '100wh',
         display: 'flex'
     },
     // necessary for content to be below app bar
