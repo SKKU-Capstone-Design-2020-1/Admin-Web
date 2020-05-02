@@ -8,7 +8,14 @@ import { DRAWER_WIDTH } from "../../libs/const";
 import useTheme from "@material-ui/core/styles/useTheme";
 import MapDialog from './dialogs/MapDialog';
 import { MAP_DIALOGS, MAP_BUILDER_HEIGHT } from "./util/const";
+import update from "immutability-helper";
 
+const createMap = (values) => {
+    return {
+        ...values,
+        seats: [], 
+    }
+} 
 const MapBuilder = () => {
     const classes = useStyles();
     const theme = useTheme();
@@ -16,9 +23,7 @@ const MapBuilder = () => {
     const [dialogs, setDialogs] = useState({
         mapDialog: false,
     });
-    const [maps, setMaps] = useState([
-
-    ])
+    const [maps, setMaps] = useState([]);
 
     const handleDialog = action => {
 
@@ -26,17 +31,23 @@ const MapBuilder = () => {
             case MAP_DIALOGS.OPEN_MAP:
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: !prev.mapDialog
+                    mapDialog: true
                 }));
                 break;
             case MAP_DIALOGS.CLOSE_MAP:
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: !prev.mapDialog, 
+                    mapDialog: false, 
                 }));
                 break;
             case MAP_DIALOGS.ADD_MAP:
-
+                setMaps(prev => update(prev, {
+                    $push: [createMap(action.data)]
+                }));
+                setDialogs(prev => ({
+                    ...prev,
+                    mapDialog: false, 
+                }));
                 break;
             default:
         }
