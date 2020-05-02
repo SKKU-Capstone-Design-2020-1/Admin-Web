@@ -7,8 +7,10 @@ import Grey from "@material-ui/core/colors/grey";
 import { DRAWER_WIDTH } from "../../libs/const";
 import useTheme from "@material-ui/core/styles/useTheme";
 import MapDialog from './dialogs/MapDialog';
+import MapDisplay from "./MapDisplay";
 import { MAP_DIALOGS, MAP_BUILDER_HEIGHT } from "./util/const";
 import update from "immutability-helper";
+import Typography from "@material-ui/core/Typography";
 
 const createMap = (values) => {
     return {
@@ -24,6 +26,7 @@ const MapBuilder = () => {
         mapDialog: false,
     });
     const [maps, setMaps] = useState([]);
+    const [mapIdx, setMapIdx] = useState(-1);
 
     const handleDialog = action => {
 
@@ -41,6 +44,7 @@ const MapBuilder = () => {
                 }));
                 break;
             case MAP_DIALOGS.ADD_MAP:
+                let curMapSize = maps.length + 1;
                 setMaps(prev => update(prev, {
                     $push: [createMap(action.data)]
                 }));
@@ -48,6 +52,7 @@ const MapBuilder = () => {
                     ...prev,
                     mapDialog: false,
                 }));
+                setMapIdx(curMapSize - 1);
                 break;
             default:
         }
@@ -70,15 +75,25 @@ const MapBuilder = () => {
         return () => window.removeEventListener('resize', updateSize);
     }, []);
 
+    const MapNotAddded = () => {
+        return (
+            <div className={classes.defaultMapRoot}>
+                <Typography variant="body1" align="center">
+                    No map has added.
+                </Typography>
+            </div>
+        )
+    }
 
     return (
         <div className={classes.root}>
             <AppBar position="static" color="default" elevation={1}>
                 <MapToolbar handleDialog={handleDialog} />
-                <MapTabs maps={maps} />
+                <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
             <div className={classes.main} style={{ width: mapWidth }} >
-                <div style={{ margin: '100px auto', width: 500, height: 300, backgroundColor: 'grey' }} />
+                {mapIdx >= 0 ? <MapDisplay data={maps[mapIdx]} /> : <MapNotAddded />}
+                {/* <div style={{ margin: '100px auto', width: 500, height: 300, backgroundColor: 'grey' }} /> */}
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
@@ -96,6 +111,12 @@ const useStyles = makeStyles(theme => ({
     main: {
         overflow: 'auto',
         height: MAP_BUILDER_HEIGHT
+    },
+    defaultMapRoot: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
     }
 }))
 export default MapBuilder
