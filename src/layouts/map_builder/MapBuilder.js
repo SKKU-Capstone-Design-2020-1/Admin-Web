@@ -34,7 +34,7 @@ const MapBuilder = () => {
                 <MapToolbar />
                 <MapTabs />
             </AppBar>
-            <div id="map_contents" className={classes.main} style={{width: mapWidth}} >
+            <div className={classes.main} style={{width: mapWidth}} >
                 <div style={{ width: 1500, height: 1000, backgroundColor: 'black' }} />
             </div>
         </div>
@@ -52,7 +52,10 @@ const useStyles = makeStyles(theme => ({
     main: {
         overflow: 'auto',
         maxHeight: '500px',
-        overflowX: 'auto'
+        overflowX: 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center', 
     }
 }))
 export default MapBuilder
