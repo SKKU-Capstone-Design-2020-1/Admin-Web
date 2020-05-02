@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useStyles from "@material-ui/core/styles/makeStyles";
 import { MAP_BUILDER_HEIGHT } from "./util/const";
+
 const MapDisplay = ({ data }) => {
     const classes = makeStyles();
     const [size, setSize] = useState({

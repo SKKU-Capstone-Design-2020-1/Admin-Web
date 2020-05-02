@@ -86,7 +86,7 @@ const MapBuilder = () => {
     }
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={{ width: mapWidth }}>
             <AppBar position="static" color="default" elevation={1}>
                 <MapToolbar handleDialog={handleDialog} />
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
