@@ -8,12 +8,12 @@ import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import RotateRightIcon from "@material-ui/icons/RotateRight";
 import EditIcon from "@material-ui/icons/Edit";
 
-const MapToolbar = () => {
+const MapToolbar = ({handleDialog}) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
             <ButtonGroup className={classes.group} size="small">
-                <Button>
+                <Button onClick={() => handleDialog({type: 'MAP_DIALOG'})}>
                     <AddIcon />
                 </Button>
             </ButtonGroup>
