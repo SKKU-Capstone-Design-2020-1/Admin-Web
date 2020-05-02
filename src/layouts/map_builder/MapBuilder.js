@@ -13,9 +13,9 @@ import update from "immutability-helper";
 const createMap = (values) => {
     return {
         ...values,
-        seats: [], 
+        seats: [],
     }
-} 
+}
 const MapBuilder = () => {
     const classes = useStyles();
     const theme = useTheme();
@@ -37,7 +37,7 @@ const MapBuilder = () => {
             case MAP_DIALOGS.CLOSE_MAP:
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: false, 
+                    mapDialog: false,
                 }));
                 break;
             case MAP_DIALOGS.ADD_MAP:
@@ -46,7 +46,7 @@ const MapBuilder = () => {
                 }));
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: false, 
+                    mapDialog: false,
                 }));
                 break;
             default:
@@ -75,7 +75,7 @@ const MapBuilder = () => {
         <div className={classes.root}>
             <AppBar position="static" color="default" elevation={1}>
                 <MapToolbar handleDialog={handleDialog} />
-                <MapTabs />
+                <MapTabs maps={maps} />
             </AppBar>
             <div className={classes.main} style={{ width: mapWidth }} >
                 <div style={{ margin: '100px auto', width: 500, height: 300, backgroundColor: 'grey' }} />

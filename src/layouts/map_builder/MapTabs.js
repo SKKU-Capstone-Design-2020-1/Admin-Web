@@ -1,17 +1,17 @@
 import React from 'react'
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-const MapTabs = () => {
+const MapTabs = ({ maps }) => {
     return (
         <Tabs
             variant="scrollable"
             textColor="primary"
             indicatorColor="primary"
-            value={1}
+            value={0}
         >
-            <Tab label="one" />
-            <Tab label="two" />
-            <Tab label="three" />
+            {maps && maps.map(map => (
+                <Tab label={map.name} />
+            ))}
 
         </Tabs>
     )

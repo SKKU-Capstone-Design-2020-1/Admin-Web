@@ -9,13 +9,14 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { MAP_DIALOGS } from "../util/const";
 
+const defaultValues = {
+    name: '',
+    height: '',
+    width: '', 
+}
 const MapDialog = ({ open, handleDialog }) => {
     const classes = useStyles();
-    const [values, setValues] = useState({
-        name: '',
-        height: '',
-        width: ''
-    })
+    const [values, setValues] = useState(defaultValues);
     const handleChange = e => {
         setValues({
             ...values,
@@ -24,7 +25,8 @@ const MapDialog = ({ open, handleDialog }) => {
     }
     const handleSubmit = e => {
         if (e) e.preventDefault();
-        handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values })
+        handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values });
+        setValues(defaultValues);
     }
 
     return (
