@@ -67,8 +67,9 @@ const MapBuilder = () => {
             else //when drawer is hidden 
                 adjustedWidth = width - theme.spacing(8);
 
-            if (adjustedWidth > 480) setWidth(adjustedWidth);
-            else setWidth(480)
+            if (adjustedWidth > 300) setWidth(adjustedWidth);
+            else setWidth(300);
+
         }
         window.addEventListener("resize", updateSize);
         updateSize();
@@ -86,14 +87,13 @@ const MapBuilder = () => {
     }
 
     return (
-        <div className={classes.root} style={{ width: mapWidth }}>
+        <div className={classes.root} style={{ width: mapWidth}}>
             <AppBar position="static" color="default" elevation={1}>
                 <MapToolbar handleDialog={handleDialog} />
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
-            <div className={classes.main} style={{ width: mapWidth }} >
+            <div className={classes.main} style={{ width: '100%' }} >
                 {mapIdx >= 0 ? <MapDisplay data={maps[mapIdx]} /> : <MapNotAddded />}
-                {/* <div style={{ margin: '100px auto', width: 500, height: 300, backgroundColor: 'grey' }} /> */}
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
