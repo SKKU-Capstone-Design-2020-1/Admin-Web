@@ -12,7 +12,7 @@ import { MAP_DIALOGS } from "../util/const";
 const defaultValues = {
     name: '',
     height: '',
-    width: '', 
+    width: '',
 }
 const MapDialog = ({ open, handleDialog }) => {
     const classes = useStyles();
@@ -28,13 +28,17 @@ const MapDialog = ({ open, handleDialog }) => {
         handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values });
         setValues(defaultValues);
     }
+    const handleClose = () => {
+        setValues(defaultValues);
+        handleDialog({ type: MAP_DIALOGS.CLOSE_MAP });
+    }
 
     return (
         <Dialog
             maxWidth="xs"
             fullWidth
             open={open}
-            onClose={() => handleDialog({ type: MAP_DIALOGS.CLOSE_MAP })}
+            onClose={handleClose}
         >
             <DialogTitle>Create a new map</DialogTitle>
             <DialogContent>
@@ -77,7 +81,7 @@ const MapDialog = ({ open, handleDialog }) => {
                 </form>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => handleDialog({ type: MAP_DIALOGS.CLOSE_MAP })}>
+                <Button onClick={handleClose}>
                     Cancel
                 </Button>
                 <Button color="primary" onClick={handleSubmit}>
