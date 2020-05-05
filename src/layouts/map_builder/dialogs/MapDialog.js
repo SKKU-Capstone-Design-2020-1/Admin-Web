@@ -7,6 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import { MAP_DIALOGS } from "../util/const";
 
 const defaultValues = {
@@ -17,6 +18,7 @@ const defaultValues = {
 const MapDialog = ({ open, handleDialog }) => {
     const classes = useStyles();
     const [values, setValues] = useState(defaultValues);
+    const [errMsg, setErrMsg] = useState('');
     const handleChange = e => {
         setValues({
             ...values,
@@ -25,11 +27,23 @@ const MapDialog = ({ open, handleDialog }) => {
     }
     const handleSubmit = e => {
         if (e) e.preventDefault();
-        handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values });
-        setValues(defaultValues);
+        let isCompleted = true;
+        Object.keys(values).forEach(key => {
+            if (values[key] === '') isCompleted = false;
+        })
+
+        if (isCompleted) {
+            handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values });
+            setValues(defaultValues);
+            setErrMsg('');
+        }
+        else
+            setErrMsg("Please fill out a form.");
+
     }
     const handleClose = () => {
         setValues(defaultValues);
+        setErrMsg('');
         handleDialog({ type: MAP_DIALOGS.CLOSE_MAP });
     }
 
@@ -79,6 +93,9 @@ const MapDialog = ({ open, handleDialog }) => {
                     </div>
                     <button style={{ display: 'none' }} type="submit" onSubmit={handleSubmit} />
                 </form>
+                <Typography className={classes.errMsg} variant="body1" color="secondary">
+                    {errMsg}
+                </Typography>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>
@@ -100,6 +117,9 @@ const useStyles = makeStyles(theme => ({
     },
     sizeText: {
         flex: 1,
+    },
+    errMsg: {
+        margin: `${theme.spacing(1)}px 0px`
     }
 }))
 
