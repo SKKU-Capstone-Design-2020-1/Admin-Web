@@ -63,7 +63,7 @@ const MapBuilder = () => {
             const width = window.innerWidth;
             let adjustedWidth;
             if (width > theme.breakpoints.values['sm'])
-                adjustedWidth = width - DRAWER_WIDTH - theme.spacing(8) - 2;
+                adjustedWidth = width - DRAWER_WIDTH - theme.spacing(10) - 4;
             else //when drawer is hidden 
                 adjustedWidth = width - theme.spacing(8);
 
