@@ -44,7 +44,7 @@ const MapBuilder = () => {
         seatDialog: false,
     });
     const [maps, setMaps] = useState([
-        {name: 'TEMP', height: 800, width: 500, seat_groups: [
+        {name: 'TEMP', height: 400, width: 500, seat_groups: [
             {x: 100, y: 100, degree: 0, seats: [
                 {state: 0, seat_name: 1, seat_id: ''},
                 {state: 0, seat_name: 2, seat_id: ''},
