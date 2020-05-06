@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -9,8 +9,44 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { MAP_DIALOGS } from "../util/const";
 
-const SeatDialog = ({ open, handleDialog, }) => {
+const defaultValue = {
+    num: '',
+    seat_ids: '',
+}
+const SeatDialog = ({ open, handleDialog, seatSize }) => {
     const classes = useStyles();
+    const [values, setValues] = useState(defaultValue);
+    const [idsDisabled, setIdsDisabled] = useState(true);
+    
+    useEffect(() => {
+        if (values.num === '') {
+            setIdsDisabled(true);
+            setValues({
+                ...values,
+                seat_ids: '', 
+            });
+        }
+        else {
+            let seat_ids = '';
+            let num = Number(values.num);
+            for (let i = 1; i <= num; i++){
+                seat_ids = seat_ids + i;
+                if (i !== num) seat_ids = seat_ids + ","; 
+            }
+            setIdsDisabled(false);
+            setValues({
+                ...values,
+                seat_ids
+            });
+        }
+    }, [values.num])
+
+    const handleChange = e => {
+        setValues({
+            ...values,
+            [e.target.id]: e.target.value, 
+        })
+    }
 
 
     return (
@@ -27,18 +63,22 @@ const SeatDialog = ({ open, handleDialog, }) => {
                 </DialogContentText>
                 <div className={classes.textRoot}>
                     <TextField
+                        onChange={handleChange}
                         className={classes.rootItem}
                         autoFocus
                         margin="dense"
                         id="num"
                         label="Number of seats"
                         type="number"
+                        value={values.num}
                     />
                     <TextField
+                        onChange={handleChange}
+                        disabled={idsDisabled}
                         className={classes.rootItem}
-                        autoFocus
                         margin="dense"
-                        id="id"
+                        id="seat_ids"
+                        value={values.seat_ids}
                         label="Seat ID"
                     />
                 </div>
