@@ -10,6 +10,7 @@ import AddLocationIcon from "@material-ui/icons/AddLocation";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
 import RemoveLocationIcon from "@material-ui/icons/LocationOff";
 import Tooltip from "@material-ui/core/Tooltip";
+import { MAP_DIALOGS } from "./util/const";
 
 const MapToolbar = ({ handleDialog }) => {
     const classes = useStyles();
@@ -17,7 +18,7 @@ const MapToolbar = ({ handleDialog }) => {
         <div className={classes.root}>
             <ButtonGroup className={classes.group} size="small">
                 <Tooltip title="Add a new map">
-                    <Button onClick={() => handleDialog({ type: 'MAP_DIALOG' })}>
+                    <Button onClick={() => handleDialog({ type: MAP_DIALOGS.OPEN_MAP })}>
                         <AddLocationIcon />
                     </Button>
                 </Tooltip>
@@ -34,7 +35,7 @@ const MapToolbar = ({ handleDialog }) => {
             </ButtonGroup>
             <ButtonGroup className={classes.group} size="small">
                 <Tooltip title="Add a seat">
-                    <Button>
+                    <Button onClick={() => handleDialog({type: MAP_DIALOGS.OPEN_SEAT})}>
                         <SeatIcon />
                     </Button>
                 </Tooltip>

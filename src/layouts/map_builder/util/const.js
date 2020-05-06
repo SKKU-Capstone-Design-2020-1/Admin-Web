@@ -2,7 +2,8 @@ export const MAP_DIALOGS = {
     "OPEN_MAP": "MAP_DIALOG",
     "CLOSE_MAP": "CLOSE_MAP_DIALOG",
     "ADD_MAP": "ADD_NEW_MAP",
-
+    "OPEN_SEAT": "OPEN_SEAT_DIALOG",
+    "CLOSE_SEAT": "CLOSE_SEAT_DIALOG"
 }
 
 export const MAP_BUILDER_HEIGHT = 500;

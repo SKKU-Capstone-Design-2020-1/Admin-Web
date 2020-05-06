@@ -11,6 +11,7 @@ import MapDisplay from "./MapDisplay";
 import { MAP_DIALOGS, MAP_BUILDER_HEIGHT } from "./util/const";
 import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
+import SeatDialog from './dialogs/SeatDialog';
 
 const createMap = (values) => {
     return {
@@ -24,6 +25,7 @@ const MapBuilder = () => {
     const [mapWidth, setWidth] = useState(0);
     const [dialogs, setDialogs] = useState({
         mapDialog: false,
+        seatDialog: false, 
     });
     const [maps, setMaps] = useState([]);
     const [mapIdx, setMapIdx] = useState(-1);
@@ -53,6 +55,18 @@ const MapBuilder = () => {
                     mapDialog: false,
                 }));
                 setMapIdx(curMapSize - 1);
+                break;
+            case MAP_DIALOGS.OPEN_SEAT:
+                setDialogs(prev => ({
+                    ...prev,
+                    seatDialog: true
+                }));
+                break;
+            case MAP_DIALOGS.CLOSE_SEAT:
+                setDialogs(prev => ({
+                    ...prev,
+                    seatDialog: false
+                }));
                 break;
             default:
         }
@@ -97,6 +111,7 @@ const MapBuilder = () => {
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
+            <SeatDialog open={dialogs.seatDialog} handleDialog={handleDialog} />
         </div>
     )
 }
