@@ -29,7 +29,7 @@ const SeatDialog = ({ open, handleDialog, seatSize }) => {
         else {
             let seat_ids = '';
             let num = Number(values.num);
-            for (let i = 1; i <= num; i++){
+            for (let i = seatSize.length + 1; i <= num; i++){
                 seat_ids = seat_ids + i;
                 if (i !== num) seat_ids = seat_ids + ","; 
             }
