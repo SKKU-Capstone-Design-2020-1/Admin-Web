@@ -12,8 +12,9 @@ const MapDisplay = ({ data }) => {
         const { height, width } = data;
         setSize({
             height, width
-        })
-    }, [data])
+        });
+        console.log(data);
+    }, [data.height, data.width])
 
     return (
         <div className={classes.root}

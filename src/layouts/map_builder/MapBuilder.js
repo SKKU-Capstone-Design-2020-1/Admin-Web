@@ -16,9 +16,25 @@ import SeatDialog from './dialogs/SeatDialog';
 const createMap = (values) => {
     return {
         ...values,
-        seats: [],
+        seat_groups: [],
     }
 }
+/**
+ * map item
+ * name: Integer
+ * height: Integer
+ * width: Integer
+ * seat_groups: array
+ * --x: Integer
+ * --y: Integer
+ * --degree: Integer
+ * --seats: array
+ * ----state: Integer (0 not in use, 1 in use)
+ * ----seat_name: ID for user
+ * ----seat_id: ID for DB
+ * 
+ */
+
 const MapBuilder = () => {
     const classes = useStyles();
     const theme = useTheme();
@@ -28,7 +44,15 @@ const MapBuilder = () => {
         seatDialog: false,
     });
     const [maps, setMaps] = useState([
-        {name: 'TEMP', height: 500, width: 500}
+        {name: 'TEMP', height: 800, width: 500, seat_groups: [
+            {x: 100, y: 100, degree: 0, seats: [
+                {state: 0, seat_name: 1, seat_id: ''},
+                {state: 0, seat_name: 2, seat_id: ''},
+                {state: 0, seat_name: 3, seat_id: ''},
+                {state: 0, seat_name: 4, seat_id: ''},
+                {state: 0, seat_name: 5, seat_id: ''},
+            ]}
+        ]}
     ]);
     const [mapIdx, setMapIdx] = useState(0);
 
@@ -75,12 +99,20 @@ const MapBuilder = () => {
                     ...prev,
                     seatDialog: false
                 }));
-                
+                handleTest();
+                //create a seat group
+                // setMaps(prev => update(prev, {
+                //     [mapIdx]: {$push: }
+                // }))
                 break;
             default:
         }
     }
 
+    const handleTest = () => {
+
+
+    }
     useLayoutEffect(() => {
         const updateSize = () => {
             const width = window.innerWidth;
@@ -120,7 +152,7 @@ const MapBuilder = () => {
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
-            <SeatDialog seats={mapIdx >= 0 ? maps[mapIdx].seats : null} open={dialogs.seatDialog} handleDialog={handleDialog} />
+            <SeatDialog seat_groups={mapIdx >= 0 ? maps[mapIdx].seat_groups : null} open={dialogs.seatDialog} handleDialog={handleDialog} />
         </div>
     )
 }

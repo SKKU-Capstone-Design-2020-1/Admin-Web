@@ -14,7 +14,7 @@ const defaultValue = {
     num: '',
     seat_names: '',
 }
-const SeatDialog = ({ open, handleDialog, seats = [] }) => {
+const SeatDialog = ({ open, handleDialog, seat_groups = [] }) => {
     const classes = useStyles();
     const [values, setValues] = useState(defaultValue);
     const [idsDisabled, setIdsDisabled] = useState(true);
@@ -31,7 +31,7 @@ const SeatDialog = ({ open, handleDialog, seats = [] }) => {
         else {
             let seat_names = '';
             let num = Number(values.num);
-            for (let i = seats.length + 1; i <= num; i++) {
+            for (let i = seat_groups.length + 1; i <= num; i++) {
                 seat_names = seat_names + i;
                 if (i !== num) seat_names = seat_names + ",";
             }
@@ -67,8 +67,8 @@ const SeatDialog = ({ open, handleDialog, seats = [] }) => {
         //check uniqueness of ids
         let names = values.seat_names.split(',');
         names.forEach(name => {
-            seats.forEach(seat => {
-                if (seats.name === name) {
+            seat_groups.forEach(seat => {
+                if (seat_groups.name === name) {
                     setErrMsg("Seat name must be unique in each map.");
                     return 0;
                 }
