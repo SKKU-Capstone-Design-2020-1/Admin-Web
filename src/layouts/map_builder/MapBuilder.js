@@ -27,8 +27,10 @@ const MapBuilder = () => {
         mapDialog: false,
         seatDialog: false,
     });
-    const [maps, setMaps] = useState([]);
-    const [mapIdx, setMapIdx] = useState(-1);
+    const [maps, setMaps] = useState([
+        {name: 'TEMP', height: 500, width: 500}
+    ]);
+    const [mapIdx, setMapIdx] = useState(0);
 
     const handleDialog = action => {
         switch (action.type) {
@@ -66,6 +68,14 @@ const MapBuilder = () => {
                     ...prev,
                     seatDialog: false
                 }));
+                break;
+            case MAP_DIALOGS.ADD_SEAT:
+                console.log(action);
+                setDialogs(prev => ({
+                    ...prev,
+                    seatDialog: false
+                }));
+                
                 break;
             default:
         }
@@ -110,7 +120,7 @@ const MapBuilder = () => {
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
-            <SeatDialog open={dialogs.seatDialog} handleDialog={handleDialog} />
+            <SeatDialog seats={mapIdx >= 0 ? maps[mapIdx].seats : null} open={dialogs.seatDialog} handleDialog={handleDialog} />
         </div>
     )
 }

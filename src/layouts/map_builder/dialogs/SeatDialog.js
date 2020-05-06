@@ -7,48 +7,77 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Typograhy from "@material-ui/core/Typography";
 import { MAP_DIALOGS } from "../util/const";
 
 const defaultValue = {
     num: '',
-    seat_ids: '',
+    seat_names: '',
 }
-const SeatDialog = ({ open, handleDialog, seatSize }) => {
+const SeatDialog = ({ open, handleDialog, seats = [] }) => {
     const classes = useStyles();
     const [values, setValues] = useState(defaultValue);
     const [idsDisabled, setIdsDisabled] = useState(true);
-    
+    const [errMsg, setErrMsg] = useState('');
+
     useEffect(() => {
         if (values.num === '') {
             setIdsDisabled(true);
             setValues({
                 ...values,
-                seat_ids: '', 
+                seat_names: '',
             });
         }
         else {
-            let seat_ids = '';
+            let seat_names = '';
             let num = Number(values.num);
-            for (let i = seatSize.length + 1; i <= num; i++){
-                seat_ids = seat_ids + i;
-                if (i !== num) seat_ids = seat_ids + ","; 
+            for (let i = seats.length + 1; i <= num; i++) {
+                seat_names = seat_names + i;
+                if (i !== num) seat_names = seat_names + ",";
             }
             setIdsDisabled(false);
             setValues({
                 ...values,
-                seat_ids
+                seat_names
             });
         }
-    }, [values.num])
+    }, [values.num]);
+    useEffect(() => {
+        if (open === false){
+            setValues(defaultValue);
+            setIdsDisabled(true);
+            setErrMsg('');
+        }
+    }, [open])
 
     const handleChange = e => {
         setValues({
             ...values,
-            [e.target.id]: e.target.value, 
+            [e.target.id]: e.target.value,
         })
     }
 
+    const handleSubmit = e => {
+        if (e) e.preventDefault();
 
+        if (values.num === '' || values.seat_names === '') {
+            setErrMsg("Please complete the form.");
+            return;
+        }
+        //check uniqueness of ids
+        let names = values.seat_names.split(',');
+        names.forEach(name => {
+            seats.forEach(seat => {
+                if (seats.name === name) {
+                    setErrMsg("Seat name must be unique in each map.");
+                    return 0;
+                }
+            })
+        })
+
+        //if all ids are unique
+        handleDialog({ type: MAP_DIALOGS.ADD_SEAT, data: values });
+    }
     return (
         <Dialog
             maxWidth={"xs"}
@@ -61,33 +90,39 @@ const SeatDialog = ({ open, handleDialog, seatSize }) => {
                 <DialogContentText>
                     Please fill out information on new seats
                 </DialogContentText>
-                <div className={classes.textRoot}>
-                    <TextField
-                        onChange={handleChange}
-                        className={classes.rootItem}
-                        autoFocus
-                        margin="dense"
-                        id="num"
-                        label="Number of seats"
-                        type="number"
-                        value={values.num}
-                    />
-                    <TextField
-                        onChange={handleChange}
-                        disabled={idsDisabled}
-                        className={classes.rootItem}
-                        margin="dense"
-                        id="seat_ids"
-                        value={values.seat_ids}
-                        label="Seat ID"
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className={classes.textRoot}>
+                        <TextField
+                            onChange={handleChange}
+                            className={classes.rootItem}
+                            autoFocus
+                            margin="dense"
+                            id="num"
+                            label="Number of seats"
+                            type="number"
+                            value={values.num}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            disabled={idsDisabled}
+                            className={classes.rootItem}
+                            margin="dense"
+                            id="seat_names"
+                            value={values.seat_names}
+                            label="Seat ID"
+                        />
+                    </div>
+                    <button style={{ display: 'none' }} type="submit" onSubmit={handleSubmit} />
+                </form>
+                <Typograhy variant="body1" color="secondary" className={classes.errMsg}>
+                    {errMsg}
+                </Typograhy>
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleDialog({ type: MAP_DIALOGS.CLOSE_SEAT })}>
                     Cancel
                 </Button>
-                <Button color="primary">
+                <Button onClick={handleSubmit} color="primary">
                     Add
                 </Button>
             </DialogActions>
@@ -110,6 +145,9 @@ const useStyles = makeStyles(theme => ({
         "&:last-child": {
             marginLeft: theme.spacing(1),
         }
+    },
+    errMsg: {
+        padding: `${theme.spacing(1)}px 0px`
     }
 }))
 export default SeatDialog;
