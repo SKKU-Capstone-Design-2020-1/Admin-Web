@@ -12,7 +12,7 @@ import RemoveLocationIcon from "@material-ui/icons/LocationOff";
 import Tooltip from "@material-ui/core/Tooltip";
 import { MAP_DIALOGS } from "./util/const";
 
-const MapToolbar = ({ handleDialog }) => {
+const MapToolbar = ({ handleDialog, mapIdx }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -23,34 +23,42 @@ const MapToolbar = ({ handleDialog }) => {
                     </Button>
                 </Tooltip>
                 <Tooltip title="Edit selected map">
-                    <Button >
+                    <Button disabled={mapIdx >= 0 ? false : true}>
                         <EditLocationIcon />
                     </Button>
                 </Tooltip>
                 <Tooltip title="Remove selected map">
-                    <Button>
+                    <Button disabled={mapIdx >= 0 ? false : true}>
                         <RemoveLocationIcon />
                     </Button>
                 </Tooltip>
             </ButtonGroup>
             <ButtonGroup className={classes.group} size="small">
                 <Tooltip title="Add a seat">
-                    <Button onClick={() => handleDialog({type: MAP_DIALOGS.OPEN_SEAT})}>
+                    <Button
+                        disabled={mapIdx >= 0 ? false : true}
+                        onClick={() => handleDialog({ type: MAP_DIALOGS.OPEN_SEAT })}>
                         <SeatIcon />
                     </Button>
                 </Tooltip>
                 <Tooltip title="Rotate seat to left">
-                    <Button>
+                    <Button
+                        disabled={mapIdx >= 0 ? false : true}
+                    >
                         <RotateLeftIcon />
                     </Button>
                 </Tooltip>
                 <Tooltip title="Rotate seat to right">
-                    <Button>
+                    <Button
+                        disabled={mapIdx >= 0 ? false : true}
+                    >
                         <RotateRightIcon />
                     </Button>
                 </Tooltip>
                 <Tooltip title="Edit selected seat">
-                    <Button>
+                    <Button
+                        disabled={mapIdx >= 0 ? false : true}
+                    >
                         <EditIcon />
                     </Button>
                 </Tooltip>

@@ -25,13 +25,12 @@ const MapBuilder = () => {
     const [mapWidth, setWidth] = useState(0);
     const [dialogs, setDialogs] = useState({
         mapDialog: false,
-        seatDialog: false, 
+        seatDialog: false,
     });
     const [maps, setMaps] = useState([]);
     const [mapIdx, setMapIdx] = useState(-1);
 
     const handleDialog = action => {
-
         switch (action.type) {
             case MAP_DIALOGS.OPEN_MAP:
                 setDialogs(prev => ({
@@ -101,9 +100,9 @@ const MapBuilder = () => {
     }
 
     return (
-        <div className={classes.root} style={{ width: mapWidth}}>
+        <div className={classes.root} style={{ width: mapWidth }}>
             <AppBar position="static" color="default" elevation={1}>
-                <MapToolbar handleDialog={handleDialog} />
+                <MapToolbar handleDialog={handleDialog} mapIdx={mapIdx} />
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
             <div className={classes.main} style={{ width: '100%' }} >
