@@ -13,8 +13,8 @@ const MapDisplay = ({ data }) => {
         setSize({
             height, width
         });
-        console.log(data);
     }, [data.height, data.width])
+
 
     return (
         <div className={classes.root}
@@ -23,7 +23,11 @@ const MapDisplay = ({ data }) => {
                 height: size.height,
                 width: size.width
             }}>
+            {data.seat_groups && data.seat_groups.map(group => (
+                <div style={{}}>
 
+                </div>
+            ))}
         </div>
     )
 }
