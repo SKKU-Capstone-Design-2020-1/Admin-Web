@@ -44,17 +44,40 @@ const MapBuilder = () => {
         seatDialog: false,
     });
     const [maps, setMaps] = useState([
-        {name: 'TEMP', height: 400, width: 500, seat_groups: [
-            {x: 100, y: 100, degree: 0, seats: [
-                {state: 0, seat_name: 1, seat_id: ''},
-                {state: 0, seat_name: 2, seat_id: ''},
-                {state: 0, seat_name: 3, seat_id: ''},
-                {state: 0, seat_name: 4, seat_id: ''},
-                {state: 0, seat_name: 5, seat_id: ''},
-            ]}
-        ]}
+        {
+            name: 'TEMP', height: 400, width: 500, seat_groups: [
+                {
+                    x: 100, y: 100, degree: 0, seats: [
+                        { state: 0, seat_name: 1, seat_id: '' },
+                        { state: 0, seat_name: 2, seat_id: '' },
+                        { state: 0, seat_name: 3, seat_id: '' },
+                        { state: 0, seat_name: 4, seat_id: '' },
+                        { state: 0, seat_name: 5, seat_id: '' },
+                    ]
+                }
+            ]
+        }
     ]);
     const [mapIdx, setMapIdx] = useState(0);
+
+    useLayoutEffect(() => {
+        const updateSize = () => {
+            const width = window.innerWidth;
+            let adjustedWidth;
+            if (width > theme.breakpoints.values['sm'])
+                adjustedWidth = width - DRAWER_WIDTH - theme.spacing(10) - 4;
+            else //when drawer is hidden 
+                adjustedWidth = width - theme.spacing(8);
+
+            if (adjustedWidth > 300) setWidth(adjustedWidth);
+            else setWidth(300);
+
+        }
+        window.addEventListener("resize", updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+
 
     const handleDialog = action => {
         switch (action.type) {
@@ -99,37 +122,11 @@ const MapBuilder = () => {
                     ...prev,
                     seatDialog: false
                 }));
-                handleTest();
-                //create a seat group
-                // setMaps(prev => update(prev, {
-                //     [mapIdx]: {$push: }
-                // }))
+
                 break;
             default:
         }
     }
-
-    const handleTest = () => {
-
-
-    }
-    useLayoutEffect(() => {
-        const updateSize = () => {
-            const width = window.innerWidth;
-            let adjustedWidth;
-            if (width > theme.breakpoints.values['sm'])
-                adjustedWidth = width - DRAWER_WIDTH - theme.spacing(10) - 4;
-            else //when drawer is hidden 
-                adjustedWidth = width - theme.spacing(8);
-
-            if (adjustedWidth > 300) setWidth(adjustedWidth);
-            else setWidth(300);
-
-        }
-        window.addEventListener("resize", updateSize);
-        updateSize();
-        return () => window.removeEventListener('resize', updateSize);
-    }, []);
 
     const MapNotAddded = () => {
         return (
