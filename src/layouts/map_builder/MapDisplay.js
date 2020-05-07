@@ -3,7 +3,7 @@ import useStyles from "@material-ui/core/styles/makeStyles";
 import { MAP_BUILDER_HEIGHT } from "./util/const";
 import Draggable from "react-draggable";
 
-const MapDisplay = ({ data }) => {
+const MapDisplay = ({ data, seatGroups }) => {
     const classes = makeStyles();
     const [size, setSize] = useState({
         height: 0,
@@ -21,16 +21,18 @@ const MapDisplay = ({ data }) => {
 
     }, [data.height, data.width])
 
-    console.log(data);
+ 
     const handleDrag = (e, ui) => {
         console.log(e, ui);
     }
+
+    console.log(seatGroups);
     return (
         <div className={classes.root}
             style={{ ...size }}>
 
-            {data.seat_groups && data.seat_groups.map(group => (
-                <Draggable onDrag={handleDrag}>
+            {seatGroups && seatGroups.map((group, idx) => (
+                <Draggable onDrag={handleDrag} key={idx}>
                     <div style={{ height: 50, width: 50, border: '1px solid black', backgroundColor: 'white' }}>
                         asd
                     </div>

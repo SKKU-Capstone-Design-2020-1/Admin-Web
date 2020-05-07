@@ -21,18 +21,20 @@ const createMap = (values) => {
     }
 }
 /**
- * map item
- * name: Integer
- * height: Integer
- * width: Integer
- * seat_groups: array
- * --x: Integer
- * --y: Integer
- * --degree: Integer
+ * maps: array
+ * --name: string
+ * --height: integer
+ * --width: integer
+ * --map_id: cuid()
+ * 
+ * seatGroups:
+ * --map_id: cuid()
+ * --x: integer
+ * --y: integer
+ * --name: string
  * --seats: array
- * ----state: Integer (0 not in use, 1 in use)
- * ----seat_name: ID for user
- * ----seat_id: ID for DB
+ * ----status: integer
+ * ----seat_id: cuid()  
  * 
  */
 
@@ -49,7 +51,7 @@ const MapBuilder = () => {
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
     const [seatGroups, setSeatGroups] = useState([
-
+        { map_id: temp_map_id, x: 0, y: 0, seats: [{ status: 0, id: 1 }] }
     ])
     const [mapIdx, setMapIdx] = useState(0);
 
@@ -139,7 +141,9 @@ const MapBuilder = () => {
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
             <div className={classes.main} style={{ width: '100%' }} >
-                {mapIdx >= 0 ? <MapDisplay data={maps[mapIdx]} /> : <MapNotAddded />}
+                {mapIdx >= 0 ? <MapDisplay
+                    seatGroups={mapIdx >= 0 ? seatGroups.filter(group => maps[mapIdx].map_id) : null}
+                    data={maps[mapIdx]} /> : <MapNotAddded />}
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
