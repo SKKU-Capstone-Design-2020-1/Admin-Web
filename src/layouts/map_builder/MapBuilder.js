@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MapToolbar from "./MapToolbar";
 import MapTabs from "./MapTabs";
@@ -12,11 +12,12 @@ import { MAP_DIALOGS, MAP_BUILDER_HEIGHT } from "./util/const";
 import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
+import { v4 as uuidv4 } from 'uuid';
 
 const createMap = (values) => {
     return {
         ...values,
-        seat_groups: [],
+        map_id: uuidv4(), 
     }
 }
 /**
@@ -44,21 +45,10 @@ const MapBuilder = () => {
         seatDialog: false,
     });
     const [maps, setMaps] = useState([
-        {
-            name: 'TEMP', height: 400, width: 500, seat_groups: [
-                {
-                    x: 100, y: 100, degree: 0, seats: [
-                        { state: 0, seat_name: 1, seat_id: '' },
-                        { state: 0, seat_name: 2, seat_id: '' },
-                        { state: 0, seat_name: 3, seat_id: '' },
-                        { state: 0, seat_name: 4, seat_id: '' },
-                        { state: 0, seat_name: 5, seat_id: '' },
-                    ]
-                }
-            ]
-        }
+        { name: 'TEMP', height: 400, width: 500, map_id: uuidv4() }
     ]);
     const [mapIdx, setMapIdx] = useState(0);
+    
 
     useLayoutEffect(() => {
         const updateSize = () => {
@@ -149,7 +139,7 @@ const MapBuilder = () => {
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
-            <SeatDialog seat_groups={mapIdx >= 0 ? maps[mapIdx].seat_groups : null} open={dialogs.seatDialog} handleDialog={handleDialog} />
+            <SeatDialog seat_groups={null} open={dialogs.seatDialog} handleDialog={handleDialog} />
         </div>
     )
 }
