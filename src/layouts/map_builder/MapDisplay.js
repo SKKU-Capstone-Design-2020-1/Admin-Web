@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useStyles from "@material-ui/core/styles/makeStyles";
 import { MAP_BUILDER_HEIGHT } from "./util/const";
+import Grey from "@material-ui/core/colors/grey";
+import Seat from "./SeatItem";
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { SEAT_SIZE } from "./util/const";
 import Draggable from "react-draggable";
 
 const MapDisplay = ({ data, seatGroups }) => {
@@ -21,7 +25,7 @@ const MapDisplay = ({ data, seatGroups }) => {
 
     }, [data.height, data.width])
 
- 
+
     const handleDrag = (e, ui) => {
         console.log(e, ui);
     }
@@ -32,15 +36,8 @@ const MapDisplay = ({ data, seatGroups }) => {
             style={{ ...size }}>
 
             {seatGroups && seatGroups.map((group, idx) => (
-                <Draggable onDrag={handleDrag} key={idx}>
-                    <div style={{ height: 50, width: 50, border: '1px solid black', backgroundColor: 'white' }}>
-                        asd
-                    </div>
-                </Draggable>
+                <Seat />
             ))}
-
-
-
 
         </div>
     )
@@ -48,7 +45,7 @@ const MapDisplay = ({ data, seatGroups }) => {
 
 const makeStyles = useStyles(theme => ({
     root: {
-        backgroundColor: 'grey'
+        backgroundColor: Grey['300']
     }
 }))
 export default MapDisplay;
