@@ -12,12 +12,12 @@ import { MAP_DIALOGS, MAP_BUILDER_HEIGHT } from "./util/const";
 import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
-import { v4 as uuidv4 } from 'uuid';
+import cuid from "cuid";
 
 const createMap = (values) => {
     return {
         ...values,
-        map_id: uuidv4(), 
+        map_id: cuid(),
     }
 }
 /**
@@ -36,6 +36,7 @@ const createMap = (values) => {
  * 
  */
 
+const temp_map_id = cuid();
 const MapBuilder = () => {
     const classes = useStyles();
     const theme = useTheme();
@@ -45,10 +46,13 @@ const MapBuilder = () => {
         seatDialog: false,
     });
     const [maps, setMaps] = useState([
-        { name: 'TEMP', height: 400, width: 500, map_id: uuidv4() }
+        { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
+    const [seatGroups, setSeatGroups] = useState([
+
+    ])
     const [mapIdx, setMapIdx] = useState(0);
-    
+
 
     useLayoutEffect(() => {
         const updateSize = () => {
