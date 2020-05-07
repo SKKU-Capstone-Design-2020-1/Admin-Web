@@ -24,9 +24,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <React.StrictMode>
         <App />
-      </React.StrictMode>
     </ThemeProvider>
   </Provider>
   ,
