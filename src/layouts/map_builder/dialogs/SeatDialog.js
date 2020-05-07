@@ -14,7 +14,7 @@ const defaultValue = {
     num: '',
     seat_names: '',
 }
-const SeatDialog = ({ open, handleDialog, seat_groups = [] }) => {
+const SeatDialog = ({ open, handleDialog, seatGroups = [] }) => {
     const classes = useStyles();
     const [values, setValues] = useState(defaultValue);
     const [idsDisabled, setIdsDisabled] = useState(true);
@@ -31,8 +31,14 @@ const SeatDialog = ({ open, handleDialog, seat_groups = [] }) => {
         else {
             let seat_names = '';
             let num = Number(values.num);
-            for (let i = seat_groups.length + 1; i <= num; i++) {
-                seat_names = seat_names + i;
+            let total_seats = 0;
+            seatGroups.forEach(group => {
+                total_seats += group.seats.length;
+            })
+
+
+            for (let i = 1; i <= num; i++) {
+                seat_names = seat_names + (i + total_seats);
                 if (i !== num) seat_names = seat_names + ",";
             }
             setIdsDisabled(false);
@@ -42,8 +48,9 @@ const SeatDialog = ({ open, handleDialog, seat_groups = [] }) => {
             });
         }
     }, [values.num]);
+
     useEffect(() => {
-        if (open === false){
+        if (open === false) {
             setValues(defaultValue);
             setIdsDisabled(true);
             setErrMsg('');
@@ -66,15 +73,17 @@ const SeatDialog = ({ open, handleDialog, seat_groups = [] }) => {
         }
         //check uniqueness of ids
         let names = values.seat_names.split(',');
-        names.forEach(name => {
-            seat_groups.forEach(seat => {
-                if (seat_groups.name === name) {
-                    setErrMsg("Seat name must be unique in each map.");
-                    return 0;
+        for (let name of names) {
+            for (let group of seatGroups) {
+                for (let seat of group.seats) {
+                    if (seat.id === name) {
+                        setErrMsg(`Seat name must be unique in each map. seat id:${seat.id} is not unique.`);
+                        return;
+                    }
                 }
-            })
-        })
-
+            }
+        }
+        
         //if all ids are unique
         handleDialog({ type: MAP_DIALOGS.ADD_SEAT, data: values });
     }

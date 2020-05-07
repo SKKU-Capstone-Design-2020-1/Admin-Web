@@ -20,6 +20,18 @@ const createMap = (values) => {
         map_id: cuid.slug(),
     }
 }
+const createSeatGroup = (map_id, values) => {
+    return {
+        map_id, 
+        seat_id: cuid.slug(),
+        x: 0,
+        y: 0,
+        seats: values.split(",").map(id => ({
+            status: 0,
+            id, 
+        })),
+    }
+}
 /**
  * maps: array
  * --name: string
@@ -52,7 +64,7 @@ const MapBuilder = () => {
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
     const [seatGroups, setSeatGroups] = useState([
-        { map_id: temp_map_id, seat_id: cuid.slug(), x: 0, y: 0, seats: [{ status: 0, id: 1 }, { status: 0, id: 2 }] },
+        { map_id: temp_map_id, seat_id: cuid.slug(), x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
     ])
     const [mapIdx, setMapIdx] = useState(0);
 
@@ -118,12 +130,17 @@ const MapBuilder = () => {
                     ...prev,
                     seatDialog: false
                 }));
-
+                const { seat_names } = action.data;
+                setSeatGroups(prev => update(prev, {
+                    $push: [createSeatGroup(maps[mapIdx].map_id, seat_names)]
+                }));
                 break;
             default:
         }
     }
-
+    useEffect(() => {
+        console.log(seatGroups);
+    }, [seatGroups])
     const handleEvents = (action) => {
         switch (action.type){
             case MAP_EVENTS.UPDATE_SEAT_GROUP:
@@ -164,7 +181,7 @@ const MapBuilder = () => {
             </div>
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
-            <SeatDialog seat_groups={null} open={dialogs.seatDialog} handleDialog={handleDialog} />
+            <SeatDialog seatGroups={seatGroups} open={dialogs.seatDialog} handleDialog={handleDialog} />
         </div>
     )
 }

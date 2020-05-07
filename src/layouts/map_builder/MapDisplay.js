@@ -38,14 +38,14 @@ const MapDisplay = ({ data, seatGroups, handleEvents }) => {
                 let updated_x = cachePos.x;
                 let updated_y = cachePos.y;
 
-                console.log(seatGroups);
+
                 if (updated_x + (SEAT_SIZE * seatGroups[idx].seats.length) > size.width)
                     updated_x = size.width - (SEAT_SIZE * seatGroups[idx].seats.length);
                 else if (updated_x < 0) updated_x = 0;
 
                 if (updated_y + SEAT_SIZE > size.height) updated_y = size.height - SEAT_SIZE;
                 else if (updated_y < 0) updated_y = 0;
-                
+
                 handleEvents({ type: MAP_EVENTS.UPDATE_SEAT_GROUP, data: { x: updated_x, y: updated_y, seat_id: seatGroups[idx].seat_id } });
                 setCachePos({
                     x: 0, y: 0
