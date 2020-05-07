@@ -9,4 +9,4 @@ export const MAP_DIALOGS = {
 
 export const MAP_BUILDER_HEIGHT = 500;
 
-export const SEAT_SIZE = 60;
+export const SEAT_SIZE = 50;

@@ -1,8 +1,9 @@
 import React from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import ButtonBase from '@material-ui/core/ButtonBase';
 import { SEAT_SIZE } from "./util/const";
 import Draggable from "react-draggable";
+import Typography from "@material-ui/core/Typography";
+
 const SeatItem = ({ data }) => {
     console.log(data);
     const classes = useStyles();
@@ -11,7 +12,9 @@ const SeatItem = ({ data }) => {
             <div className={classes.itemRoot} style={{ height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
                 {data.seats.map(seat => (
                     <div className={classes.root}>
-                        TEST
+                        <Typography variant="body1" className={classes.seatID}>
+                            {seat.id}
+                        </Typography>
                     </div>
                 ))}
             </div>
@@ -31,6 +34,9 @@ const useStyles = makeStyles(theme => ({
     },
     itemRoot: {
         display: 'flex',
+    },
+    seatID: {
+        fontSize: '0.9rem'
     }
 }))
 export default SeatItem;
