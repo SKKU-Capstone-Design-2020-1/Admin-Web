@@ -8,9 +8,10 @@ const SeatItem = ({ data, handleDrag, idx }) => {
     const classes = useStyles();
     return (
         <Draggable
+            style={{ position: 'absolute' }}
             onStop={(e, drag) => handleDrag("ON_STOP", drag, idx)}
             onDrag={(e, drag) => handleDrag("ON_DRAG", drag)}
-            position={{ x: data.x, y: data.y }}>
+            >
             <div className={classes.itemRoot} style={{ height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
                 {data.seats.map((seat, idx) => (
                     <div className={classes.root} key={idx}>

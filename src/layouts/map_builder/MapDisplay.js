@@ -68,7 +68,8 @@ const MapDisplay = ({ data, seatGroups, handleEvents }) => {
 
 const makeStyles = useStyles(theme => ({
     root: {
-        backgroundColor: Grey['300']
+        backgroundColor: Grey['300'],
+        overflow: 'auto'
     }
 }))
 export default MapDisplay;
