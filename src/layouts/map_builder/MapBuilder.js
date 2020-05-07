@@ -51,7 +51,7 @@ const MapBuilder = () => {
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
     const [seatGroups, setSeatGroups] = useState([
-        { map_id: temp_map_id, x: 0, y: 0, seats: [{ status: 0, id: 1 }] }
+        { map_id: temp_map_id, x: 0, y: 0, seats: [{ status: 0, id: 1 }, { status: 0, id: 2 }] },
     ])
     const [mapIdx, setMapIdx] = useState(0);
 

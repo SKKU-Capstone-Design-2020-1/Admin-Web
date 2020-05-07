@@ -36,7 +36,7 @@ const MapDisplay = ({ data, seatGroups }) => {
             style={{ ...size }}>
 
             {seatGroups && seatGroups.map((group, idx) => (
-                <Seat />
+                <Seat key={idx} data={group} />
             ))}
 
         </div>

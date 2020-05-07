@@ -3,14 +3,17 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { SEAT_SIZE } from "./util/const";
 import Draggable from "react-draggable";
-const SeatItem = () => {
+const SeatItem = ({ data }) => {
+    console.log(data);
     const classes = useStyles();
     return (
         <Draggable position={{ x: 0, y: 0 }}>
-            <div className={classes.root}>
-                <ButtonBase>
-                    {"test"}
-                </ButtonBase>
+            <div className={classes.itemRoot} style={{ height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
+                {data.seats.map(seat => (
+                    <div className={classes.root}>
+                        TEST
+                    </div>
+                ))}
             </div>
         </Draggable>
 
@@ -19,10 +22,15 @@ const SeatItem = () => {
 
 const useStyles = makeStyles(theme => ({
     root: {
+        border: `.75px solid black`,
+        background: 'white',
         height: SEAT_SIZE,
         width: SEAT_SIZE,
-        border: `1px solid black`,
-        background: 'white'
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    itemRoot: {
+        display: 'flex',
     }
 }))
 export default SeatItem;
