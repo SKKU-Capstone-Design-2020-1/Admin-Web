@@ -8,7 +8,7 @@ import { DRAWER_WIDTH } from "../../libs/const";
 import useTheme from "@material-ui/core/styles/useTheme";
 import MapDialog from './dialogs/MapDialog';
 import MapDisplay from "./MapDisplay";
-import { MAP_DIALOGS, MAP_BUILDER_HEIGHT } from "./util/const";
+import { MAP_DIALOGS, MAP_BUILDER_HEIGHT, MAP_EVENTS } from "./util/const";
 import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
@@ -17,7 +17,7 @@ import cuid from "cuid";
 const createMap = (values) => {
     return {
         ...values,
-        map_id: cuid(),
+        map_id: cuid.slug(),
     }
 }
 /**
@@ -29,16 +29,17 @@ const createMap = (values) => {
  * 
  * seatGroups:
  * --map_id: cuid()
+ * --seat_id: cuid(),
  * --x: integer
  * --y: integer
  * --name: string
  * --seats: array
  * ----status: integer
- * ----seat_id: cuid()  
+ * ----seat_id: 0, 1 
  * 
  */
 
-const temp_map_id = cuid();
+const temp_map_id = cuid.slug();
 const MapBuilder = () => {
     const classes = useStyles();
     const theme = useTheme();
@@ -51,10 +52,9 @@ const MapBuilder = () => {
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
     const [seatGroups, setSeatGroups] = useState([
-        { map_id: temp_map_id, x: 0, y: 0, seats: [{ status: 0, id: 1 }, { status: 0, id: 2 }] },
+        { map_id: temp_map_id, seat_id: cuid.slug(), x: 0, y: 0, seats: [{ status: 0, id: 1 }, { status: 0, id: 2 }] },
     ])
     const [mapIdx, setMapIdx] = useState(0);
-
 
     useLayoutEffect(() => {
         const updateSize = () => {
@@ -124,6 +124,22 @@ const MapBuilder = () => {
         }
     }
 
+    const handleEvents = (action) => {
+        switch (action.type){
+            case MAP_EVENTS.UPDATE_SEAT_GROUP:
+                const { x, y, seat_id } = action.data;
+                let s_idx = seatGroups.findIndex(group => group.seat_id === seat_id);
+                setSeatGroups(prev => update(prev, {
+                    [s_idx]: {
+                        x: {$set: x},
+                        y: {$set: y}
+                    }
+                }));
+                break;
+            default:
+        }
+    }
+
     const MapNotAddded = () => {
         return (
             <div className={classes.defaultMapRoot}>
@@ -142,6 +158,7 @@ const MapBuilder = () => {
             </AppBar>
             <div className={classes.main} style={{ width: '100%' }} >
                 {mapIdx >= 0 ? <MapDisplay
+                    handleEvents={handleEvents}
                     seatGroups={mapIdx >= 0 ? seatGroups.filter(group => maps[mapIdx].map_id) : null}
                     data={maps[mapIdx]} /> : <MapNotAddded />}
             </div>

@@ -4,14 +4,16 @@ import { SEAT_SIZE } from "./util/const";
 import Draggable from "react-draggable";
 import Typography from "@material-ui/core/Typography";
 
-const SeatItem = ({ data }) => {
-    console.log(data);
+const SeatItem = ({ data, handleDrag, idx }) => {
     const classes = useStyles();
     return (
-        <Draggable position={{ x: 0, y: 0 }}>
+        <Draggable
+            onStop={(e, drag) => handleDrag("ON_STOP", drag, idx)}
+            onDrag={(e, drag) => handleDrag("ON_DRAG", drag)}
+            position={{ x: data.x, y: data.y }}>
             <div className={classes.itemRoot} style={{ height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
-                {data.seats.map(seat => (
-                    <div className={classes.root}>
+                {data.seats.map((seat, idx) => (
+                    <div className={classes.root} key={idx}>
                         <Typography variant="body1" className={classes.seatID}>
                             {seat.id}
                         </Typography>
