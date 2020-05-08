@@ -42,38 +42,6 @@ const MapDisplay = ({ data, seatGroups, handleEvents }) => {
         });
 
     }, [data])
-    const handleDrag = (id, x, y) => {
-
-    }
-    // const handleDrag = (type, data, idx) => {
-    //     switch (type) {
-    //         case "ON_DRAG":
-    //             const { x, y } = data;
-    //             setCachePos({ x, y });
-    //             break;
-
-    //         case "ON_STOP":
-    //             let updated_x = cachePos.x;
-    //             let updated_y = cachePos.y;
-    //             console.log(data, idx);
-
-    //             // if (updated_x + (SEAT_SIZE * seatGroups[idx].seats.length) > size.width)
-    //             //     updated_x = size.width - (SEAT_SIZE * seatGroups[idx].seats.length);
-    //             // else if (updated_x < 0) updated_x = 0;
-
-    //             // if (updated_y + SEAT_SIZE > size.height) updated_y = size.height - SEAT_SIZE;
-    //             // else if (updated_y < 0) updated_y = 0;
-
-    //             console.log(updated_y, updated_x);
-    //             handleEvents({ type: MAP_EVENTS.UPDATE_SEAT_GROUP, data: { x: updated_x, y: updated_y, seat_id: seatGroups[idx].seat_id } });
-    //             setCachePos({
-    //                 x: 0, y: 0
-    //             });
-    //             break;
-
-    //         default:
-    //     }
-    // }
 
     return (
         <div
@@ -81,7 +49,7 @@ const MapDisplay = ({ data, seatGroups, handleEvents }) => {
             className={classes.root}
             style={{ ...size }}>
             {seatGroups && seatGroups.map((group, idx) => (
-                <Seat idx={idx} handleDrag={handleDrag} key={idx} data={group} />
+                <Seat idx={idx} key={idx} data={group} />
             ))}
         </div>
 

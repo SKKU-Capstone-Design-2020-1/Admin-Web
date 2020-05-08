@@ -19,7 +19,10 @@ const SeatItem = ({ data }) => {
     // }
 
     return (
-        <div ref={drag} className={classes.itemRoot} style={{ left: data.x, top: data.y, height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
+        <div
+            ref={drag}
+            className={classes.itemRoot}
+            style={{ left: data.x, top: data.y, height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
             {data.seats.map((seat, idx) => (
                 <div className={classes.root} key={idx}>
                     <Typography variant="body1" className={classes.seatID}>

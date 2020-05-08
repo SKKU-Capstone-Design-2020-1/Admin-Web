@@ -143,9 +143,7 @@ const MapBuilder = () => {
             default:
         }
     }
-    useEffect(() => {
-        console.log(seatGroups);
-    }, [seatGroups])
+
     const handleEvents = (action) => {
         switch (action.type) {
             case MAP_EVENTS.UPDATE_SEAT_GROUP:
