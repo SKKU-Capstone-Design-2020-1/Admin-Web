@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MapToolbar from "./MapToolbar";
 import MapTabs from "./MapTabs";
@@ -89,7 +89,7 @@ const MapBuilder = () => {
         window.addEventListener("resize", updateSize);
         updateSize();
         return () => window.removeEventListener('resize', updateSize);
-    }, []);
+    }, [theme]);
 
 
     const handleDialog = action => {

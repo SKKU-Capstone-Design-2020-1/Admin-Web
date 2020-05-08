@@ -47,7 +47,7 @@ const SeatDialog = ({ open, handleDialog, seatGroups = [] }) => {
                 seat_names
             });
         }
-    }, [values.num]);
+    }, [seatGroups, values]);
 
     useEffect(() => {
         if (open === false) {

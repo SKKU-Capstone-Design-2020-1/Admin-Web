@@ -3,8 +3,7 @@ import useStyles from "@material-ui/core/styles/makeStyles";
 import { MAP_BUILDER_HEIGHT } from "./util/const";
 import Grey from "@material-ui/core/colors/grey";
 import Seat from "./SeatItem";
-import ButtonBase from '@material-ui/core/ButtonBase';
-import { SEAT_SIZE, MAP_EVENTS } from "./util/const";
+import { MAP_EVENTS } from "./util/const";
 import { useDrop } from "react-dnd";
 
 const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
