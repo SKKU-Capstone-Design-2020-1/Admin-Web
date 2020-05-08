@@ -13,6 +13,9 @@ import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
 import cuid from "cuid";
+import Backend from 'react-dnd-html5-backend';
+import { DndProvider } from "react-dnd";
+
 
 const createMap = (values) => {
     return {
@@ -22,14 +25,14 @@ const createMap = (values) => {
 }
 const createSeatGroup = (map_id, values) => {
     return {
-        map_id, 
+        map_id,
         seat_id: cuid.slug(),
         x: 0,
         y: 0,
-        clicked: false, 
+        clicked: false,
         seats: values.split(",").map(id => ({
             status: 0,
-            id, 
+            id,
         })),
     }
 }
@@ -66,6 +69,7 @@ const MapBuilder = () => {
     ]);
     const [seatGroups, setSeatGroups] = useState([
         { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
+        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
     ])
     const [mapIdx, setMapIdx] = useState(0);
 
@@ -143,14 +147,14 @@ const MapBuilder = () => {
         console.log(seatGroups);
     }, [seatGroups])
     const handleEvents = (action) => {
-        switch (action.type){
+        switch (action.type) {
             case MAP_EVENTS.UPDATE_SEAT_GROUP:
                 const { x, y, seat_id } = action.data;
                 let s_idx = seatGroups.findIndex(group => group.seat_id === seat_id);
                 setSeatGroups(prev => update(prev, {
                     [s_idx]: {
-                        x: {$set: x},
-                        y: {$set: y}
+                        x: { $set: x },
+                        y: { $set: y }
                     }
                 }));
                 break;
@@ -175,11 +179,17 @@ const MapBuilder = () => {
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
             <div className={classes.main} style={{ width: '100%' }} >
-                {mapIdx >= 0 ? <MapDisplay
-                    handleEvents={handleEvents}
-                    seatGroups={mapIdx >= 0 ? seatGroups.filter(group => maps[mapIdx].map_id) : null}
-                    data={maps[mapIdx]} /> : <MapNotAddded />}
+                {mapIdx >= 0 &&
+                    <DndProvider backend={Backend}>
+                        <MapDisplay
+                            handleEvents={handleEvents}
+                            seatGroups={mapIdx >= 0 ? seatGroups.filter(group => maps[mapIdx].map_id) : null}
+                            data={maps[mapIdx]} />
+                    </DndProvider>
+                }
+                {mapIdx < 0 && <MapNotAddded />}
             </div>
+
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
             <SeatDialog seatGroups={seatGroups} open={dialogs.seatDialog} handleDialog={handleDialog} />
