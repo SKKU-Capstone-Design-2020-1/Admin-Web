@@ -8,7 +8,7 @@ import { DRAWER_WIDTH } from "../../libs/const";
 import useTheme from "@material-ui/core/styles/useTheme";
 import MapDialog from './dialogs/MapDialog';
 import MapDisplay from "./MapDisplay";
-import { MAP_DIALOGS, MAP_BUILDER_HEIGHT, MAP_EVENTS } from "./util/const";
+import { MAP_DIALOGS, MAP_BUILDER_HEIGHT, MAP_EVENTS, MAP_CLICK } from "./util/const";
 import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
@@ -160,6 +160,25 @@ const MapBuilder = () => {
         }
     }
 
+    const handleClick = (action) => {
+        switch (action.type) {
+            case MAP_CLICK.CLICK_SEAT:
+                const { seat_id, clicked } = action.data;
+                const seat_idx = seatGroups.findIndex(group => group.seat_id === seat_id);
+
+                setSeatGroups(
+                    update(seatGroups, {
+                        [seat_idx]: {
+                            clicked: { $set: !clicked }
+                        }
+                    })
+                );
+                break;
+            default:
+
+        }
+    }
+
     const MapNotAddded = () => {
         return (
             <div className={classes.defaultMapRoot}>
@@ -180,8 +199,9 @@ const MapBuilder = () => {
                 {mapIdx >= 0 &&
                     <DndProvider backend={Backend}>
                         <MapDisplay
+                            handleClick={handleClick}
                             handleEvents={handleEvents}
-                            seatGroups={mapIdx >= 0 ? seatGroups.filter(group => maps[mapIdx].map_id) : null}
+                            seatGroups={mapIdx >= 0 ? seatGroups.filter(group => group.map_id === maps[mapIdx].map_id) : null}
                             data={maps[mapIdx]} />
                     </DndProvider>
                 }

@@ -7,7 +7,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import { SEAT_SIZE, MAP_EVENTS } from "./util/const";
 import { useDrop } from "react-dnd";
 
-const MapDisplay = ({ data, seatGroups, handleEvents }) => {
+const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
     const classes = makeStyles();
     const [size, setSize] = useState({
         height: 0,
@@ -49,7 +49,7 @@ const MapDisplay = ({ data, seatGroups, handleEvents }) => {
             className={classes.root}
             style={{ ...size }}>
             {seatGroups && seatGroups.map((group, idx) => (
-                <Seat idx={idx} key={idx} data={group} />
+                <Seat idx={idx} key={idx} data={group}  handleClick={handleClick} />
             ))}
         </div>
 

@@ -9,6 +9,9 @@ export const MAP_DIALOGS = {
 export const MAP_EVENTS = {
     "UPDATE_SEAT_GROUP": "UPDATE_SEAT_GROUP_COORDINATE"
 }
+export const MAP_CLICK = {
+    "CLICK_SEAT": "SEAT_CLICKED", 
+}
 
 export const MAP_BUILDER_HEIGHT = 500;
 
