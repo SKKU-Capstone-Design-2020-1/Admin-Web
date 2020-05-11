@@ -142,9 +142,12 @@ const MapBuilder = () => {
                 }));
                 break;
             case MAP_DIALOGS.REMOVE_MAP:
+                const removedID = maps[mapIdx].map_id;
                 const removedMap = maps.filter((map, idx) => idx !== mapIdx);
+                
                 setMapIdx(-1);
                 setMaps(removedMap);
+                setSeatGroups(seatGroups.filter(seat => seat.map_id !== removedID));
                 break;  
             default:
         }
