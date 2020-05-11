@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useStyles from "@material-ui/core/styles/makeStyles";
-import { MAP_BUILDER_HEIGHT } from "./util/const";
+import { MAP_BUILDER_HEIGHT, MAP_EVENTS } from "./util/const";
 import Grey from "@material-ui/core/colors/grey";
 import Seat from "./SeatItem";
-import { MAP_EVENTS } from "./util/const";
 import { useDrop } from "react-dnd";
 
 const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
@@ -17,12 +16,12 @@ const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
         accept: "seat",
         drop(item, monitor) {
             const delta = monitor.getDifferenceFromInitialOffset();
-            const x = Math.round(item.x + delta.x);
-            const y = Math.round(item.y + delta.y);
+            // const x = Math.round(item.x + delta.x);
+            // const y = Math.round(item.y + delta.y);
 
-            console.log(item);
-            console.log(delta);
-            moveSeat(item.id, x, y);
+            // console.log(item);
+            // console.log(delta);
+            moveSeat(item.id, delta.x, delta.y);
             return undefined;
         }
     });
@@ -48,7 +47,7 @@ const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
             className={classes.root}
             style={{ ...size }}>
             {seatGroups && seatGroups.map((group, idx) => (
-                <Seat idx={idx} key={idx} data={group}  handleClick={handleClick} />
+                <Seat idx={idx} key={idx} data={group} handleClick={handleClick} />
             ))}
         </div>
 

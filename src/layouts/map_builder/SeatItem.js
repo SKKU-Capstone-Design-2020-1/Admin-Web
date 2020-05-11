@@ -47,7 +47,8 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column'
     },
     clicked: {
-        borderColor: theme.palette.primary.dark
+        borderColor: theme.palette.primary.dark,
+        border: `1.5px solid`
     },
     itemRoot: {
         display: 'flex',

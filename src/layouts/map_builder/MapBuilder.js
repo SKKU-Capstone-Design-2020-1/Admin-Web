@@ -150,12 +150,16 @@ const MapBuilder = () => {
             case MAP_EVENTS.UPDATE_SEAT_GROUP:
                 const { x, y, seat_id } = action.data;
                 let s_idx = seatGroups.findIndex(group => group.seat_id === seat_id);
-                setSeatGroups(prev => update(prev, {
-                    [s_idx]: {
-                        x: { $set: x },
-                        y: { $set: y }
+                setSeatGroups(seatGroups.map((seat, idx) => {
+                    console.log(seat.clicked, s_idx);
+                    if (!seat.clicked && s_idx !== idx) return seat;
+                    return {
+                        ...seat,
+                        x: seat.x + x,
+                        y: seat.y + y
                     }
                 }));
+
                 break;
             case MAP_EVENTS.ROTATE_SEAT_LEFT:
                 setSeatGroups(seatGroups.map(seat => {
@@ -193,6 +197,15 @@ const MapBuilder = () => {
                         }
                     })
                 );
+                break;
+
+            
+            case MAP_CLICK.CLICK_MAP:
+                console.log('clicekd');
+                setSeatGroups(seatGroups.map(seat => ({
+                    ...seat,
+                    clicked: false, 
+                })))
                 break;
             default:
 

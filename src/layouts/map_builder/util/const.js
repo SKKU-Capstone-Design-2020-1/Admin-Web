@@ -12,7 +12,9 @@ export const MAP_EVENTS = {
     "ROTATE_SEAT_RIGHT": "ROTATE_SELECTED_SEAT_RIGHT",
 }
 export const MAP_CLICK = {
-    "CLICK_SEAT": "SEAT_CLICKED", 
+    "CLICK_SEAT": "SEAT_CLICKED",
+    "CLICK_MAP": "MAP_CLICKED",
+    
 }
 
 export const MAP_BUILDER_HEIGHT = 500;
