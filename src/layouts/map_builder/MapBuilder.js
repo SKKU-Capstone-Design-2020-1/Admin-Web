@@ -30,6 +30,7 @@ const createSeatGroup = (map_id, values) => {
         x: 0,
         y: 0,
         clicked: false,
+        deg: 0,
         seats: values.split(",").map(id => ({
             status: 0,
             id,
@@ -68,8 +69,8 @@ const MapBuilder = () => {
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
     const [seatGroups, setSeatGroups] = useState([
-        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
-        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
+        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
+        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
     ])
     const [mapIdx, setMapIdx] = useState(0);
 
@@ -156,6 +157,25 @@ const MapBuilder = () => {
                     }
                 }));
                 break;
+            case MAP_EVENTS.ROTATE_SEAT_LEFT:
+                setSeatGroups(seatGroups.map(seat => {
+                    if (!seat.clicked) return seat;
+                    return {
+                        ...seat,
+                        deg: (seat.deg - 15) % 360
+                    }
+                }))
+                break;
+            case MAP_EVENTS.ROTATE_SEAT_RIGHT:
+                setSeatGroups(seatGroups.map(seat => {
+                    if (!seat.clicked) return seat;
+                    return {
+                        ...seat,
+                        deg: (seat.deg + 15) % 360
+                    }
+                }))
+                break;
+
             default:
         }
     }
@@ -192,7 +212,7 @@ const MapBuilder = () => {
     return (
         <div className={classes.root} style={{ width: mapWidth }}>
             <AppBar position="static" color="default" elevation={1}>
-                <MapToolbar handleDialog={handleDialog} mapIdx={mapIdx} />
+                <MapToolbar handleDialog={handleDialog} handleEvents={handleEvents} mapIdx={mapIdx} />
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
             <div className={classes.main} style={{ width: '100%' }} >

@@ -24,7 +24,7 @@ const SeatItem = ({ data, handleClick }) => {
             ref={drag}
             onClick={() => handleClick({ type: MAP_CLICK.CLICK_SEAT, data })}
             className={classes.itemRoot}
-            style={{ left: data.x, top: data.y, height: SEAT_SIZE, width: SEAT_SIZE * data.seats.length }}>
+            style={{ left: data.x, top: data.y, height: SEAT_SIZE, transform: `rotate(${data.deg}deg)`, width: SEAT_SIZE * data.seats.length }}>
             {data.seats.map((seat, idx) => (
                 <div className={classNames(classes.root, data.clicked && classes.clicked)} key={idx}>
                     <Typography variant="body1" className={classes.seatID}>

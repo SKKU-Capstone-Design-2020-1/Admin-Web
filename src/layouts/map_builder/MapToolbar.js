@@ -10,9 +10,9 @@ import AddLocationIcon from "@material-ui/icons/AddLocation";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
 import RemoveLocationIcon from "@material-ui/icons/LocationOff";
 import Tooltip from "@material-ui/core/Tooltip";
-import { MAP_DIALOGS } from "./util/const";
+import { MAP_DIALOGS, MAP_EVENTS } from "./util/const";
 
-const MapToolbar = ({ handleDialog, mapIdx }) => {
+const MapToolbar = ({ handleDialog, handleEvents, mapIdx }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -44,6 +44,7 @@ const MapToolbar = ({ handleDialog, mapIdx }) => {
                 <Tooltip title="Rotate seat to left">
                     <Button
                         disabled={mapIdx >= 0 ? false : true}
+                        onClick={() => handleEvents({ type: MAP_EVENTS.ROTATE_SEAT_LEFT })}
                     >
                         <RotateLeftIcon />
                     </Button>
@@ -51,6 +52,7 @@ const MapToolbar = ({ handleDialog, mapIdx }) => {
                 <Tooltip title="Rotate seat to right">
                     <Button
                         disabled={mapIdx >= 0 ? false : true}
+                        onClick={() => handleEvents({ type: MAP_EVENTS.ROTATE_SEAT_RIGHT })}
                     >
                         <RotateRightIcon />
                     </Button>
