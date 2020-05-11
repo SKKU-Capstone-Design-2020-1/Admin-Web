@@ -48,7 +48,8 @@ const SeatDialog = ({ open, handleDialog, seatGroups = [] }) => {
                 seat_names
             });
         }
-    }, [values, seatGroups, open]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [values.num, seatGroups, open]);
 
     useEffect(() => {
         if (open === false) {
@@ -84,7 +85,7 @@ const SeatDialog = ({ open, handleDialog, seatGroups = [] }) => {
                 }
             }
         }
-        
+
         //if all ids are unique
         handleDialog({ type: MAP_DIALOGS.ADD_SEAT, data: values });
     }
