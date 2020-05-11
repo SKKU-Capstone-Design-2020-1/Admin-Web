@@ -21,6 +21,7 @@ const SeatDialog = ({ open, handleDialog, seatGroups = [] }) => {
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
+        if (!open) return;
         if (values.num === '') {
             setIdsDisabled(true);
             setValues({
@@ -47,7 +48,7 @@ const SeatDialog = ({ open, handleDialog, seatGroups = [] }) => {
                 seat_names
             });
         }
-    }, [seatGroups, values]);
+    }, [values, seatGroups, open]);
 
     useEffect(() => {
         if (open === false) {
