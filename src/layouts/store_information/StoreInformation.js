@@ -22,6 +22,7 @@ const StoreInformation = () => {
         },
         latitude: '',
         longtitude: '', 
+        limit_time: '', 
     })
     const [mapData, setMapData] = useState({
         visible: false,
@@ -118,12 +119,23 @@ const StoreInformation = () => {
         <div className={classes.root}>
             <TextField
                 variant="outlined"
-                label="Store Name"
+                label="Store name"
                 id="name"
                 fullWidth
                 className={classes.textField}
                 onChange={handleChange}
                 value={storeData.name}
+            />
+            <TextField
+                variant="outlined"
+                label="Limit time"
+                id="limit_time"
+                fullWidth
+                type="number"
+                className={classes.textField}
+                onChange={handleChange}
+                placeholder="This is time limited for making a reservation"
+                value={storeData.limit_time}
             />
             <div className={classes.picRoot}>
                 <div className={classes.picLabelRoot}>
