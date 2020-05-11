@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -16,11 +16,58 @@ const StoreInformation = () => {
         postal_code: '',
         address: '',
         address_detail: '',
-        name: '', 
+        name: '',
         address_info: {
 
-        }
+        },
+        latitude: '',
+        longtitude: '', 
     })
+    const [mapData, setMapData] = useState({
+        visible: false,
+    })
+
+    useEffect(() => {
+        if (!mapData.visible) return;
+
+        let container = window.document.getElementById("map");
+        let options = {
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3
+        }
+
+        let map = new window.kakao.maps.Map(container, options);
+        
+        let geoCoder = new window.kakao.maps.services.Geocoder();
+
+        geoCoder.addressSearch(storeData.address, (result, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+                let coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+                console.log(coords);
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                let marker = new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords
+                });
+
+                let infowindow = new window.kakao.maps.InfoWindow({
+                    content: '<div style="width:150px;text-align:center;padding:6px 0;">Location</div>'
+                });
+                infowindow.open(map, marker);
+
+                map.setCenter(coords);
+                const { Ga, Ha } = coords;
+                setStoreData({
+                    ...storeData, 
+                    latitude: Ha, 
+                    longtitude: Ga 
+                });
+            }
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [storeData.address, mapData.visible])
+
+
     const handleImg = e => {
         const file = e.target.files[0];
 
@@ -47,10 +94,15 @@ const StoreInformation = () => {
             onComplete: function (data) {
                 const { roadAddress, zonecode } = data;
                 setStoreData({
-                    ...storeData, 
-                    address: roadAddress, 
-                    postal_code: zonecode, 
-                    address_info: data, 
+                    ...storeData,
+                    address: roadAddress,
+                    postal_code: zonecode,
+                    address_info: data,
+                });
+
+                setMapData({
+                    ...mapData,
+                    visible: true
                 })
             }
         }).open();
@@ -132,6 +184,14 @@ const StoreInformation = () => {
                 fullWidth
                 onChange={handleChange}
             />
+
+            {mapData.visible &&
+                <div className={classes.mapContainer}>
+                    <div id="map" style={{ width: 300, height: 300, margin: 'auto' }} />
+                </div>
+            }
+
+
         </div>
     )
 }
@@ -173,6 +233,10 @@ const useStyles = makeStyles(theme => ({
     },
     postalCode: {
         width: 150,
+    },
+    mapContainer: {
+        width: '100%',
+        marginTop: theme.spacing(2),
     }
 
 }))
