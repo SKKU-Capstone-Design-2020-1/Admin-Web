@@ -12,6 +12,7 @@ import { MAP_DIALOGS, MAP_BUILDER_HEIGHT, MAP_EVENTS, MAP_CLICK } from "./util/c
 import update from "immutability-helper";
 import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
+import BeaconDialog from "./dialogs/BeaconDialog";
 import cuid from "cuid";
 import Backend from 'react-dnd-html5-backend';
 import { DndProvider } from "react-dnd";
@@ -64,6 +65,7 @@ const MapBuilder = () => {
     const [dialogs, setDialogs] = useState({
         mapDialog: false,
         seatDialog: false,
+        beaconDialog: false,
     });
     const [maps, setMaps] = useState([
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
@@ -144,11 +146,23 @@ const MapBuilder = () => {
             case MAP_DIALOGS.REMOVE_MAP:
                 const removedID = maps[mapIdx].map_id;
                 const removedMap = maps.filter((map, idx) => idx !== mapIdx);
-                
+
                 setMapIdx(-1);
                 setMaps(removedMap);
                 setSeatGroups(seatGroups.filter(seat => seat.map_id !== removedID));
-                break;  
+                break;
+            case MAP_DIALOGS.OPEN_BEACON:
+                setDialogs({
+                    ...dialogs,
+                    beaconDialog: true
+                });
+                break;
+            case MAP_DIALOGS.CLOSE_BEACON:
+                setDialogs({
+                    ...dialogs,
+                    beaconDialog: false,
+                });
+                break;
             default:
         }
     }
@@ -250,6 +264,7 @@ const MapBuilder = () => {
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
             <SeatDialog seatGroups={seatGroups} open={dialogs.seatDialog} handleDialog={handleDialog} />
+            <BeaconDialog open={dialogs.beaconDialog} handleDialog={handleDialog} />
         </div>
     )
 }

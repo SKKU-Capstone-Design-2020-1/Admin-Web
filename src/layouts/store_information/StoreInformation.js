@@ -44,7 +44,7 @@ const StoreInformation = () => {
         geoCoder.addressSearch(storeData.address, (result, status) => {
             if (status === window.kakao.maps.services.Status.OK) {
                 let coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-                console.log(coords);
+                
                 // 결과값으로 받은 위치를 마커로 표시합니다
                 let marker = new window.kakao.maps.Marker({
                     map: map,

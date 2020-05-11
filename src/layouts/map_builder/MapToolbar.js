@@ -9,6 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddLocationIcon from "@material-ui/icons/AddLocation";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
 import RemoveLocationIcon from "@material-ui/icons/LocationOff";
+import SettingRemoteIcon from "@material-ui/icons/SettingsRemote";
 import Tooltip from "@material-ui/core/Tooltip";
 import { MAP_DIALOGS, MAP_EVENTS } from "./util/const";
 
@@ -66,7 +67,15 @@ const MapToolbar = ({ handleDialog, handleEvents, mapIdx }) => {
                         <EditIcon />
                     </Button>
                 </Tooltip>
-
+            </ButtonGroup>
+            <ButtonGroup>
+                <Tooltip title="Add a beacon">
+                    <Button
+                        onClick={() => handleDialog({ type: MAP_DIALOGS.OPEN_BEACON })}
+                        disabled={mapIdx >= 0 ? false : true}>
+                        <SettingRemoteIcon />
+                    </Button>
+                </Tooltip>
             </ButtonGroup>
         </div>
     )
