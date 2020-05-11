@@ -199,12 +199,12 @@ const MapBuilder = () => {
                 );
                 break;
 
-            
+
             case MAP_CLICK.CLICK_MAP:
                 console.log('clicekd');
                 setSeatGroups(seatGroups.map(seat => ({
                     ...seat,
-                    clicked: false, 
+                    clicked: false,
                 })))
                 break;
             default:
@@ -240,7 +240,6 @@ const MapBuilder = () => {
                 }
                 {mapIdx < 0 && <MapNotAddded />}
             </div>
-
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
             <SeatDialog seatGroups={seatGroups} open={dialogs.seatDialog} handleDialog={handleDialog} />

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useStyles from "@material-ui/core/styles/makeStyles";
-import { MAP_BUILDER_HEIGHT, MAP_EVENTS } from "./util/const";
+import { MAP_BUILDER_HEIGHT, MAP_EVENTS, MAP_CLICK } from "./util/const";
 import Grey from "@material-ui/core/colors/grey";
 import Seat from "./SeatItem";
 import { useDrop } from "react-dnd";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
     const classes = makeStyles();
@@ -42,14 +43,16 @@ const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
     }, [data])
 
     return (
-        <div
-            ref={drop}
-            className={classes.root}
-            style={{ ...size }}>
-            {seatGroups && seatGroups.map((group, idx) => (
-                <Seat idx={idx} key={idx} data={group} handleClick={handleClick} />
-            ))}
-        </div>
+        <ClickAwayListener onClickAway={() => handleClick({type: MAP_CLICK.CLICK_MAP})}>
+            <div
+                ref={drop}
+                className={classes.root}
+                style={{ ...size }}>
+                {seatGroups && seatGroups.map((group, idx) => (
+                    <Seat idx={idx} key={idx} data={group} handleClick={handleClick} />
+                ))}
+            </div>
+        </ClickAwayListener>
 
     )
 }
