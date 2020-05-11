@@ -28,7 +28,9 @@ const MapToolbar = ({ handleDialog, handleEvents, mapIdx }) => {
                     </Button>
                 </Tooltip>
                 <Tooltip title="Remove selected map">
-                    <Button disabled={mapIdx >= 0 ? false : true}>
+                    <Button
+                        onClick={() => handleDialog({ type: MAP_DIALOGS.REMOVE_MAP })}
+                        disabled={mapIdx >= 0 ? false : true}>
                         <RemoveLocationIcon />
                     </Button>
                 </Tooltip>

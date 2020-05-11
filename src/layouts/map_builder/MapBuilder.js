@@ -141,6 +141,11 @@ const MapBuilder = () => {
                     $push: [createSeatGroup(maps[mapIdx].map_id, seat_names)]
                 }));
                 break;
+            case MAP_DIALOGS.REMOVE_MAP:
+                const removedMap = maps.filter((map, idx) => idx !== mapIdx);
+                setMapIdx(-1);
+                setMaps(removedMap);
+                break;  
             default:
         }
     }
@@ -201,7 +206,6 @@ const MapBuilder = () => {
 
 
             case MAP_CLICK.CLICK_MAP:
-                console.log('clicekd');
                 setSeatGroups(seatGroups.map(seat => ({
                     ...seat,
                     clicked: false,
