@@ -9,10 +9,13 @@ import StoreInformation from "../../layouts/store_information/StoreInformation";
 import MapBuilder from "../../layouts/map_builder/MapBuilder";
 import Grid from "@material-ui/core/Grid";
 import cuid from "cuid";
+import { useDispatch } from "react-redux";
+import { registerStore } from "./AddStoreActions";
 
 const temp_map_id = cuid.slug();
 const AddStore = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [curStep, setCurStep] = useState(0);
     const [storeData, setStoreData] = useState({
         postal_code: '',
@@ -34,8 +37,12 @@ const AddStore = () => {
         { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
         { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
     ])
+
     const handleStep = (value) => {
-        setCurStep(curStep + value >= 0 ? curStep + value : curStep)
+        if (curStep + value > 2){
+            dispatch(registerStore({maps, seatGroups, storeData}));
+        }
+        else setCurStep(curStep + value >= 0 ? curStep + value : curStep)
     }
 
 
@@ -50,8 +57,10 @@ const AddStore = () => {
             </Stepper>
 
             <main>
-                {curStep === 0 && <StoreInformation storeData={storeData} setStoreData={setStoreData} />}
-                {curStep === 1 && <MapBuilder maps={maps} setMaps={setMaps} seatGroups={seatGroups} setSeatGroups={setSeatGroups} />}
+                {curStep === 0 &&
+                    <StoreInformation storeData={storeData} setStoreData={setStoreData} />}
+                {curStep === 1 &&
+                    <MapBuilder maps={maps} setMaps={setMaps} seatGroups={seatGroups} setSeatGroups={setSeatGroups} />}
             </main>
 
             <div className={classes.btnRoot}>
@@ -75,7 +84,7 @@ const AddStore = () => {
                             variant="contained"
                             disableElevation
                             color="primary">
-                            Next
+                            {curStep === 2 ? "Complete" : "Next"}
                         </Button>
                     </Grid>
                 </Grid>
