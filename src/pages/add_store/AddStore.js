@@ -39,8 +39,8 @@ const AddStore = () => {
     ])
 
     const handleStep = (value) => {
-        if (curStep + value > 2){
-            dispatch(registerStore({maps, seatGroups, storeData}));
+        if (curStep + value > 2) {
+            dispatch(registerStore({ maps, seatGroups, storeData: { ...storeData, limit_time: Number(storeData.limit_time) } }));
         }
         else setCurStep(curStep + value >= 0 ? curStep + value : curStep)
     }

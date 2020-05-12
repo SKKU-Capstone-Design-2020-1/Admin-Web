@@ -28,16 +28,15 @@ export const registerStore = data => async dispatch => {
         let batch = firestore.batch();
         batch.set(storeDoc, {
             open: false,
+            num_seats,
+            num_users: 0,
             img_url,
             maps, 
             owner_id: temp_oid, 
             ...storeInfo
         });
-        for (let group of seatGroups){
-            let { clicked, ...groupInfo } = group;
-            batch.set(storeDoc.collection(`seatGroups`).doc(), {
-                ...groupInfo
-            })
+        for (let group of updatedSeats){
+            batch.set(storeDoc.collection(`seatGroups`).doc(), group);
         }
 
         await batch.commit();
