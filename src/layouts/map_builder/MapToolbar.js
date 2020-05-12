@@ -10,7 +10,10 @@ import AddLocationIcon from "@material-ui/icons/AddLocation";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
 import RemoveLocationIcon from "@material-ui/icons/LocationOff";
 import SettingRemoteIcon from "@material-ui/icons/SettingsRemote";
+import RemoveIcon from "@material-ui/icons/Delete";
+import ClearIcon from "@material-ui/icons/Clear";
 import Tooltip from "@material-ui/core/Tooltip";
+
 import { MAP_DIALOGS, MAP_EVENTS } from "./util/const";
 
 const MapToolbar = ({ handleDialog, handleEvents, mapIdx }) => {
@@ -65,6 +68,22 @@ const MapToolbar = ({ handleDialog, handleEvents, mapIdx }) => {
                         disabled={mapIdx >= 0 ? false : true}
                     >
                         <EditIcon />
+                    </Button>
+                </Tooltip>
+                <Tooltip title="Clear selected seat">
+                    <Button
+                        onClick={() => handleEvents({ type: MAP_EVENTS.CLEAR_SEATS })}
+                        disabled={mapIdx >= 0 ? false : true}
+                    >
+                        <ClearIcon />
+                    </Button>
+                </Tooltip>
+                <Tooltip title="Remove selected seats">
+                    <Button
+                        onClick={() => handleEvents({ type: MAP_EVENTS.REMOVE_SEATS })}
+                        disabled={mapIdx >= 0 ? false : true}
+                    >
+                        <RemoveIcon />
                     </Button>
                 </Tooltip>
             </ButtonGroup>

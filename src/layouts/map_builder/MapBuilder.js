@@ -59,7 +59,7 @@ const createSeatGroup = (map_id, values) => {
  */
 
 const temp_map_id = cuid.slug();
-const MapBuilder = ({maps, setMaps, seatGroups, setSeatGroups}) => {
+const MapBuilder = ({ maps, setMaps, seatGroups, setSeatGroups }) => {
     const classes = useStyles();
     const theme = useTheme();
     const [mapWidth, setWidth] = useState(0);
@@ -172,9 +172,9 @@ const MapBuilder = ({maps, setMaps, seatGroups, setSeatGroups}) => {
                 //update other seatgroups beacon ids
                 const { data } = action;
                 setSeatGroups(seatGroups.map(seat => {
-                    if (seat.map_id === maps[mapIdx].map_id){
+                    if (seat.map_id === maps[mapIdx].map_id) {
                         return {
-                            ...seat, 
+                            ...seat,
                             beacon_ids: data
                         }
                     }
@@ -219,7 +219,15 @@ const MapBuilder = ({maps, setMaps, seatGroups, setSeatGroups}) => {
                     }
                 }))
                 break;
-
+            case MAP_EVENTS.CLEAR_SEATS:
+                setSeatGroups(seatGroups.map(seat => ({
+                    ...seat,
+                    clicked: false,
+                })));
+                break;
+            case MAP_EVENTS.REMOVE_SEATS:
+                setSeatGroups(seatGroups.filter(seat => !seat.clicked));
+                break;
             default:
         }
     }
