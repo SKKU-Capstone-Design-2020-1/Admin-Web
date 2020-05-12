@@ -59,7 +59,7 @@ const createSeatGroup = (map_id, values) => {
  */
 
 const temp_map_id = cuid.slug();
-const MapBuilder = () => {
+const MapBuilder = ({maps, setMaps, seatGroups, setSeatGroups}) => {
     const classes = useStyles();
     const theme = useTheme();
     const [mapWidth, setWidth] = useState(0);
@@ -69,13 +69,7 @@ const MapBuilder = () => {
         beaconDialog: false,
         beacon_ids: [],
     });
-    const [maps, setMaps] = useState([
-        { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
-    ]);
-    const [seatGroups, setSeatGroups] = useState([
-        { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
-        { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
-    ])
+
     const [mapIdx, setMapIdx] = useState(0);
 
     useLayoutEffect(() => {

@@ -4,29 +4,17 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-const StoreInformation = () => {
+const StoreInformation = ({ storeData, setStoreData }) => {
     const classes = useStyles();
     const [imgFile, setImgFile] = useState({
         data: null,
         file_name: '',
-        file: null,
         ready: false,
-    })
-    const [storeData, setStoreData] = useState({
-        postal_code: '',
-        address: '',
-        address_detail: '',
-        name: '',
-        address_info: {
-
-        },
-        latitude: '',
-        longtitude: '', 
-        limit_time: '', 
     })
     const [mapData, setMapData] = useState({
         visible: false,
     })
+
 
     useEffect(() => {
         if (!mapData.visible) return;
@@ -38,13 +26,13 @@ const StoreInformation = () => {
         }
 
         let map = new window.kakao.maps.Map(container, options);
-        
+
         let geoCoder = new window.kakao.maps.services.Geocoder();
 
         geoCoder.addressSearch(storeData.address, (result, status) => {
             if (status === window.kakao.maps.services.Status.OK) {
                 let coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-                
+
                 // 결과값으로 받은 위치를 마커로 표시합니다
                 let marker = new window.kakao.maps.Marker({
                     map: map,
@@ -59,13 +47,13 @@ const StoreInformation = () => {
                 map.setCenter(coords);
                 const { Ga, Ha } = coords;
                 setStoreData({
-                    ...storeData, 
-                    latitude: Ha, 
-                    longtitude: Ga 
+                    ...storeData,
+                    latitude: Ha,
+                    longtitude: Ga
                 });
             }
         })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [storeData.address, mapData.visible])
 
 
@@ -78,9 +66,12 @@ const StoreInformation = () => {
                 setImgFile({
                     data: e.target.result,
                     file_name: file.name,
-                    file,
                     ready: true,
                 });
+                setStoreData({
+                    ...storeData,
+                    img_file: file, 
+                })
             }
             try {
                 reader.readAsDataURL(file);
@@ -238,7 +229,7 @@ const useStyles = makeStyles(theme => ({
         height: 250,
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(1),
-        objectFit: 'none'
+        objectFit: 'contain'
     },
     imgLabel: {
         marginBottom: theme.spacing(2),

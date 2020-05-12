@@ -8,14 +8,36 @@ import { ADD_STORE_STEPS } from "../../libs/const";
 import StoreInformation from "../../layouts/store_information/StoreInformation";
 import MapBuilder from "../../layouts/map_builder/MapBuilder";
 import Grid from "@material-ui/core/Grid";
+import cuid from "cuid";
 
+const temp_map_id = cuid.slug();
 const AddStore = () => {
     const classes = useStyles();
-    const [curStep, setCurStep] = useState(1);
+    const [curStep, setCurStep] = useState(0);
+    const [storeData, setStoreData] = useState({
+        postal_code: '',
+        address: '',
+        address_detail: '',
+        name: '',
+        address_info: {
 
+        },
+        latitude: '',
+        longtitude: '',
+        limit_time: '',
+        img_file: null,
+    });
+    const [maps, setMaps] = useState([
+        { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
+    ]);
+    const [seatGroups, setSeatGroups] = useState([
+        { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
+        { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
+    ])
     const handleStep = (value) => {
         setCurStep(curStep + value >= 0 ? curStep + value : curStep)
     }
+
 
     return (
         <div className={classes.root}>
@@ -28,14 +50,15 @@ const AddStore = () => {
             </Stepper>
 
             <main>
-                {curStep === 0 && <StoreInformation />}
-                {curStep === 1 && <MapBuilder />}
+                {curStep === 0 && <StoreInformation storeData={storeData} setStoreData={setStoreData} />}
+                {curStep === 1 && <MapBuilder maps={maps} setMaps={setMaps} seatGroups={seatGroups} setSeatGroups={setSeatGroups} />}
             </main>
-            
+
             <div className={classes.btnRoot}>
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12} md={4}>
                         <Button
+                            disabled={curStep > 0 ? false : true}
                             onClick={() => handleStep(-1)}
                             fullWidth
                             className={classes.button}
