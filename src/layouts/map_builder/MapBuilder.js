@@ -32,6 +32,7 @@ const createSeatGroup = (map_id, values) => {
         y: 0,
         clicked: false,
         deg: 0,
+        beacon_ids: [],
         seats: values.split(",").map(id => ({
             status: 0,
             id,
@@ -66,13 +67,14 @@ const MapBuilder = () => {
         mapDialog: false,
         seatDialog: false,
         beaconDialog: false,
+        beacon_ids: [],
     });
     const [maps, setMaps] = useState([
         { name: 'TEMP', height: 400, width: 500, map_id: temp_map_id }
     ]);
     const [seatGroups, setSeatGroups] = useState([
-        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
-        { clicked: false, map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
+        { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
+        { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
     ])
     const [mapIdx, setMapIdx] = useState(0);
 
@@ -133,7 +135,6 @@ const MapBuilder = () => {
                 }));
                 break;
             case MAP_DIALOGS.ADD_SEAT:
-                console.log(action);
                 setDialogs(prev => ({
                     ...prev,
                     seatDialog: false
@@ -152,16 +153,39 @@ const MapBuilder = () => {
                 setSeatGroups(seatGroups.filter(seat => seat.map_id !== removedID));
                 break;
             case MAP_DIALOGS.OPEN_BEACON:
+                let map_id = maps[mapIdx].map_id;
+                let seat = seatGroups.find(seat => seat.map_id === map_id);
+                console.log(seat);
                 setDialogs({
                     ...dialogs,
-                    beaconDialog: true
+                    beaconDialog: true,
+                    beacon_ids: seat ? seat.beacon_ids : [],
                 });
                 break;
             case MAP_DIALOGS.CLOSE_BEACON:
                 setDialogs({
                     ...dialogs,
                     beaconDialog: false,
+                    beacon_ids: [],
                 });
+                break;
+            case MAP_DIALOGS.UPDATE_BEACON:
+                setDialogs({
+                    ...dialogs,
+                    beaconDialog: false,
+                    beacon_ids: [],
+                });
+                //update other seatgroups beacon ids
+                const { data } = action;
+                setSeatGroups(seatGroups.map(seat => {
+                    if (seat.map_id === maps[mapIdx].map_id){
+                        return {
+                            ...seat, 
+                            beacon_ids: data
+                        }
+                    }
+                    else return seat;
+                }))
                 break;
             default:
         }
@@ -264,7 +288,7 @@ const MapBuilder = () => {
 
             <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
             <SeatDialog seatGroups={seatGroups} open={dialogs.seatDialog} handleDialog={handleDialog} />
-            <BeaconDialog open={dialogs.beaconDialog} handleDialog={handleDialog} />
+            <BeaconDialog open={dialogs.beaconDialog} handleDialog={handleDialog} data={dialogs.beacon_ids} />
         </div>
     )
 }

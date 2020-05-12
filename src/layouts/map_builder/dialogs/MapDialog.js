@@ -19,6 +19,8 @@ const MapDialog = ({ open, handleDialog }) => {
     const classes = useStyles();
     const [values, setValues] = useState(defaultValues);
     const [errMsg, setErrMsg] = useState('');
+
+    
     const handleChange = e => {
         setValues({
             ...values,
@@ -46,7 +48,8 @@ const MapDialog = ({ open, handleDialog }) => {
         setErrMsg('');
         handleDialog({ type: MAP_DIALOGS.CLOSE_MAP });
     }
-
+    
+    
     return (
         <Dialog
             maxWidth="xs"

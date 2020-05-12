@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -20,13 +20,20 @@ import update from "immutability-helper";
 const BeaconClicks = {
     ADD: "ADD_BEACON",
     REMOVE: "REMOVE_BEACON",
+    UPDATE: "UPDATE_BEACON"
 }
 
-const BeaconDialog = ({ open, handleDialog }) => {
-    const [beacons, setBeacons] = useState(['asd', 'asd', 'asd', 'asd', 'asd', 'asd']);
+const BeaconDialog = ({ open, handleDialog, data }) => {
+    const classes = useStyles();
+    const [beacons, setBeacons] = useState([]);
     const [beaconID, setBeaconID] = useState('');
 
-    const classes = useStyles();
+    useEffect(() => {
+        if (open) {
+            setBeacons(data);
+        }
+    }, [open, data])
+
     const handleChange = e => {
         setBeaconID(e.target.value);
     }
@@ -39,6 +46,10 @@ const BeaconDialog = ({ open, handleDialog }) => {
                 break;
             case BeaconClicks.REMOVE:
                 setBeacons(beacons.filter((beacon, idx) => idx !== action.data));
+                break;
+            case BeaconClicks.UPDATE:
+                handleDialog({ type: MAP_DIALOGS.UPDATE_BEACON, data: beacons });
+                setBeacons([]);
                 break;
             default:
         }
@@ -86,8 +97,8 @@ const BeaconDialog = ({ open, handleDialog }) => {
             </DialogContent>
             <List className={classes.list}>
                 {beacons && beacons.map((beacon, idx) => (
-                    <ListItem key={idx}>
-                        <ListItemText button primary={beacon} />
+                    <ListItem button key={idx}>
+                        <ListItemText primary={beacon} />
                         <ListItemSecondaryAction>
                             <IconButton onClick={() => handleClick({ type: BeaconClicks.REMOVE, data: idx })}>
                                 <DeleteIcon />
@@ -100,7 +111,7 @@ const BeaconDialog = ({ open, handleDialog }) => {
                 <Button onClick={() => handleDialog({ type: MAP_DIALOGS.CLOSE_BEACON })}>
                     Cancel
                 </Button>
-                <Button color="primary">
+                <Button color="primary" onClick={() => handleClick({ type: BeaconClicks.UPDATE })}>
                     Update
                 </Button>
             </DialogActions>
@@ -122,7 +133,6 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: `${theme.spacing(1)}px 0px`
     },
     addBtn: {
         marginLeft: theme.spacing(2),
