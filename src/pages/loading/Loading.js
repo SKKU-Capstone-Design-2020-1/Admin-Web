@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const Loading = () => {
     const classes = useStyles();
     const { loading } = useSelector(state => state.backdrop, []);
-    console.log(loading);
+
     return (
         <div>
             <Backdrop className={classes.Backdrop} open={loading}>

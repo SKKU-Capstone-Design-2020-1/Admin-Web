@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grey from "@material-ui/core/colors/grey";
 import Button from "@material-ui/core/Button";
@@ -6,17 +6,25 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "./SignUpActions";
 const toSignIn = React.forwardRef((prop, ref) => (
     <RouterLink ref={ref} to="/" {...prop} />
 ))
 const SignUp = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const signup = useSelector(state => state.signup);
+    const [errMsg, setErrMsg] = useState('');
     const [authData, setAuthData] = useState({
         email: '',
         password: '',
         confirm_password: '',
     })
+
+    useEffect(() => {
+        setErrMsg(signup.errMsg);
+    }, [signup.errMsg])
     const handleChange = e => {
         setAuthData({
             ...authData,
@@ -24,6 +32,24 @@ const SignUp = () => {
         })
     }
 
+    const handleSubmit = e => {
+        if (e) e.preventDefault();
+
+        let completed = true;
+        Object.keys(authData).forEach(key => {
+            if (authData[key] === '') completed = false;
+        })
+        if (!completed) {
+            setErrMsg("Please complete the form");
+            return;
+        }
+        if (authData.password !== authData.confirm_password) {
+            setErrMsg("Confirm password does not match.");
+            return;
+        }
+        console.log(authData);
+        dispatch(signUp(authData));
+    }
     return (
         <div className={classes.root}>
             <div className={classes.container} >
@@ -33,40 +59,47 @@ const SignUp = () => {
                 <Typography variant="body1" className={classes.subTitle}>
                     Sign up to deploy innovative seat management system to your places immediately.
                 </Typography>
-                <TextField
-                    onChange={handleChange}
-                    value={authData.email}
-                    className={classes.textField}
-                    fullWidth
-                    variant="outlined"
-                    id="email"
-                    type="email"
-                    label="Email" />
-                <TextField
-                    onChange={handleChange}
-                    value={authData.password}
-                    className={classes.textField}
-                    fullWidth
-                    variant="outlined"
-                    id="password"
-                    type="password"
-                    label="Password" />
-                <TextField
-                    onChange={handleChange}
-                    value={authData.confirm_password}
-                    className={classes.textField}
-                    fullWidth
-                    variant="outlined"
-                    id="confirm_password"
-                    type="password"
-                    label="Confirm password" />
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        onChange={handleChange}
+                        value={authData.email}
+                        className={classes.textField}
+                        fullWidth
+                        variant="outlined"
+                        id="email"
+                        type="email"
+                        label="Email" />
+                    <TextField
+                        onChange={handleChange}
+                        value={authData.password}
+                        className={classes.textField}
+                        fullWidth
+                        variant="outlined"
+                        id="password"
+                        type="password"
+                        label="Password" />
+                    <TextField
+                        onChange={handleChange}
+                        value={authData.confirm_password}
+                        className={classes.textField}
+                        fullWidth
+                        variant="outlined"
+                        id="confirm_password"
+                        type="password"
+                        label="Confirm password" />
+                    <button style={{ display: 'none' }} type="submit" onSubmit={handleSubmit} />
+                </form>
 
+                <Typography variant="body1" color="secondary">
+                    {errMsg}
+                </Typography>
                 <Button
                     className={classes.button}
                     variant="contained"
                     color="primary"
                     disableElevation
                     fullWidth
+                    onClick={handleSubmit}
                 >
                     Sign Up
                 </Button>
