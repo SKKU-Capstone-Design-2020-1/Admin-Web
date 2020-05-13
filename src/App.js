@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AdminAuth from "./pages/auth/AdminAuth";
 import SignUp from "./pages/signup/SignUp";
 import AdminMain from "./pages/main/AdminMain";
+import Loading from "./pages/loading/Loading";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
           <Route path="/admin" component={AdminMain} />
         </Switch>
       </Router>
+
+    <Loading />
     </div>
   );
 }
