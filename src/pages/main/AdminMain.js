@@ -9,6 +9,8 @@ import AddStore from "../add_store/AddStore";
 import URLS from "../../libs/urls";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import Store from "../store/Store";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const AdminMain = ({ location }) => {
     const classes = useStyles();
@@ -19,15 +21,22 @@ const AdminMain = ({ location }) => {
         setMobileOpen(!mobileOpen);
     }
 
+    const initPage = () => {
+        if (auth.store_ids.length === 0) return <NoStoreAdded />
+        else return <Redirect to={`/admin/${auth.store_ids[0].id}`} />
+
+    }
     const getContents = () => {
-        switch (location.pathname) {
-            case URLS.admin:
-                return <NoStoreAdded />
-            case URLS.addStore:
-                return <AddStore />
-            default:
-                return <NoStoreAdded />
-        }
+        return (
+            <Router>
+                <Switch>
+                    <Route exact path={URLS.admin} component={initPage} />
+                    <Route path={URLS.addStore} component={AddStore} />
+                    <Route path={URLS.store} component={Store} />
+                </Switch>
+            </Router>
+        );
+
     }
 
     if (!auth.uid) return <Redirect to="/" />

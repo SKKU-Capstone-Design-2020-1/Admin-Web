@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from "@material-ui/core/styles/";
 import Divider from "@material-ui/core/Divider";
 import MDrawer from "@material-ui/core/Drawer";
@@ -17,11 +17,22 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import BootstrapInput from "./BootstrpInput";
 import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-const Drawer = ({ mobileOpen, handleDrawerToggle }) => {
+const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
     const classes = useStyles();
     const { owner } = useSelector(state => state.auth);
-    console.log(owner); 
+    const { sid } = useSelector(state => state.store)
+    const [stores, setStores] = useState([]);
+
+    useEffect(() => {
+        setStores(owner.store_ids);
+    }, [owner]);
+
+    const handleChange = e => {
+        history.push(e.target.value);        
+    }
+    console.log(history)
     const drawer = (
         <div className={classes.drawerContents}>
             <div className={classes.toolbar} >
@@ -29,9 +40,12 @@ const Drawer = ({ mobileOpen, handleDrawerToggle }) => {
                     <InputLabel>Store</InputLabel>
                     <Select
                         input={<BootstrapInput />}
+                        value={sid}
+                        onChange={handleChange}
+                        style={{ backgroundColor: 'white', borderRadius: 4 }}
                     >
                         {owner.store_ids && owner.store_ids.map((store) => (
-                            <MenuItem key={store.id}>
+                            <MenuItem value={store.id} key={store.id}>
                                 {store.name}
                             </MenuItem>
                         ))}
@@ -128,4 +142,4 @@ const useStyles = makeStyles(theme => ({
         width: `calc(100% - ${theme.spacing(4)}px)`
     }
 }));
-export default Drawer;
+export default withRouter(Drawer);
