@@ -16,11 +16,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import BootstrapInput from "./BootstrpInput";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { setStore } from "../../pages/store/storeActions";
 
 const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const { owner } = useSelector(state => state.auth);
     const { sid } = useSelector(state => state.store)
     const [stores, setStores] = useState([]);
@@ -30,9 +32,13 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
     }, [owner]);
 
     const handleChange = e => {
-        history.push(e.target.value);        
+        if (e.target.value === "add") {
+            history.push("/admin/add_store");
+            dispatch(setStore('add'));
+        }
+        else history.push(e.target.value);
     }
-    console.log(history)
+
     const drawer = (
         <div className={classes.drawerContents}>
             <div className={classes.toolbar} >
@@ -49,6 +55,9 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
                                 {store.name}
                             </MenuItem>
                         ))}
+                        <MenuItem value="add">
+                            Add Store
+                        </MenuItem>
                     </Select>
                 </FormControl>
             </div>

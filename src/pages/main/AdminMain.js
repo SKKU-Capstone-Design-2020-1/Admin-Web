@@ -28,28 +28,30 @@ const AdminMain = ({ location }) => {
     }
     const getContents = () => {
         return (
-            <Router>
-                <Switch>
-                    <Route exact path={URLS.admin} component={initPage} />
-                    <Route path={URLS.addStore} component={AddStore} />
-                    <Route path={URLS.store} component={Store} />
-                </Switch>
-            </Router>
+            <Switch>
+                <Route path={URLS.addStore} component={AddStore} />
+                <Route exact path={URLS.admin} component={initPage} />
+                <Route path={URLS.store} component={Store} />
+            </Switch>
         );
 
     }
 
     if (!auth.uid) return <Redirect to="/" />
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <Toolbar handleDrawerToggle={handleDrawerToggle} title={"Admin Page"} />
-            <Drawer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                {getContents()}
-            </main>
-        </div>
+        <Router>
+            <div className={classes.root}>
+                <CssBaseline />
+                <Toolbar handleDrawerToggle={handleDrawerToggle} title={"Admin Page"} />
+                <Drawer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    {getContents()}
+                </main>
+            </div>
+
+        </Router>
+
     )
 }
 const useStyles = makeStyles(theme => ({
