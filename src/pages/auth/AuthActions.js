@@ -10,6 +10,7 @@ export const authActionType = {
     complete: 'authComplete',
     err: 'authSignUpErr',
     signOut: 'authSignOut',
+    addStore: "ownerAddStore", 
 }
 export const signInActionType = {
     err: 'authSignInError',

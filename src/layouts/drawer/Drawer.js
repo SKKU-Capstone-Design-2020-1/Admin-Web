@@ -16,10 +16,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import BootstrapInput from "./BootstrpInput";
+import { useSelector } from "react-redux";
 
 const Drawer = ({ mobileOpen, handleDrawerToggle }) => {
     const classes = useStyles();
-
+    const { owner } = useSelector(state => state.auth);
+    console.log(owner); 
     const drawer = (
         <div className={classes.drawerContents}>
             <div className={classes.toolbar} >
@@ -28,9 +30,11 @@ const Drawer = ({ mobileOpen, handleDrawerToggle }) => {
                     <Select
                         input={<BootstrapInput />}
                     >
-                        <MenuItem>asd</MenuItem>
-                        <MenuItem>asd</MenuItem>
-                        <MenuItem>asd</MenuItem>
+                        {owner.store_ids && owner.store_ids.map((store) => (
+                            <MenuItem key={store.id}>
+                                {store.name}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
             </div>

@@ -1,11 +1,15 @@
-import { storage, firestore } from "../../libs/config";
+import { storage, firestore, firebaseApp } from "../../libs/config";
+import { setProgress, completeProgress } from "../loading/LoadingAction";
+import { authActionType } from "../auth/AuthActions";
 
-export const registerStore = data => async dispatch => {
+export const registerStore = data => async (dispatch, getState) => {
+    dispatch(setProgress);
     try {
-        const temp_oid = "TEST_OWNER";
-        const { storeData, maps, seatGroups } = data;         
+        const state = getState();
+        const oid = state.auth.owner.uid;
+        const { storeData, maps, seatGroups } = data;
         console.log(storeData, maps, seatGroups);
-        
+
         const { img_file, ...storeInfo } = storeData;
 
         let num_seats = 0;
@@ -17,11 +21,11 @@ export const registerStore = data => async dispatch => {
         });
 
         let storeDoc = firestore.collection('stores').doc();
-        
+
         //Add image to firebase storage
         const storageRef = storage.ref();
-        const imgRef = storageRef.child(`stores/${temp_oid}/${storeDoc.id}/store_img`);
-        
+        const imgRef = storageRef.child(`stores/${oid}/${storeDoc.id}/store_img`);
+
         await imgRef.put(img_file);
         let img_url = await imgRef.getDownloadURL();
 
@@ -31,17 +35,25 @@ export const registerStore = data => async dispatch => {
             num_seats,
             num_users: 0,
             img_url,
-            maps, 
-            owner_id: temp_oid, 
+            maps,
+            owner_id: oid,
+            created_at: new Date(),
             ...storeInfo
         });
-        for (let group of updatedSeats){
+        for (let group of updatedSeats) {
             batch.set(storeDoc.collection(`seatGroups`).doc(), group);
         }
 
+        //update store_ids on owner document
+        batch.update(firestore.doc(`owners/${oid}`), {
+            store_ids: firebaseApp.firestore.FieldValue.arrayUnion({ id: storeDoc.id, name: storeInfo.name })
+        });
+
         await batch.commit();
-        console.log('completed');
-    } catch (err){
+        dispatch({ type: authActionType.addStore, data: { id: storeDoc.id, name: storeInfo.name } });
+    } catch (err) {
         console.log(err);
+
     }
+    dispatch(completeProgress);
 }

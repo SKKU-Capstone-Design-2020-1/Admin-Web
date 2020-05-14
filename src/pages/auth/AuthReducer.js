@@ -63,11 +63,19 @@ const authReducer = (state = initState, action) => {
                 }
             })
         }
-    
+
         case signInActionType.init: {
             return update(state, {
                 "signin": {
-                    "errMsg": {$set: ""}
+                    "errMsg": { $set: "" }
+                }
+            })
+        }
+
+        case authActionType.addStore: {
+            return update(state, {
+                "owner": {
+                    "store_ids": { $push: [action.data] }
                 }
             })
         }
