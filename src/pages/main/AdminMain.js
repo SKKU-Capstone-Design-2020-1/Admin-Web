@@ -7,10 +7,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import NoStoreAdded from "./NoStoreAdded";
 import AddStore from "../add_store/AddStore";
 import URLS from "../../libs/urls";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 const AdminMain = ({ location }) => {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const auth = useSelector(state => state.auth.owner);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -26,6 +29,8 @@ const AdminMain = ({ location }) => {
                 return <NoStoreAdded />
         }
     }
+
+    if (!auth.uid) return <Redirect to="/" />
     return (
         <div className={classes.root}>
             <CssBaseline />

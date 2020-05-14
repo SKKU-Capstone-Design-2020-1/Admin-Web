@@ -34,10 +34,12 @@ const authReducer = (state = initState, action) => {
             return initState;
         case authActionType.complete:
             return update(state, {
-                "owner": {$set: {
-                    ...action.data,
-                    errMsg: '', 
-                }}
+                "owner": {
+                    $set: {
+                        ...action.data,
+                        errMsg: '',
+                    }
+                }
             })
 
         case authActionType.err: {
@@ -46,6 +48,9 @@ const authReducer = (state = initState, action) => {
                     "errMsg": { $set: action.err }
                 }
             })
+        }
+        case authActionType.signOut: {
+            return initState;
         }
         default:
             return state;

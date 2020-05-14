@@ -6,9 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { DRAWER_WIDTH } from "../../libs/const";
+import Button from "@material-ui/core/Button";
+import { useDispatch } from "react-redux";
+import { signOut } from "../../pages/auth/AuthActions";
 
 const Toolbar = ({ handleDrawerToggle, title }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
     return (
         <AppBar position="fixed" className={classes.appBar} elevation={2}>
             <MToolbar>
@@ -23,6 +28,11 @@ const Toolbar = ({ handleDrawerToggle, title }) => {
                 <Typography className={classes.title} varaint="h6" noWrap>
                     {title}
                 </Typography>
+                <div className={classes.btnRoot}>
+                    <Button variant="outlined" size="small" onClick={() => dispatch(signOut())}>
+                        Sign Out
+                    </Button>
+                </div>
             </MToolbar>
         </AppBar>
     )
@@ -49,5 +59,8 @@ const useStyles = makeStyles(theme => ({
             display: 'none',
         },
     },
+    btnRoot: {
+        marginLeft: 'auto'
+    }
 }))
 export default Toolbar;

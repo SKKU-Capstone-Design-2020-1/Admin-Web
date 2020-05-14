@@ -9,6 +9,7 @@ export const signUpActionType = {
 export const authActionType = {
     complete: 'authComplete',
     err: 'authSignUpErr',
+    signOut: 'authSignOut',
 }
 
 export const signUp = ({ email, password }) => async dispatch => {
@@ -44,21 +45,32 @@ export const verifyOwner = () => async dispatch => {
     dispatch(setProgress);
     try {
         fireauth.onAuthStateChanged(async user => {
-            //get store ids from database
-            let { email, uid } = user;
-            let ownerResp = await firestore.doc(`owners/${uid}`).get();
-            let { store_ids } = ownerResp.data();
+            if (!user) {
+                //if user signed out
+                dispatch({ type: authActionType.signOut })
+            }
+            else {
+                //get store ids from database
+                let { email, uid } = user;
+                let ownerResp = await firestore.doc(`owners/${uid}`).get();
+                let { store_ids } = ownerResp.data();
 
-            dispatch({
-                type: authActionType.complete, data: {
-                    email: email,
-                    uid: uid,
-                    store_ids, 
-                }
-            });
+                dispatch({
+                    type: authActionType.complete, data: {
+                        email: email,
+                        uid: uid,
+                        store_ids,
+                    }
+                });
+            }
+
         })
     } catch (err) {
         dispatch({ type: authActionType.err, err: err.message });
     }
     dispatch(completeProgress);
+}
+
+export const signOut = () => dispatch => {
+    fireauth.signOut();
 }
