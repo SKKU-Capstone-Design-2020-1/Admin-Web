@@ -2,7 +2,7 @@ import { storage, firestore, firebaseApp } from "../../libs/config";
 import { setProgress, completeProgress } from "../loading/LoadingAction";
 import { authActionType } from "../auth/AuthActions";
 
-export const registerStore = data => async (dispatch, getState) => {
+export const registerStore = (data, callback) => async (dispatch, getState) => {
     dispatch(setProgress);
     try {
         const state = getState();
@@ -50,6 +50,7 @@ export const registerStore = data => async (dispatch, getState) => {
         });
 
         await batch.commit();
+        callback(storeDoc.id);
         dispatch({ type: authActionType.addStore, data: { id: storeDoc.id, name: storeInfo.name } });
     } catch (err) {
         console.log(err);

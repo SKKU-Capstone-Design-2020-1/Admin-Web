@@ -11,9 +11,6 @@ const Store = ({ match, history }) => {
     return (
         <div>
             {match.params.sid}
-            <button onClick={() => history.push("/admin/add_store")}>
-                Add
-            </button>
         </div>
     )
 }

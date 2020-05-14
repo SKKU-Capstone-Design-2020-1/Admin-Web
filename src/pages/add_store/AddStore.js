@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { registerStore } from "./AddStoreActions";
 
 const temp_map_id = cuid.slug();
-const AddStore = () => {
+const AddStore = ({ history }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [curStep, setCurStep] = useState(0);
@@ -40,11 +40,15 @@ const AddStore = () => {
 
     const handleStep = (value) => {
         if (curStep + value > 2) {
-            dispatch(registerStore({ maps, seatGroups, storeData: { ...storeData, limit_time: Number(storeData.limit_time) } }));
+            dispatch(registerStore
+                ({ maps, seatGroups, storeData: { ...storeData, limit_time: Number(storeData.limit_time) } }, onCompletion)
+            );
         }
         else setCurStep(curStep + value >= 0 ? curStep + value : curStep)
     }
-
+    const onCompletion = (store_id) => {
+        history.push(`/admin/${store_id}`)
+    }
 
     return (
         <div className={classes.root}>
