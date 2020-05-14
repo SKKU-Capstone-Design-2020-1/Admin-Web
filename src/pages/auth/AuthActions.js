@@ -11,6 +11,10 @@ export const authActionType = {
     err: 'authSignUpErr',
     signOut: 'authSignOut',
 }
+export const signInActionType = {
+    err: 'authSignInError',
+    init: 'authSignInInit',
+}
 
 export const signUp = ({ email, password }) => async dispatch => {
     dispatch(setProgress);
@@ -40,7 +44,18 @@ export const signUp = ({ email, password }) => async dispatch => {
     }
     dispatch(completeProgress);
 }
-
+export const signIn = (creds) => async dispatch => {
+    dispatch(setProgress);
+    try {
+        const { email, password } = creds;
+        console.log(creds);
+        
+        await fireauth.signInWithEmailAndPassword(email, password);
+    } catch (err) {
+        dispatch({ type: signInActionType.err, err: err.message });
+    }
+    dispatch(completeProgress);
+}
 export const verifyOwner = () => async dispatch => {
     dispatch(setProgress);
     try {
@@ -62,6 +77,7 @@ export const verifyOwner = () => async dispatch => {
                         store_ids,
                     }
                 });
+                dispatch({ type: signInActionType.init });
             }
 
         })

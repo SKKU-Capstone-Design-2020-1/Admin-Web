@@ -1,4 +1,4 @@
-import { signUpActionType, authActionType } from "./AuthActions";
+import { signUpActionType, authActionType, signInActionType } from "./AuthActions";
 import update from "immutability-helper";
 
 const initState = {
@@ -11,6 +11,9 @@ const initState = {
         uid: '',
         store_ids: [],
         //and other data from firestore
+    },
+    signin: {
+        errMsg: '',
     }
 }
 
@@ -51,6 +54,22 @@ const authReducer = (state = initState, action) => {
         }
         case authActionType.signOut: {
             return initState;
+        }
+
+        case signInActionType.err: {
+            return update(state, {
+                "signin": {
+                    "errMsg": { $set: action.err }
+                }
+            })
+        }
+    
+        case signInActionType.init: {
+            return update(state, {
+                "signin": {
+                    "errMsg": {$set: ""}
+                }
+            })
         }
         default:
             return state;

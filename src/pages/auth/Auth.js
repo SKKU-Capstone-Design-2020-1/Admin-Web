@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -8,6 +8,8 @@ import { useSelector } from "react-redux"
 import Grey from "@material-ui/core/colors/grey";
 import { Link as RouterLink } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux"
+import { signIn } from "./AuthActions";
 
 const toSignUp = React.forwardRef((prop, ref) => (
     <RouterLink ref={ref} to="/signup" {...prop} />
@@ -15,53 +17,85 @@ const toSignUp = React.forwardRef((prop, ref) => (
 
 const Auth = () => {
     const classes = useStyles();
-    const authState = useSelector(state => state.auth.owner);
-    console.log(authState);
+    const { owner, signin } = useSelector(state => state.auth);
+    const [creds, setCreds] = useState({
+        email: '',
+        password: '',
+    })
+    const dispatch = useDispatch();
 
-    if (authState.uid){
+    if (owner.uid) {
         return <Redirect to="/admin" />
     }
-    
+    const handleSubmit = e => {
+        if (e) e.preventDefault();
+
+        dispatch(signIn(creds));
+    }
+    const handleChange = e => {
+        setCreds({
+            ...creds,
+            [e.target.id]: e.target.value,
+        })
+    }
     return (
         <div className={classes.root}>
-            <div className={classes.rootField}>
-                <Typography variant="body1" className={classes.title}>
-                    Realtime Seat Reservation
+            <form onSubmit={handleSubmit}>
+                <div className={classes.rootField}>
+                    <Typography variant="body1" className={classes.title}>
+                        Realtime Seat Reservation
                 </Typography>
-                <Typography varaint="body1" className={classes.typoHint}>
-                    This page can be accessed only by admins.
+                    <Typography varaint="body1" className={classes.typoHint}>
+                        This page can be accessed only by admins.
                 </Typography>
-                <TextField
-                    className={classes.textField}
-                    id="email"
-                    label="Email"
-                    type="email"
-                    variant="outlined" />
-                <TextField
-                    className={classes.textField}
-                    id="password"
-                    label="Password"
-                    type="password"
-                    variant="outlined" />
 
-                <div className={classes.rootTextBtns}>
-                    <Typography>
-                        <Link href="#" className={classes.link} onClick={e => e.preventDefault}>
-                            Forgot Password?
+                    <TextField
+                        className={classes.textField}
+                        id="email"
+                        label="Email"
+                        type="email"
+                        variant="outlined"
+                        value={creds.email}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.textField}
+                        id="password"
+                        label="Password"
+                        type="password"
+                        value={creds.password}
+                        onChange={handleChange}
+                        variant="outlined"
+                    />
+
+
+
+                    <div className={classes.rootTextBtns}>
+                        <Typography>
+                            <Link href="#" className={classes.link} onClick={e => e.preventDefault}>
+                                Forgot Password?
                         </Link>
-                        <Link component={toSignUp} className={classes.link} onClick={e => e.preventDefault}>
-                            Sign Up
+                            <Link component={toSignUp} className={classes.link} onClick={e => e.preventDefault}>
+                                Sign Up
                         </Link>
+                        </Typography>
+                    </div>
+                    <Typography variant="body1" color="secondary" className={classes.errMsg}>
+                        {signin.errMsg}
                     </Typography>
-                </div>
-                <Button className={classes.button}
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    disableElevation >
-                    Sign In
+                    <Button className={classes.button}
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                        onClick={handleSubmit}
+                    >
+                        Sign In
                 </Button>
-            </div>
+
+                </div>
+                <button type="submit" style={{ display: 'none' }} onSubmit={handleSubmit} />
+            </form>
         </div>
     )
 }
@@ -87,7 +121,7 @@ const useStyles = makeStyles(theme => ({
         border: `1.5px solid ${Grey['200']}`
     },
     button: {
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(2),
         height: 50,
     },
     title: {
@@ -111,8 +145,11 @@ const useStyles = makeStyles(theme => ({
     typoHint: {
         fontSize: '0.9rem',
         color: 'grey',
-        marginBottom: theme.spacing(5), 
+        marginBottom: theme.spacing(5),
         textAlign: 'center'
+    },
+    errMsg: {
+        marginTop: theme.spacing(1)
     }
 }));
 
