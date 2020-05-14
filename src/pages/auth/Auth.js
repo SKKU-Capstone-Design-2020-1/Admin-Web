@@ -149,7 +149,8 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center'
     },
     errMsg: {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
+        maxWidth: 300,
     }
 }));
 
