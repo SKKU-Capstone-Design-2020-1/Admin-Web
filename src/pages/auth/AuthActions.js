@@ -22,6 +22,12 @@ export const signUp = ({ email, password }) => async dispatch => {
             store_ids: [],
             uid: user.uid,
         });
+
+        dispatch({ type: signUpActionType.complete, data: {
+            email: user.email,
+            uid: user.uid, 
+            store_ids: [], 
+        } });
     } catch (err) {
         dispatch({ type: signUpActionType.err, err: err.message })
     }

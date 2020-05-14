@@ -7,14 +7,14 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signUp } from "./SignUpActions";
+import { signUp } from "./AuthActions";
 const toSignIn = React.forwardRef((prop, ref) => (
     <RouterLink ref={ref} to="/" {...prop} />
 ))
-const SignUp = () => {
+const AuthSignUp = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const signup = useSelector(state => state.signup);
+    const signup = useSelector(state => state.auth.signup);
     const [errMsg, setErrMsg] = useState('');
     const [authData, setAuthData] = useState({
         email: '',
@@ -153,4 +153,4 @@ const useStyles = makeStyles(theme => ({
         }
     }
 }))
-export default SignUp
+export default AuthSignUp

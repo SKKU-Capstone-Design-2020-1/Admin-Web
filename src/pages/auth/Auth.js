@@ -12,7 +12,7 @@ const toSignUp = React.forwardRef((prop, ref) => (
     <RouterLink ref={ref} to="/signup" {...prop} />
 ))
 
-const AdminAuth = () => {
+const Auth = () => {
     const classes = useStyles();
     // const authState = useSelector(state => state.auth);
 
@@ -110,4 +110,4 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default AdminAuth;
+export default Auth;

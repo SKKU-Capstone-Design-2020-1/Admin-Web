@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AdminAuth from "./pages/auth/AdminAuth";
-import SignUp from "./pages/signup/SignUp";
+import Auth from "./pages/auth/Auth";
+import AuthSignUp from "./pages/auth/AuthSignUp";
 import AdminMain from "./pages/main/AdminMain";
 import Loading from "./pages/loading/Loading";
 
@@ -10,8 +10,8 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/" component={AdminAuth} />
-          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/" component={Auth} />
+          <Route exact path="/signup" component={AuthSignUp} />
           <Route path="/admin" component={AdminMain} />
         </Switch>
       </Router>
