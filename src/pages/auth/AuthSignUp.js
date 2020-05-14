@@ -24,13 +24,10 @@ const AuthSignUp = () => {
         confirm_password: '',
     })
 
-    if (owner.uid){
-        return <Redirect to="/admin" />
-    }
-
     useEffect(() => {
         setErrMsg(signup.errMsg);
-    }, [signup.errMsg])
+    }, [signup.errMsg]);
+
     const handleChange = e => {
         setAuthData({
             ...authData,
@@ -56,6 +53,12 @@ const AuthSignUp = () => {
         console.log(authData);
         dispatch(signUp(authData));
     }
+
+    
+    if (owner.uid){
+        return <Redirect to="/admin" />
+    }
+
     return (
         <div className={classes.root}>
             <div className={classes.container} >
