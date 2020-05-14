@@ -7,6 +7,7 @@ import Link from "@material-ui/core/Link";
 import { useSelector } from "react-redux"
 import Grey from "@material-ui/core/colors/grey";
 import { Link as RouterLink } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const toSignUp = React.forwardRef((prop, ref) => (
     <RouterLink ref={ref} to="/signup" {...prop} />
@@ -14,8 +15,13 @@ const toSignUp = React.forwardRef((prop, ref) => (
 
 const Auth = () => {
     const classes = useStyles();
-    // const authState = useSelector(state => state.auth);
+    const authState = useSelector(state => state.auth.owner);
+    console.log(authState);
 
+    if (authState.uid){
+        return <Redirect to="/admin" />
+    }
+    
     return (
         <div className={classes.root}>
             <div className={classes.rootField}>

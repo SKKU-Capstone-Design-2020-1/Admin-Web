@@ -8,19 +8,25 @@ import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "./AuthActions";
+import { Redirect } from "react-router-dom";
+
 const toSignIn = React.forwardRef((prop, ref) => (
     <RouterLink ref={ref} to="/" {...prop} />
 ))
 const AuthSignUp = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const signup = useSelector(state => state.auth.signup);
+    const { signup, owner } = useSelector(state => state.auth);
     const [errMsg, setErrMsg] = useState('');
     const [authData, setAuthData] = useState({
         email: '',
         password: '',
         confirm_password: '',
     })
+
+    if (owner.uid){
+        return <Redirect to="/admin" />
+    }
 
     useEffect(() => {
         setErrMsg(signup.errMsg);
