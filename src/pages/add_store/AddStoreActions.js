@@ -8,7 +8,6 @@ export const registerStore = (data, callback) => async (dispatch, getState) => {
         const state = getState();
         const oid = state.auth.owner.uid;
         const { storeData, maps, seatGroups } = data;
-        console.log(storeData, maps, seatGroups);
 
         const { img_file, ...storeInfo } = storeData;
 

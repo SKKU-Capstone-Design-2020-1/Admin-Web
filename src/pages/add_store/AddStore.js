@@ -43,9 +43,14 @@ const AddStore = ({ history }) => {
     const handleStep = (value) => {
         if (curStep + value > 2) {
             const seatWithBeacons = seatGroups.map(seat => {
-                let mapBeacons = beacons.find(beacon => beacon.map_id === seat.map_id);
-                if (!mapBeacons) mapBeacons = [];
-
+                let mapBeacons;
+                try {
+                    mapBeacons = beacons.find(beacon => beacon.map_id === seat.map_id).beacon_ids;
+                }
+                catch (err){
+                    mapBeacons = [];
+                }
+                
                 return {
                     ...seat,
                     beacon_ids: mapBeacons,
