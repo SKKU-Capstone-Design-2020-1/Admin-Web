@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react'
 import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setStore } from "./storeActions";
+import { setStore, getStore } from "./storeActions";
 const Store = ({ match, history }) => {
     const dispatch = useDispatch();
     
     useEffect(() => {
-        dispatch(setStore(match.params.sid));
+        const { sid } = match.params;
+        dispatch(setStore(sid));
+        dispatch(getStore(sid));
     }, [match])
     return (
         <div>
