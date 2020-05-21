@@ -27,7 +27,8 @@ const AddStore = ({ history }) => {
         },
         latitude: '',
         longtitude: '',
-        limit_time: '',
+        go_time: '',
+        break_time: '',
         img_file: null,
     });
     const [maps, setMaps] = useState([
@@ -41,7 +42,7 @@ const AddStore = ({ history }) => {
     const handleStep = (value) => {
         if (curStep + value > 2) {
             dispatch(registerStore
-                ({ maps, seatGroups, storeData: { ...storeData, limit_time: Number(storeData.limit_time) } }, onCompletion)
+                ({ maps, seatGroups, storeData: { ...storeData, go_time: Number(storeData.go_time), break_time: Number(storeData.break_time) } }, onCompletion)
             );
         }
         else setCurStep(curStep + value >= 0 ? curStep + value : curStep)

@@ -70,7 +70,7 @@ const StoreInformation = ({ storeData, setStoreData }) => {
                 });
                 setStoreData({
                     ...storeData,
-                    img_file: file, 
+                    img_file: file,
                 })
             }
             try {
@@ -117,17 +117,30 @@ const StoreInformation = ({ storeData, setStoreData }) => {
                 onChange={handleChange}
                 value={storeData.name}
             />
+
             <TextField
                 variant="outlined"
-                label="Limit time"
-                id="limit_time"
+                label="Go Time"
+                id="go_time"
                 fullWidth
                 type="number"
                 className={classes.textField}
                 onChange={handleChange}
-                placeholder="This is time limited for making a reservation"
-                value={storeData.limit_time}
+                placeholder="This is time limited for users to reach to a reserved seat"
+                value={storeData.go_time}
             />
+            <TextField
+                variant="outlined"
+                label="Break Time"
+                id="break_time"
+                fullWidth
+                type="number"
+                className={classes.textField}
+                onChange={handleChange}
+                placeholder="This is maximum time allowed for taking a break"
+                value={storeData.break_time}
+            />
+
             <div className={classes.picRoot}>
                 <div className={classes.picLabelRoot}>
                     <Typography variant="body1">

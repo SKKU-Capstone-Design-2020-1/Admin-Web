@@ -12,7 +12,7 @@ import { Redirect } from "react-router-dom";
 import Store from "../store/Store";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-const AdminMain = ({ location }) => {
+const AdminMain = () => {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
     const auth = useSelector(state => state.auth.owner);
@@ -24,8 +24,8 @@ const AdminMain = ({ location }) => {
     const initPage = () => {
         if (auth.store_ids.length === 0) return <NoStoreAdded />
         else return <Redirect to={`/admin/${auth.store_ids[0].id}`} />
-
     }
+    
     const getContents = () => {
         return (
             <Switch>
