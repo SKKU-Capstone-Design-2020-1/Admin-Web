@@ -58,8 +58,7 @@ const createSeatGroup = (map_id, values) => {
  * 
  */
 
-const temp_map_id = cuid.slug();
-const MapBuilder = ({ maps, setMaps, seatGroups, setSeatGroups }) => {
+const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGroups }) => {
     const classes = useStyles();
     const theme = useTheme();
     const [mapWidth, setWidth] = useState(0);
@@ -77,7 +76,7 @@ const MapBuilder = ({ maps, setMaps, seatGroups, setSeatGroups }) => {
             const width = window.innerWidth;
             let adjustedWidth;
             if (width > theme.breakpoints.values['sm'])
-                adjustedWidth = width - DRAWER_WIDTH - theme.   spacing(10) - 4;
+                adjustedWidth = width - DRAWER_WIDTH - theme.spacing(10) - 4;
             else //when drawer is hidden 
                 adjustedWidth = width - theme.spacing(8);
 
@@ -137,6 +136,7 @@ const MapBuilder = ({ maps, setMaps, seatGroups, setSeatGroups }) => {
                 setSeatGroups(prev => update(prev, {
                     $push: [createSeatGroup(maps[mapIdx].map_id, seat_names)]
                 }));
+
                 break;
             case MAP_DIALOGS.REMOVE_MAP:
                 const removedID = maps[mapIdx].map_id;
@@ -148,12 +148,12 @@ const MapBuilder = ({ maps, setMaps, seatGroups, setSeatGroups }) => {
                 break;
             case MAP_DIALOGS.OPEN_BEACON:
                 let map_id = maps[mapIdx].map_id;
-                let seat = seatGroups.find(seat => seat.map_id === map_id);
-                console.log(seat);
+                let beacon_data = beacons.find(beacon => beacon.map_id === map_id);
+
                 setDialogs({
                     ...dialogs,
                     beaconDialog: true,
-                    beacon_ids: seat ? seat.beacon_ids : [],
+                    beacon_ids: beacon_data ? beacon_data.beacon_ids : [],
                 });
                 break;
             case MAP_DIALOGS.CLOSE_BEACON:
@@ -171,27 +171,34 @@ const MapBuilder = ({ maps, setMaps, seatGroups, setSeatGroups }) => {
                 });
                 //update other seatgroups beacon ids
                 const { data } = action;
-                setSeatGroups(seatGroups.map(seat => {
-                    if (seat.map_id === maps[mapIdx].map_id) {
-                        return {
-                            ...seat,
-                            beacon_ids: data
+                let idx = beacons.findIndex(beacon => beacon.map_id === maps[mapIdx].map_id);
+                if (idx >= 0) {
+                    setBeacons(update(beacons, {
+                        [idx]: {
+                            "beacon_ids": { $set: data }
                         }
-                    }
-                    else return seat;
-                }))
+                    }));
+                }
+                else {
+                    setBeacons(update(beacons, {
+                        $push: [{
+                            map_id: maps[mapIdx].map_id,
+                            beacon_ids: data
+                        }]
+                    }))
+                }
+
                 break;
             default:
         }
     }
-
     const handleEvents = (action) => {
         switch (action.type) {
             case MAP_EVENTS.UPDATE_SEAT_GROUP:
                 const { x, y, seat_id } = action.data;
                 let s_idx = seatGroups.findIndex(group => group.seat_id === seat_id);
                 setSeatGroups(seatGroups.map((seat, idx) => {
-                    console.log(seat.clicked, s_idx);
+
                     if (!seat.clicked && s_idx !== idx) return seat;
                     return {
                         ...seat,

@@ -38,11 +38,27 @@ const AddStore = ({ history }) => {
         { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 0, y: 0, seats: [{ status: 0, id: "1" }, { status: 0, id: "2" }] },
         { clicked: false, beacon_ids: [], map_id: temp_map_id, seat_id: cuid.slug(), deg: 0, x: 150, y: 100, seats: [{ status: 0, id: "3" }, { status: 0, id: "4" }] },
     ])
+    const [beacons, setBeacons] = useState([]);
 
     const handleStep = (value) => {
         if (curStep + value > 2) {
+            const seatWithBeacons = seatGroups.map(seat => {
+                let mapBeacons = beacons.find(beacon => beacon.map_id === seat.map_id);
+                if (!mapBeacons) mapBeacons = [];
+
+                return {
+                    ...seat,
+                    beacon_ids: mapBeacons,
+                }
+            });
+
             dispatch(registerStore
-                ({ maps, seatGroups, storeData: { ...storeData, go_time: Number(storeData.go_time), break_time: Number(storeData.break_time) } }, onCompletion)
+                ({
+                    maps,
+                    seatGroups: seatWithBeacons,
+                    storeData: { ...storeData, go_time: Number(storeData.go_time), break_time: Number(storeData.break_time), beacons }
+                }
+                    , onCompletion)
             );
         }
         else setCurStep(curStep + value >= 0 ? curStep + value : curStep)
@@ -65,7 +81,13 @@ const AddStore = ({ history }) => {
                 {curStep === 0 &&
                     <StoreInformation storeData={storeData} setStoreData={setStoreData} />}
                 {curStep === 1 &&
-                    <MapBuilder maps={maps} setMaps={setMaps} seatGroups={seatGroups} setSeatGroups={setSeatGroups} />}
+                    <MapBuilder
+                        setBeacons={setBeacons}
+                        beacons={beacons}
+                        maps={maps}
+                        setMaps={setMaps}
+                        seatGroups={seatGroups}
+                        setSeatGroups={setSeatGroups} />}
             </main>
 
             <div className={classes.btnRoot}>

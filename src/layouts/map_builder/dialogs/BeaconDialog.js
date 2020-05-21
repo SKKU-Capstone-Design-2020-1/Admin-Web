@@ -30,7 +30,7 @@ const BeaconDialog = ({ open, handleDialog, data }) => {
 
     useEffect(() => {
         if (open) {
-            setBeacons(data);
+            setBeacons(data ? data : []);
         }
     }, [open, data])
 
