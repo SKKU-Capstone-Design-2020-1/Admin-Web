@@ -4,6 +4,10 @@ const initState = {
     sid: '',
     data: null,
     seatGroups: [],
+    unsubscribe:{
+        store: null,
+        seat: null
+    }
 }
 
 const storeReducer = (state = initState, action) => {
@@ -19,6 +23,30 @@ const storeReducer = (state = initState, action) => {
                 ...state,
                 data: action.data.store_data,
                 seatGroups: action.data.seatGroups_data
+            }
+
+        case storeActionType.setUnsubscribe:
+            return {
+                ...state,
+                unsubscribe: action.data
+            }
+        case storeActionType.unsubscribeStore:
+            return {
+                ...state,
+                unsubscribe: {
+                    store: null,
+                    seat: null, 
+                }
+            }
+        case storeActionType.respSeatData:
+            return {
+                ...state,
+                seatGroups: action.data
+            }
+        case storeActionType.respStoreData:
+            return {
+                ...state,
+                data: action.data
             }
         default:
             return state;

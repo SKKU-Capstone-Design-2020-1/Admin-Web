@@ -5,7 +5,7 @@ import Grey from "@material-ui/core/colors/grey";
 import Seat from "./SeatItem";
 import { useDrop } from "react-dnd";
 
-const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
+const MapDisplay = ({ data, seatGroups, handleEvents, handleClick, disableDrag = false }) => {
     const classes = makeStyles();
     const [size, setSize] = useState({
         height: 0,
@@ -48,7 +48,7 @@ const MapDisplay = ({ data, seatGroups, handleEvents, handleClick }) => {
             className={classes.root}
             style={{ ...size }}>
             {seatGroups && seatGroups.map((group, idx) => (
-                <Seat idx={idx} key={idx} data={group} handleClick={handleClick} />
+                <Seat disableDrag={disableDrag} idx={idx} key={idx} data={group} handleClick={handleClick} />
             ))}
         </div>
 

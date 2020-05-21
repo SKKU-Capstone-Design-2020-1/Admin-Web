@@ -5,10 +5,11 @@ import Typography from "@material-ui/core/Typography";
 import { useDrag } from "react-dnd";
 import classNames from "classnames";
 
-const SeatItem = ({ data, handleClick }) => {
+const SeatItem = ({ data, handleClick, disableDrag }) => {
     const classes = useStyles();
     const [, drag] = useDrag({
         item: { id: data.seat_id, x: data.x, y: data.y, type: 'seat' },
+        canDrag: !disableDrag, 
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         })
@@ -23,7 +24,7 @@ const SeatItem = ({ data, handleClick }) => {
         <div
             ref={drag}
             onClick={() => handleClick({ type: MAP_CLICK.CLICK_SEAT, data })}
-            className={classes.itemRoot}
+            className={classNames(classes.itemRoot, disableDrag ? classes.draggable : classes.notDraggable)}
             style={{ left: data.x, top: data.y, height: SEAT_SIZE, transform: `rotate(${data.deg}deg)`, width: SEAT_SIZE * data.seats.length }}>
             {data.seats.map((seat, idx) => (
                 <div className={classNames(classes.root, data.clicked && classes.clicked)} key={idx}>
@@ -53,7 +54,12 @@ const useStyles = makeStyles(theme => ({
     itemRoot: {
         display: 'flex',
         position: 'absolute',
-        cursor: 'move'
+    },
+    draggable: {
+        cursor: "pointer"
+    },
+    notDraggable: {
+        cursor: "move"
     },
     seatID: {
         fontSize: '0.9rem'

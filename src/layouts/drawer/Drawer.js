@@ -26,7 +26,7 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
     const { owner } = useSelector(state => state.auth);
     const { sid } = useSelector(state => state.store)
     const [stores, setStores] = useState([]);
-    console.log(sid);
+
     useEffect(() => {
         setStores(owner.store_ids);
     }, [owner]);
