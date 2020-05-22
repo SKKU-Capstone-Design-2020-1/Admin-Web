@@ -1,5 +1,5 @@
 import { setProgress, completeProgress } from "../loading/LoadingAction";
-import { firestore } from "../../libs/config";
+import { firestore, firebaseApp } from "../../libs/config";
 import update from "immutability-helper";
 
 export const storeActionType = {
@@ -111,8 +111,8 @@ export const getStore = sid => async (dispatch, getState) => {
 export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
     try {
         const { seat_id, selected_idx } = data;
-        console.log(data);
-        console.log(seat_id, selected_idx);
+
+
         const state = getState();
         const { seatGroups, sid } = state.store;
 
@@ -128,11 +128,18 @@ export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
             }
         })[seatIdx].seats;
 
+        console.log(firebaseApp.firestore.FieldValue.increment);
 
-
-        await firestore.doc(`stores/${sid}/seatGroups/${data.id}`).update({
+        let batch = firestore.batch();
+        batch.update(firestore.doc(`stores/${sid}/seatGroups/${data.id}`), {
             seats: updatedSeats
         });
+        batch.update(firestore.doc(`stores/${sid}`), {
+            num_users: firebaseApp.firestore.FieldValue.increment(updatedSeats[selected_idx].status === 0 ? -1 : 1)
+        });
+
+        await batch.commit();
+
         dispatch({ type: storeActionType.ownerUpdateMap });
     } catch (err) {
         console.log(err);
