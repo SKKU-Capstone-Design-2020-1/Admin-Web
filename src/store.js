@@ -5,7 +5,10 @@ import loadingReducer from "./pages/loading/LoadingReducer";
 import storeReducer from "./pages/store/storeReducer";
 import { verifyOwner } from "./pages/auth/AuthActions";
 
+
 export const configureStore = () => {
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
     const store = createStore(
         combineReducers({
             auth: authReducer,
@@ -13,7 +16,7 @@ export const configureStore = () => {
             store: storeReducer 
         }),
         {},
-        compose(applyMiddleware(thunk))
+        composeEnhancers(applyMiddleware(thunk))
     );
 
     store.dispatch(verifyOwner());
