@@ -47,9 +47,13 @@ const MapViewer = (
         switch (action.type) {
             case MAP_CLICK.CLICK_SEAT:
                 if (mode === VIEW_MODE.Owner)
-                    dispatch(ownerSeatUpdate(action.data));
-                else
-                    history.push("/completeReserve?result=success");
+                    dispatch(ownerSeatUpdate(action.data, null));
+                else {
+                    const { map_id, seat_id, selected_seat } = action.data;
+                    dispatch(ownerSeatUpdate(action.data, () =>
+                        history.push(`/reserveComplete?result=success&map_id=${map_id}&seat_id=${seat_id}&selected_seat=${selected_seat}`)));
+                }
+
                 break;
             default:
                 break;

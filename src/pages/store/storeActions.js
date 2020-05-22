@@ -108,7 +108,9 @@ export const getStore = sid => async (dispatch, getState) => {
     dispatch(completeProgress);
 }
 
-export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
+export const ownerSeatUpdate = (data, callback) => async (dispatch, getState) => {
+    //if callback exists => reservation
+    //if callback does not exist => owner updating map
     try {
         const { seat_id, selected_idx } = data;
 
@@ -136,7 +138,9 @@ export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
         });
 
         await batch.commit();
-
+        if (callback){
+            callback();
+        }
         dispatch({ type: storeActionType.ownerUpdateMap });
     } catch (err) {
         console.log(err);

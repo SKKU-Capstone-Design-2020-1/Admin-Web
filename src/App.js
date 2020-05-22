@@ -5,6 +5,7 @@ import AuthSignUp from "./pages/auth/AuthSignUp";
 import AdminMain from "./pages/main/AdminMain";
 import Loading from "./pages/loading/Loading";
 import Reserve from "./pages/reserve/UserReserve";
+import ReserveComplete from "./pages/reserve_complete/ReserveComplete";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route exact path="/signup" component={AuthSignUp} />
           <Route path="/admin" component={AdminMain} />
           <Route path="/reserve" component={Reserve} />
+          <Route path="/reserveComplete" component={ReserveComplete} />
         </Switch>
       </Router>
 
