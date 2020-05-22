@@ -112,12 +112,10 @@ export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
     try {
         const { seat_id, selected_idx } = data;
 
-
         const state = getState();
         const { seatGroups, sid } = state.store;
 
         let seatIdx = seatGroups.findIndex(seat => seat.seat_id === seat_id);
-
         let updatedSeats = update(seatGroups, {
             [seatIdx]: {
                 "seats": {
@@ -128,7 +126,6 @@ export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
             }
         })[seatIdx].seats;
 
-        console.log(firebaseApp.firestore.FieldValue.increment);
 
         let batch = firestore.batch();
         batch.update(firestore.doc(`stores/${sid}/seatGroups/${data.id}`), {

@@ -20,9 +20,12 @@ export const MAP_EVENTS = {
 export const MAP_CLICK = {
     "CLICK_SEAT": "SEAT_CLICKED",
     "CLICK_MAP": "MAP_CLICKED",
-
 }
 
+export const VIEW_MODE = {
+    "Reserve": "RESERVESEAT",
+    "Owner": "ADMIN"
+}
 export const MAP_BUILDER_HEIGHT = 500;
 
 export const SEAT_SIZE = 65;

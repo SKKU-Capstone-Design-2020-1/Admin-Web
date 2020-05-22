@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { withRouter } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, batch } from "react-redux";
 import { setStore, subscribeStore, unsubscribeAll } from "./storeActions";
 import MapViewer from "../../layouts/map_builder/MapViewer";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import { VIEW_MODE } from "../../layouts/map_builder/util/const";
 
 const Store = ({ match, history }) => {
     const dispatch = useDispatch();
@@ -13,8 +14,11 @@ const Store = ({ match, history }) => {
 
     useEffect(() => {
         const { sid } = match.params;
-        dispatch(setStore(sid));
-        dispatch(subscribeStore(sid));
+        batch(() => {
+            dispatch(setStore(sid));
+            dispatch(subscribeStore(sid));
+        })
+
         return () => dispatch(unsubscribeAll());
     }, [match])
 
@@ -26,7 +30,7 @@ const Store = ({ match, history }) => {
     if (!data || !seatGroups || seatGroups.length <= 0) return null;
 
     return (
-        <div>
+        <div >
             <Typography variant="body1" className={classes.title}>
                 {`Number of people using: ${data.num_users}`}
             </Typography>
@@ -35,7 +39,7 @@ const Store = ({ match, history }) => {
                 maps={data.maps}
                 beacons={data.beacons}
                 seatGroups={seatGroups}
-
+                mode={VIEW_MODE.Owner}
             />
 
         </div>
@@ -45,6 +49,6 @@ const Store = ({ match, history }) => {
 const useStyles = makeStyles(theme => ({
     title: {
         marginLeft: `${theme.spacing(1)}`
-    }
+    },
 }))
 export default withRouter(Store);

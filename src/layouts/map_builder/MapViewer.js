@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { MAP_BUILDER_HEIGHT, MAP_EVENTS, MAP_CLICK } from "./util/const";
+import { MAP_BUILDER_HEIGHT, VIEW_MODE, MAP_CLICK } from "./util/const";
 import MapDisplay from "./MapDisplay";
 import MapTabs from "./MapTabs";
 import AppBar from "@material-ui/core/AppBar";
@@ -11,8 +11,10 @@ import Backend from 'react-dnd-html5-backend';
 import { DRAWER_WIDTH } from "../../libs/const";
 import { useDispatch } from "react-redux";
 import { ownerSeatUpdate } from "../../pages/store/storeActions";
+import { withRouter } from "react-router-dom";
+
 const MapViewer = (
-    { maps, beacons, seatGroups }
+    { maps, beacons, seatGroups, drawerVisible = true, mode, history }
 ) => {
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -24,11 +26,13 @@ const MapViewer = (
         const updateSize = () => {
             const width = window.innerWidth;
             let adjustedWidth;
-            if (width > theme.breakpoints.values['sm'])
+            if (width > theme.breakpoints.values['sm'] && drawerVisible)
                 adjustedWidth = width - DRAWER_WIDTH - theme.spacing(10) - 4;
             else //when drawer is hidden 
                 adjustedWidth = width - theme.spacing(8);
 
+            console.log(width);
+            console.log(drawerVisible);
             if (adjustedWidth > 300) setWidth(adjustedWidth);
             else setWidth(300);
 
@@ -40,10 +44,12 @@ const MapViewer = (
 
 
     const handleClick = action => {
-
         switch (action.type) {
             case MAP_CLICK.CLICK_SEAT:
-                dispatch(ownerSeatUpdate(action.data));
+                if (mode === VIEW_MODE.Owner)
+                    dispatch(ownerSeatUpdate(action.data));
+                else
+                    history.push("/completeReserve?result=success");
                 break;
             default:
                 break;
@@ -87,4 +93,4 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: 1,
     }
 }))
-export default MapViewer;
+export default withRouter(MapViewer);
