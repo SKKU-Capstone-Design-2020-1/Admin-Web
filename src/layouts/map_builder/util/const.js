@@ -25,4 +25,4 @@ export const MAP_CLICK = {
 
 export const MAP_BUILDER_HEIGHT = 500;
 
-export const SEAT_SIZE = 50;
+export const SEAT_SIZE = 65;

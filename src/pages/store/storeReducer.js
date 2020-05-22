@@ -48,6 +48,9 @@ const storeReducer = (state = initState, action) => {
                 ...state,
                 data: action.data
             }
+        case storeActionType.ownerUpdateMap:
+            return state;
+            
         default:
             return state;
     }

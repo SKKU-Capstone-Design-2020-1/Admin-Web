@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setStore, getStore, subscribeStore, unsubscribeAll } from "./storeActions";
+import { setStore, subscribeStore, unsubscribeAll } from "./storeActions";
 import MapViewer from "../../layouts/map_builder/MapViewer";
+
 
 const Store = ({ match, history }) => {
     const dispatch = useDispatch();
@@ -19,6 +20,9 @@ const Store = ({ match, history }) => {
         console.log(data);
         console.log(seatGroups);
     }, [data, seatGroups])
+
+
+
     return (
         <div>
             {data && seatGroups && seatGroups.length > 0 &&
@@ -26,6 +30,7 @@ const Store = ({ match, history }) => {
                     maps={data.maps}
                     beacons={data.beacons}
                     seatGroups={seatGroups}
+
                 />
             }
 

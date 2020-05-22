@@ -1,5 +1,7 @@
 import { setProgress, completeProgress } from "../loading/LoadingAction";
 import { firestore } from "../../libs/config";
+import update from "immutability-helper";
+
 export const storeActionType = {
     setStore: "setStore",
     requestStore: "requestStore",
@@ -8,7 +10,8 @@ export const storeActionType = {
     unsubscribeStore: "unsubscribeStore",
     respStoreData: "snapStoreData",
     respSeatData: "snapSeatData",
-    setUnsubscribe: "setUnsubscribeStore"
+    setUnsubscribe: "setUnsubscribeStore",
+    ownerUpdateMap: "updateMapOwner",
 }
 
 export const setStore = sid => dispatch => {
@@ -17,10 +20,10 @@ export const setStore = sid => dispatch => {
 
 export const unsubscribeAll = () => (dispatch, getState) => {
     const state = getState().store;
-    
+
     if (state.unsubscribe.store) state.unsubscribe.store();
     if (state.unsubscribe.seat) state.unsubscribe.seat();
-    
+
     dispatch({ type: storeActionType.unsubscribeStore })
 }
 
@@ -99,6 +102,38 @@ export const getStore = sid => async (dispatch, getState) => {
                 store_data, seatGroups_data
             }
         });
+    } catch (err) {
+        console.log(err);
+    }
+    dispatch(completeProgress);
+}
+
+export const ownerSeatUpdate = (data) => async (dispatch, getState) => {
+    try {
+        const { seat_id, selected_idx } = data;
+        console.log(data);
+        console.log(seat_id, selected_idx);
+        const state = getState();
+        const { seatGroups, sid } = state.store;
+
+        let seatIdx = seatGroups.findIndex(seat => seat.seat_id === seat_id);
+
+        let updatedSeats = update(seatGroups, {
+            [seatIdx]: {
+                "seats": {
+                    [selected_idx]: {
+                        "status": { $set: seatGroups[seatIdx].seats[selected_idx].status === 0 ? 2 : 0 }
+                    }
+                }
+            }
+        })[seatIdx].seats;
+
+
+
+        await firestore.doc(`stores/${sid}/seatGroups/${data.id}`).update({
+            seats: updatedSeats
+        });
+        dispatch({ type: storeActionType.ownerUpdateMap });
     } catch (err) {
         console.log(err);
     }
