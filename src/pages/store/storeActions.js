@@ -113,7 +113,11 @@ export const ownerSeatUpdate = (data, callback) => async (dispatch, getState) =>
     //if callback does not exist => owner updating map
     try {
         const { seat_id, selected_idx } = data;
-
+        let updateValue = 2;
+        if (callback){
+            //if callback exists, reservation
+            updateValue = 1
+        }
         const state = getState();
         const { seatGroups, sid } = state.store;
 
@@ -122,7 +126,7 @@ export const ownerSeatUpdate = (data, callback) => async (dispatch, getState) =>
             [seatIdx]: {
                 "seats": {
                     [selected_idx]: {
-                        "status": { $set: seatGroups[seatIdx].seats[selected_idx].status === 0 ? 2 : 0 }
+                        "status": { $set: seatGroups[seatIdx].seats[selected_idx].status === updateValue ? 0 : updateValue }
                     }
                 }
             }
