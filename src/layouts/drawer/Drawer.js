@@ -19,6 +19,8 @@ import BootstrapInput from "./BootstrpInput";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { setStore } from "../../pages/store/storeActions";
+import EditIcon from "@material-ui/icons/Edit";
+import URLs from "../../libs/urls";
 
 const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
     const classes = useStyles();
@@ -62,12 +64,18 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
                 </FormControl>
             </div>
             <List className={classes.list}>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                <ListItem className={classes.listItem} button onClick={() => history.push(`/admin/${sid}/edit_store`)}>
+                    <ListItemIcon>
+                        <EditIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Edit Store" />
+                </ListItem>
+                {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem className={classes.listItem} button key={text}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
                         <ListItemText style={{ fontSize: '0.9rem' }} primary={text} />
                     </ListItem>
-                ))}
+                ))} */}
             </List>
             <Divider className={classes.divider} variant="middle" />
             <List className={classes.list}>
@@ -132,6 +140,12 @@ const useStyles = makeStyles(theme => ({
     listItem: {
         "&:hover": {
             backgroundColor: '#2f3e52'
+        },
+        "& span": {
+            fontSize: '0.9rem'
+        },
+        "& svg": {
+            color: 'white'
         }
     },
     divider: {

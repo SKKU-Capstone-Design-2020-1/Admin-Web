@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Store from "../store/Store";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import EditStore from "../edit_store/EditStore";
 
 const AdminMain = () => {
     const classes = useStyles();
@@ -25,12 +26,13 @@ const AdminMain = () => {
         if (auth.store_ids.length === 0) return <NoStoreAdded />
         else return <Redirect to={`/admin/${auth.store_ids[0].id}`} />
     }
-    
+
     const getContents = () => {
         return (
             <Switch>
                 <Route path={URLS.addStore} component={AddStore} />
                 <Route exact path={URLS.admin} component={initPage} />
+                <Route path={URLS.editStore} component={EditStore} />
                 <Route path={URLS.store} component={Store} />
             </Switch>
         );

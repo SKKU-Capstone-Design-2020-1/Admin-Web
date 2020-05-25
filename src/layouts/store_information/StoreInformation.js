@@ -157,9 +157,9 @@ const StoreInformation = ({ storeData, setStoreData }) => {
                     </Button>
                 </div>
 
-                {imgFile.ready ? (
+                {imgFile.ready || storeData.img_url ? (
                     <React.Fragment>
-                        <img src={imgFile.data} alt="pic" className={classes.img} />
+                        <img src={imgFile.data ? imgFile.data : storeData.img_url} alt="pic" className={classes.img} />
                         <Typography variant="body1" className={classes.imgLabel}>
                             {imgFile.file_name}
                         </Typography>
