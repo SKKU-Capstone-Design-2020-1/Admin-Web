@@ -13,7 +13,7 @@ const ReserveComplete = ({location}) => {
     }, [location])
     
     return (
-        <Container maxWidth="sm" className={classes.root}>
+        <Container maxWidth="sm" className={classes.root} >
             <Typography align="center" varaint="body1" className={classes.title}>
                 Reservation Completed!
             </Typography>  
@@ -26,12 +26,13 @@ const ReserveComplete = ({location}) => {
 
 const useStyles = makeStyles(theme => ({
     root: {
-        margin: `${theme.spacing(4)}px ${theme.spacing(2)}px`
+        margin: `${theme.spacing(4)}px auto`,
+        width: '100%'
     },
     title: {
         fontSize: '1.8rem',
         fontWeight: 600,
-        color: theme.palette.primary.main
+        color: theme.palette.primary.main,
     }
 }))
 export default ReserveComplete;
