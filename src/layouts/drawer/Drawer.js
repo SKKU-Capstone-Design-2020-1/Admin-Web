@@ -39,7 +39,7 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
             history.push("/admin/add_store");
             dispatch(setStore('add'));
         }
-        else history.push(e.target.value);
+        else history.push(`/admin/${e.target.value}`);
     }
 
     const drawer = (
@@ -75,7 +75,7 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
                     <ListItemIcon>
                         <EditLocationIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Edit Map"/>
+                    <ListItemText primary="Edit Map" />
                 </ListItem>
                 {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem className={classes.listItem} button key={text}>
