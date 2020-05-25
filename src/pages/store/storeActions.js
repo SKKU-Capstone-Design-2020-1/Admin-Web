@@ -35,8 +35,8 @@ export const subscribeStore = sid => async (dispatch, getState) => {
         dispatch(setProgress);
 
         //unsubscribe
-        if (state.unsubscribe.store) state.snapshot.store();
-        if (state.unsubscribe.seat) state.snapshot.seat();
+        if (state.unsubscribe.store) state.unsubscribe.store();
+        if (state.unsubscribe.seat) state.unsubscribe.seat();
 
         const unsub_store = firestore.doc(`stores/${sid}`).onSnapshot(store_doc => {
             let store_data = {

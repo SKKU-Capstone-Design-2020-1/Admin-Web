@@ -21,10 +21,7 @@ const Store = ({ match }) => {
 
     }, [match])
 
-    useEffect(() => {
-        console.log(data);
-        console.log(seatGroups);
-    }, [data, seatGroups])
+
 
     if (!data || !seatGroups || seatGroups.length <= 0) return null;
 
