@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from "@material-ui/core/styles/";
 import Grey from "@material-ui/core/colors/grey";
 import Toolbar from "../../layouts/toolbar/Toolbar";
@@ -7,17 +7,23 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import NoStoreAdded from "./NoStoreAdded";
 import AddStore from "../add_store/AddStore";
 import URLS from "../../libs/urls";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Store from "../store/Store";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import EditStore from "../edit_store/EditStore";
 import EditMap from "../edit_map/EditMap";
+import { unsubscribeAll } from "../store/storeActions";
 
 const AdminMain = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [mobileOpen, setMobileOpen] = useState(false);
     const auth = useSelector(state => state.auth.owner);
+
+    useEffect(() => {
+        return () => dispatch(unsubscribeAll());
+    }, [])
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);

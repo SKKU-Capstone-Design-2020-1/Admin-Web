@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector, batch } from "react-redux";
-import { setStore, subscribeStore, unsubscribeAll } from "./storeActions";
+import { setStore, subscribeStore } from "./storeActions";
 import MapViewer from "../../layouts/map_builder/MapViewer";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { VIEW_MODE } from "../../layouts/map_builder/util/const";
 
-const Store = ({ match, history }) => {
+const Store = ({ match }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const { data, seatGroups } = useSelector(state => state.store);
@@ -19,7 +19,6 @@ const Store = ({ match, history }) => {
             dispatch(subscribeStore(sid));
         })
 
-        return () => dispatch(unsubscribeAll());
     }, [match])
 
     useEffect(() => {
