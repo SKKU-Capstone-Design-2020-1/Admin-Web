@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import StoreInformation from "../../layouts/store_information/StoreInformation";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Typograhy from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import { updateStore } from "../add_store/AddStoreActions";
 
-const EditStore = () => {
+const EditStore = ({history}) => {
     const store = useSelector(state => state.store);
     const [storeData, setStoreData] = useState(null);
     const classes = useStyles();
+    const dispatch = useDispatch();
     useEffect(() => {
         if (!store.data || Object.keys(store.data).length === 0) return;
+
 
         setStoreData({
             ...store.data,
@@ -20,6 +23,15 @@ const EditStore = () => {
         });
 
     }, [store])
+
+
+    const handleSubmit = () => {
+        dispatch(updateStore({
+            ...storeData,
+            go_time: Number(storeData.go_time),
+            break_time: Number(storeData.break_time)
+        }, (id) => history.push(`/admin/${id}`)))
+    }
 
     if (!storeData) {
         return (
@@ -32,10 +44,16 @@ const EditStore = () => {
     }
     return (
         <div className={classes.root}>
-            <StoreInformation storeData={storeData} />
+            <StoreInformation storeData={storeData} setStoreData={setStoreData} />
             <Grid container justify="center">
                 <Grid item md={6} xs={12}>
-                    <Button color="primary" className={classes.btn} variant="contained" disableElevation fullWidth>
+                    <Button
+                        onClick={handleSubmit}
+                        color="primary"
+                        className={classes.btn}
+                        variant="contained"
+                        disableElevation
+                        fullWidth>
                         Edit
                     </Button>
                 </Grid>

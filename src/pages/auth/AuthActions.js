@@ -11,6 +11,8 @@ export const authActionType = {
     err: 'authSignUpErr',
     signOut: 'authSignOut',
     addStore: "ownerAddStore", 
+    editStore: "ownerEditStore",
+    
 }
 export const signInActionType = {
     err: 'authSignInError',

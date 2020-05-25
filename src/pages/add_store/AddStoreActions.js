@@ -1,6 +1,7 @@
 import { storage, firestore, firebaseApp } from "../../libs/config";
 import { setProgress, completeProgress } from "../loading/LoadingAction";
 import { authActionType } from "../auth/AuthActions";
+import update from "immutability-helper";
 
 export const registerStore = (data, callback) => async (dispatch, getState) => {
     dispatch(setProgress);
@@ -54,6 +55,60 @@ export const registerStore = (data, callback) => async (dispatch, getState) => {
     } catch (err) {
         console.log(err);
 
+    }
+    dispatch(completeProgress);
+}
+
+export const updateStore = (storeData, callback) => async (dispatch, getState) => {
+    dispatch(setProgress);
+    try {
+        const state = getState();
+
+        const oid = state.auth.owner.uid;
+        const store_ids = state.auth.owner.store_ids;
+
+        const { img_file, ...store_info } = storeData;
+        let img_url = "";
+        if (img_file) {
+            //upload and get img url
+            const storageRef = storage.ref();
+            const imgRef = storageRef.child(`stores/${oid}/${store_info.id}/store_img`);
+
+            await imgRef.put(img_file);
+            img_url = await imgRef.getDownloadURL();
+        }
+        else
+            img_url = store_info.img_url;
+
+        const batch = firestore.batch();
+
+        batch.update(firestore.doc(`stores/${store_info.id}`), {
+            ...store_info,
+            img_url,
+        });
+
+        console.log(store_ids);
+        let sidx = store_ids.findIndex(store => store.id === storeData.id);
+        let updatedIds = store_ids;
+        if (sidx >= 0) {
+            updatedIds = update(store_ids, {
+                [sidx]: {
+                    name: { $set: storeData.name }
+                }
+            })
+        }
+
+        batch.update(firestore.doc(`owners/${oid}`), {
+            store_ids: updatedIds
+        })
+        
+        await batch.commit();
+        callback(storeData.id);
+
+        dispatch({ type: authActionType.editStore, data: { updatedIds } });
+
+    } catch (err) {
+        console.log(err);
     }
     dispatch(completeProgress);
 }

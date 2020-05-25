@@ -79,6 +79,18 @@ const authReducer = (state = initState, action) => {
                 }
             })
         }
+
+        case authActionType.editStore: {
+            const { updatedIds } = action.data;
+
+            return update(state, {
+                "owner": {
+                    "store_ids": {
+                        $set: updatedIds
+                    }
+                }
+            })
+        }
         default:
             return state;
     }
