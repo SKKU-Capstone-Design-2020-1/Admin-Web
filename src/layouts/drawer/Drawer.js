@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { setStore } from "../../pages/store/storeActions";
 import EditIcon from "@material-ui/icons/Edit";
+import EditLocationIcon from "@material-ui/icons/EditLocation";
 import URLs from "../../libs/urls";
 
 const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
@@ -69,6 +70,12 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
                         <EditIcon />
                     </ListItemIcon>
                     <ListItemText primary="Edit Store" />
+                </ListItem>
+                <ListItem className={classes.listItem} button onClick={() => history.push(`/admin/${sid}/edit_map`)}>
+                    <ListItemIcon>
+                        <EditLocationIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Edit Map"/>
                 </ListItem>
                 {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem className={classes.listItem} button key={text}>

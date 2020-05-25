@@ -87,7 +87,6 @@ export const updateStore = (storeData, callback) => async (dispatch, getState) =
             img_url,
         });
 
-        console.log(store_ids);
         let sidx = store_ids.findIndex(store => store.id === storeData.id);
         let updatedIds = store_ids;
         if (sidx >= 0) {

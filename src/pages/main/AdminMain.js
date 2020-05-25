@@ -12,6 +12,7 @@ import { Redirect } from "react-router-dom";
 import Store from "../store/Store";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import EditStore from "../edit_store/EditStore";
+import EditMap from "../edit_map/EditMap";
 
 const AdminMain = () => {
     const classes = useStyles();
@@ -33,6 +34,7 @@ const AdminMain = () => {
                 <Route path={URLS.addStore} component={AddStore} />
                 <Route exact path={URLS.admin} component={initPage} />
                 <Route path={URLS.editStore} component={EditStore} />
+                <Route path={URLS.editMap} component={EditMap} />
                 <Route path={URLS.store} component={Store} />
             </Switch>
         );
