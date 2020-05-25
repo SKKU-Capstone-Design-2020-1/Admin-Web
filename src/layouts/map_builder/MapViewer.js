@@ -6,8 +6,6 @@ import MapDisplay from "./MapDisplay";
 import MapTabs from "./MapTabs";
 import AppBar from "@material-ui/core/AppBar";
 import Grey from "@material-ui/core/colors/grey";
-import { DndProvider } from "react-dnd";
-import Backend from 'react-dnd-html5-backend';
 import { DRAWER_WIDTH } from "../../libs/const";
 import { useDispatch } from "react-redux";
 import { ownerSeatUpdate } from "../../pages/store/storeActions";
@@ -70,15 +68,13 @@ const MapViewer = (
                 <MapTabs mapIdx={mapIdx} setMapIdx={setMapIdx} maps={maps} />
             </AppBar>
             <div className={classes.main}>
-                <DndProvider backend={Backend}>
-                    <MapDisplay
-                        handleClick={handleClick}
-                        handleEvents={handleEvents}
-                        data={maps[mapIdx]}
-                        disableDrag={true}
-                        seatGroups={seatGroups.filter(group => group.map_id === maps[mapIdx].map_id)}
-                    />
-                </DndProvider>
+                <MapDisplay
+                    handleClick={handleClick}
+                    handleEvents={handleEvents}
+                    data={maps[mapIdx]}
+                    disableDrag={true}
+                    seatGroups={seatGroups.filter(group => group.map_id === maps[mapIdx].map_id)}
+                />
 
             </div>
         </div>

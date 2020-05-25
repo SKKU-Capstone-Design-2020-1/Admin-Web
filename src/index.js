@@ -6,7 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux"
 import { configureStore } from "./store";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
+import Backend from 'react-dnd-html5-backend';
+import { DndProvider } from "react-dnd";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +28,9 @@ const store = configureStore();
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <App />
+      <DndProvider backend={Backend}>
+        <App />
+      </DndProvider>
     </ThemeProvider>
   </Provider>
   ,

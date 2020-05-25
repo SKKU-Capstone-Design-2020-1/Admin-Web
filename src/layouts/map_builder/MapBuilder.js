@@ -14,8 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import SeatDialog from './dialogs/SeatDialog';
 import BeaconDialog from "./dialogs/BeaconDialog";
 import cuid from "cuid";
-import Backend from 'react-dnd-html5-backend';
-import { DndProvider } from "react-dnd";
+
 
 
 const createMap = (values) => {
@@ -284,13 +283,13 @@ const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGro
             </AppBar>
             <div className={classes.main} style={{ width: '100%' }} >
                 {mapIdx >= 0 &&
-                    <DndProvider backend={Backend}>
-                        <MapDisplay
-                            handleClick={handleClick}
-                            handleEvents={handleEvents}
-                            seatGroups={mapIdx >= 0 ? seatGroups.filter(group => group.map_id === maps[mapIdx].map_id) : null}
-                            data={maps[mapIdx]} />
-                    </DndProvider>
+
+                    <MapDisplay
+                        handleClick={handleClick}
+                        handleEvents={handleEvents}
+                        seatGroups={mapIdx >= 0 ? seatGroups.filter(group => group.map_id === maps[mapIdx].map_id) : null}
+                        data={maps[mapIdx]} />
+
                 }
                 {mapIdx < 0 && <MapNotAddded />}
             </div>
