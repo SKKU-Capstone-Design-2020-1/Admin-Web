@@ -27,7 +27,6 @@ const MapDisplay = ({ data, seatGroups, handleEvents, handleClick, disableDrag =
     });
 
     const moveSeat = (id, x, y) => {
-        console.log(id, x, y);
         handleEvents({ type: MAP_EVENTS.UPDATE_SEAT_GROUP, data: { x, y, seat_id: id } });
     }
     useEffect(() => {

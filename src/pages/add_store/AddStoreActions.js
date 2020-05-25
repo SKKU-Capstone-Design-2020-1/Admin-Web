@@ -111,3 +111,27 @@ export const updateStore = (storeData, callback) => async (dispatch, getState) =
     }
     dispatch(completeProgress);
 }
+
+export const updateMaps = ({maps, beacons, seatGroups}, callback) => async (dispatch, getState) => {
+    dispatch(setProgress);
+    try {
+        const state = getState();
+        const { sid } = state.store;
+        console.log(maps, beacons, seatGroups);
+
+        const batch = firestore.batch();
+        batch.update(firestore.doc(`stores/${sid}`), {
+            maps, 
+            beacons 
+        })
+        for (let seatGroup of seatGroups){
+            batch.update(firestore.doc(`stores/${sid}/seatGroups/${seatGroup.id}`), seatGroup);
+        }
+
+        await batch.commit();
+    } catch (err) {
+        console.log(err);
+    }
+    callback();
+    dispatch(completeProgress);
+}
