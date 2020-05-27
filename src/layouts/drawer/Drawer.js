@@ -3,12 +3,11 @@ import { makeStyles } from "@material-ui/core/styles/";
 import Divider from "@material-ui/core/Divider";
 import MDrawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
+import QRIcon from "@material-ui/icons/CropFree";
 import Grey from "@material-ui/core/colors/grey";
 import { DRAWER_WIDTH } from "../../libs/const";
 import Select from "@material-ui/core/Select";
@@ -85,13 +84,19 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
                 ))} */}
             </List>
             <Divider className={classes.divider} variant="middle" />
-            <List className={classes.list}>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <List className={classes.list} onClick={() => history.push(`/admin/${sid}/qr_codes`)}>
+                <ListItem className={classes.listItem} button>
+                    <ListItemIcon>
+                        <QRIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="QR Codes"/>
+                </ListItem>
+                {/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
                     <ListItem className={classes.listItem} button key={text}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
-                ))}
+                ))} */}
             </List>
         </div>
     )
