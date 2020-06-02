@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import qs from "query-string";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+import Typography from "@material-ui/core/Typography";
 
 const getMinutes = () => {
     const minutes = [];
@@ -22,15 +23,25 @@ const getMinutes = () => {
 const ReserveQR = ({ location }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { seats, loaded } = useSelector(state => state.qr);
+    const { seats, loaded, available } = useSelector(state => state.qr);
+    const [info, setInfo] = useState(null)
     useEffect(() => {
-        dispatch(getStoreInfo(qs.parse(location.search)))
+        const parse = qs.parse(location.search);
+        setInfo(parse);
+        dispatch(getStoreInfo(parse));
     }, [])
 
-    useEffect(() => {
-
-    }, [loaded, seats]);
-
+ 
+    if (!loaded) return null;
+    if (!available) {
+        return (
+            <Container className={classes.root} maxWidth="xs">
+                <Typography variant="body1" >
+                    This seat is not available
+                </Typography>
+            </Container>
+        )
+    }
 
     return (
         <Container className={classes.root} maxWidth="xs">
@@ -46,7 +57,7 @@ const ReserveQR = ({ location }) => {
                     </Select>
                 </FormControl>
                 <Button fullWidth className={classes.btn} variant="contained" color="primary">
-                    Reserve
+                    Use Seat
                 </Button>
             </div>
         </Container>

@@ -1,7 +1,8 @@
 import { reserveActionType } from "./ReserveQRAction"; 
 const initState = {
     seats: null,
-    loaded: false
+    loaded: false,
+    available: false, 
 }
 
 const reserveQRReducer = (state = initState, action) => {
@@ -11,7 +12,14 @@ const reserveQRReducer = (state = initState, action) => {
             return {
                 ...state,
                 seats: action.data,
-                loaded: true 
+                loaded: true,
+                available: true, 
+            }
+        case reserveActionType.errGet:
+            return {
+                ...state,
+                loaded: true, 
+                available: false, 
             }
         default:
             return state;
