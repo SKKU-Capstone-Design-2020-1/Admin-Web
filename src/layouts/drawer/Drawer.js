@@ -20,6 +20,7 @@ import { withRouter } from "react-router-dom";
 import { setStore } from "../../pages/store/storeActions";
 import EditIcon from "@material-ui/icons/Edit";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
+import SupportIcon from "@material-ui/icons/ContactSupport";
 import URLs from "../../libs/urls";
 
 const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
@@ -84,19 +85,25 @@ const Drawer = ({ mobileOpen, handleDrawerToggle, history }) => {
                 ))} */}
             </List>
             <Divider className={classes.divider} variant="middle" />
-            <List className={classes.list} onClick={() => history.push(`/admin/${sid}/qr_codes`)}>
-                <ListItem className={classes.listItem} button>
+            <List className={classes.list} >
+                <ListItem
+                    onClick={() => history.push(`/admin/${sid}/qr_codes`)}
+                    className={classes.listItem}
+                    button>
                     <ListItemIcon>
                         <QRIcon />
                     </ListItemIcon>
-                    <ListItemText primary="QR Codes"/>
+                    <ListItemText primary="QR Codes" />
                 </ListItem>
-                {/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem className={classes.listItem} button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon style={{ color: 'white' }} /> : <MailIcon style={{ color: 'white' }} />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))} */}
+                <ListItem
+                    onClick={() => history.push(`/admin/${sid}/contacts`)}
+                    className={classes.listItem}
+                    button>
+                    <ListItemIcon>
+                        <SupportIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Contacts" />
+                </ListItem>
             </List>
         </div>
     )

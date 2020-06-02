@@ -15,6 +15,7 @@ import EditStore from "../edit_store/EditStore";
 import EditMap from "../edit_map/EditMap";
 import { unsubscribeAll } from "../store/storeActions";
 import QRCodes from "../qr_codes/QRCodes";
+import Contacts from "../contacts/Contacts";
 
 const AdminMain = () => {
     const classes = useStyles();
@@ -40,9 +41,10 @@ const AdminMain = () => {
             <Switch>
                 <Route path={URLS.addStore} component={AddStore} />
                 <Route exact path={URLS.admin} component={initPage} />
+                <Route path={URLS.contacts} component={Contacts} />
                 <Route path={URLS.editStore} component={EditStore} />
                 <Route path={URLS.editMap} component={EditMap} />
-                <Route path={URLS.qr} component={QRCodes}/>
+                <Route path={URLS.qr} component={QRCodes} />
                 <Route path={URLS.store} component={Store} />
             </Switch>
         );
