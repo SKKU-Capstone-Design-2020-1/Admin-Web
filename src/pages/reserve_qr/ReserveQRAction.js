@@ -1,10 +1,11 @@
 import { firestore } from "../../libs/config";
 import { setProgress, completeProgress } from "../loading/LoadingAction";
+import moment from "moment";
 
 export const reserveActionType = {
     get: "GetReserveQR",
     errGet: "ErrorGetReserveQr",
-
+    useSeat: "UseReserveQRSeat"
 }
 export const getStoreInfo = (info) => async dispatch => {
     const { sid, seat_id } = info;
@@ -16,8 +17,17 @@ export const getStoreInfo = (info) => async dispatch => {
             throw "err"
         }
 
+        const seats = {
+            ...seatResp.docs[0].data(),
+            doc_id: seatResp.docs[0].id
+        };
 
-        dispatch({ type: reserveActionType.get, data: seatResp.docs[0].data() });
+        const target_seat = seats.seats.find(seat => seat.id === info.id);
+        if (!target_seat) throw "err";
+
+        dispatch({
+            type: reserveActionType.get, data: seats, target_seat 
+        });
     } catch (err) {
         dispatch({ type: reserveActionType.errGet })
     }
@@ -25,10 +35,41 @@ export const getStoreInfo = (info) => async dispatch => {
 }
 
 
-export const occupySeat = () => async dispatch => {
-    try { 
-        
-    } catch (err){
-        
+export const reserveSeat = (info) => async (dispatch, getState) => {
+    dispatch(setProgress);
+    const { sid, id, minutes } = info;
+    const qrState = getState().qr;
+    try {
+        const batch = firestore.batch();
+        console.log(info);
+        console.log(qrState);
+
+        const updatedSeats = qrState.seats.seats.map(seat => {
+            if (seat.id === info.id){
+                return {
+                    ...seat,
+                    status: 2
+                }
+            }
+            else return seat;
+        })
+
+
+        batch.update(firestore.doc(`stores/${sid}/seatGroups/${qrState.seats.id}`), {
+            seats: updatedSeats
+        });
+
+        const returned_at = moment().add(minutes, "minutes").toDate();
+        batch.set(firestore.collection(`qr_reserves`).doc(), {
+            sid,
+            id,
+            returned_at
+        });
+
+        await batch.commit();
+        dispatch({ type: reserveActionType.useSeat, returned_at });
+    } catch (err) {
+        console.log(err);
     }
+    dispatch(completeProgress);
 }

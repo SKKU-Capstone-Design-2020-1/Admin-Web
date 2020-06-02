@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import qs from "query-string";
 import { useDispatch, useSelector } from "react-redux";
-import { getStoreInfo } from "./ReserveQRAction";
+import { getStoreInfo, reserveSeat } from "./ReserveQRAction";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
@@ -10,6 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Typography from "@material-ui/core/Typography";
+import moment from "moment";
 
 const getMinutes = () => {
     const minutes = [];
@@ -23,21 +24,40 @@ const getMinutes = () => {
 const ReserveQR = ({ location }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { seats, loaded, available } = useSelector(state => state.qr);
+    const { target_seat, loaded, available, completed, returned_at } = useSelector(state => state.qr);
     const [info, setInfo] = useState(null)
+    const [minutes, setMinutes] = useState("");
+
     useEffect(() => {
         const parse = qs.parse(location.search);
         setInfo(parse);
         dispatch(getStoreInfo(parse));
     }, [])
 
- 
+    const handleUser = () => {
+        dispatch(reserveSeat({ ...info, minutes}))
+    }
+
+    const handleChange = e => {
+        setMinutes(Number(e.target.value))
+    }
+
     if (!loaded) return null;
-    if (!available) {
+
+    if (!available || target_seat && target_seat.status > 0) {
         return (
             <Container className={classes.root} maxWidth="xs">
-                <Typography variant="body1" >
+                <Typography variant="body1" align="center">
                     This seat is not available
+                </Typography>
+            </Container>
+        )
+    }
+    if (completed.value) {
+        return (
+            <Container className={classes.root} maxWidth="xs">
+                <Typography variant="body1" align="center">
+                    {`This seat is occupied until ${moment(returned_at).calendar()}`}
                 </Typography>
             </Container>
         )
@@ -47,8 +67,11 @@ const ReserveQR = ({ location }) => {
         <Container className={classes.root} maxWidth="xs">
             <div>
                 <FormControl className={classes.form} >
-                    <InputLabel >Usage Time</InputLabel>
-                    <Select id="setMinute" value={30}>
+                    <InputLabel >Usage Time (minutes)</InputLabel>
+                    <Select id="setMinute" value={minutes} onChange={handleChange}>
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
                         {getMinutes().map(minute => (
                             <MenuItem key={minute} value={minute}>
                                 {minute}
@@ -56,7 +79,12 @@ const ReserveQR = ({ location }) => {
                         ))}
                     </Select>
                 </FormControl>
-                <Button fullWidth className={classes.btn} variant="contained" color="primary">
+                <Button
+                    onClick={handleUser}
+                    fullWidth
+                    className={classes.btn}
+                    variant="contained"
+                    color="primary">
                     Use Seat
                 </Button>
             </div>
