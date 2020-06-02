@@ -4,6 +4,7 @@ import authReducer from "./pages/auth/AuthReducer";
 import loadingReducer from "./pages/loading/LoadingReducer";
 import storeReducer from "./pages/store/storeReducer";
 import contactsReducer from "./pages/contacts/ContactsReducer";
+import reserveQRReducer from "./pages/reserve_qr/ReserveQRReducer";
 import { verifyOwner } from "./pages/auth/AuthActions";
 
 
@@ -16,6 +17,7 @@ export const configureStore = () => {
             backdrop: loadingReducer,
             store: storeReducer,
             contacts: contactsReducer,
+            qr: reserveQRReducer
         }),
         {},
         composeEnhancers(applyMiddleware(thunk))
