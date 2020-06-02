@@ -13,6 +13,11 @@ const contactsReducer = (state = initState, action) => {
                 data: action.data,
                 loaded: true 
             }
+        case contactsActionType.update:
+            return {
+                ...state,
+                data: state.data.filter(data => data.id !== action.data.id)
+            }
         default:
             return state;
     }

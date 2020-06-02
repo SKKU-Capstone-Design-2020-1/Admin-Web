@@ -1,10 +1,11 @@
 import { firestore } from "../../libs/config";
 export const contactsActionType = {
     get: "GetContactsType",
+    update: "UpdateContactType"
 }
 export const getContacts = (sid) => async dispatch => {
     try {
-        let contactsSnap = await firestore.collection(`contacts`).where("store_id", "==", sid).get();
+        let contactsSnap = await firestore.collection(`contacts`).orderBy("checked").where("store_id", "==", sid).get();
 
         let data = [];
         for (let contact of contactsSnap.docs) {
@@ -16,6 +17,21 @@ export const getContacts = (sid) => async dispatch => {
 
             dispatch({ type: contactsActionType.get, data })
         }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const checkContact = (contact) => async dispatch => {
+    try {
+        await firestore.doc(`contacts/${contact.id}`).update({
+            checked: true
+        });
+
+        dispatch({
+            type: contactsActionType.update,
+            data: contact
+        })
     } catch (err) {
         console.log(err);
     }

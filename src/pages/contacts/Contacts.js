@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import { getContacts } from "./ContactsAction";
+import { getContacts, checkContact } from "./ContactsAction";
 import { useDispatch, useSelector } from "react-redux";
 import ContactItem from "./ContactItem";
 
@@ -21,8 +21,9 @@ const Contacts = ({ match }) => {
     }, [loaded, data])
 
     const handleClick = (contact) => {
-        console.log(contact);
+        dispatch(checkContact(contact))
     }
+
     return (
         <div>
             {items.map(item => (
@@ -32,7 +33,5 @@ const Contacts = ({ match }) => {
     )
 }
 
-const useStyles = makeStyles(theme => ({
 
-}))
 export default Contacts;
