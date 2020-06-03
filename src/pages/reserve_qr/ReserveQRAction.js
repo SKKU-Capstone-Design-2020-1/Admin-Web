@@ -37,13 +37,11 @@ export const getStoreInfo = (info) => async dispatch => {
 
 export const reserveSeat = (info) => async (dispatch, getState) => {
     dispatch(setProgress);
+
     const { sid, id, minutes } = info;
     const qrState = getState().qr;
     try {
         const batch = firestore.batch();
-        console.log(info);
-        console.log(qrState);
-
         const updatedSeats = qrState.seats.seats.map(seat => {
             if (seat.id === info.id){
                 return {
@@ -59,11 +57,12 @@ export const reserveSeat = (info) => async (dispatch, getState) => {
             seats: updatedSeats
         });
 
+    
         const returned_at = moment().add(minutes, "minutes").toDate();
+        console.log(returned_at);
         batch.set(firestore.collection(`qr_reserves`).doc(), {
-            sid,
-            id,
-            returned_at
+            ...info, 
+            returned_at,
         });
 
         await batch.commit();

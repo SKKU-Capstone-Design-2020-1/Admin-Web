@@ -43,7 +43,6 @@ const ReserveQR = ({ location }) => {
     }
 
     if (!loaded) return null;
-    console.log(target_seat);
     if (!available || target_seat && target_seat.status > 0) {
         return (
             <Container className={classes.root} maxWidth="xs">
@@ -54,7 +53,6 @@ const ReserveQR = ({ location }) => {
         )
     }
     if (completed.value) {
-
         return (
             <Container className={classes.root} maxWidth="xs">
                 <Typography variant="body1" align="center">
