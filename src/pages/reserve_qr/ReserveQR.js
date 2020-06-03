@@ -24,7 +24,7 @@ const getMinutes = () => {
 const ReserveQR = ({ location }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { target_seat, loaded, available, completed, returned_at } = useSelector(state => state.qr);
+    const { target_seat, loaded, available, completed } = useSelector(state => state.qr);
     const [info, setInfo] = useState(null)
     const [minutes, setMinutes] = useState("");
 
@@ -43,7 +43,7 @@ const ReserveQR = ({ location }) => {
     }
 
     if (!loaded) return null;
-
+    console.log(target_seat);
     if (!available || target_seat && target_seat.status > 0) {
         return (
             <Container className={classes.root} maxWidth="xs">
@@ -54,10 +54,11 @@ const ReserveQR = ({ location }) => {
         )
     }
     if (completed.value) {
+
         return (
             <Container className={classes.root} maxWidth="xs">
                 <Typography variant="body1" align="center">
-                    {`This seat is occupied until ${moment(returned_at).calendar()}`}
+                    {`This seat is occupied until ${moment(completed.returned_at).calendar()}`}
                 </Typography>
             </Container>
         )
