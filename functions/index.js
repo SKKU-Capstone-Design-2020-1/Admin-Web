@@ -1,8 +1,9 @@
 const functions = require('firebase-functions');
 const admin = require("firebase-admin");
+
 const serviceAccount = require("./config/seat-reservation-2600f-firebase-adminsdk-jllvn-0943411cf8.json");
 const cors = require('cors')({ origin: true })
-const moment = require('moment-timezone');
+
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -10,6 +11,7 @@ admin.initializeApp({
 })
 
 const db = admin.firestore();
+const auth = admin.auth();
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -18,6 +20,24 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 });
 
 
+exports.checkToken = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+        const { idToken } = req.body;
+        
+        auth.verifyIdToken(idToken).then(decoded => {
+            return res.send({
+                success: true,
+                user: decoded, 
+            })
+        }).catch(err => {
+            console.log(err);
+            return res.status(400).send({
+                success: false,
+                err
+            })
+        })
+    })
+});
 exports.checkReserves = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
 
@@ -30,7 +50,7 @@ exports.checkReserves = functions.https.onRequest((req, res) => {
 
         for (let doc of reserveSnap.docs){
             batch.delete(db.doc(`qr_reserves/${doc.id}`));
-            
+
             let rdata = doc.data();
             const path = `stores/${rdata.sid}/seatGroups/${rdata.seat_group_id}`;
             reserves.push({

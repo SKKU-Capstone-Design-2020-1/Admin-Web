@@ -6,6 +6,7 @@ import MapViewer from "../../layouts/map_builder/MapViewer";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { VIEW_MODE } from "../../layouts/map_builder/util/const";
+import { getUserToken } from "../reserve/ReserveActions";
 
 const Store = ({ match }) => {
     const dispatch = useDispatch();
@@ -21,7 +22,9 @@ const Store = ({ match }) => {
 
     }, [match])
 
-
+    useEffect(() => {
+        dispatch(getUserToken());
+    }, [])
 
     if (!data || !seatGroups || seatGroups.length <= 0) return null;
 

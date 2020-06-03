@@ -9,6 +9,7 @@ import MapViewer from "../../layouts/map_builder/MapViewer";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { VIEW_MODE } from "../../layouts/map_builder/util/const";
+import { getUserToken} from "./ReserveActions";
 
 const UserReserve = ({ location }) => {
     const classes = useStyles();
