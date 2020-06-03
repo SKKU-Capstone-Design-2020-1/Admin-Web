@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require("firebase-admin");
 const serviceAccount = require("./config/seat-reservation-2600f-firebase-adminsdk-jllvn-0943411cf8.json");
 const cors = require('cors')({ origin: true })
+const moment = require('moment-timezone');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -19,12 +20,56 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
 exports.checkReserves = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
-        const reserveSnap = await db.collection(`qr_reserves`).get();
+
+        const reserveSnap = await db.collection(`qr_reserves`).where("returned_at", "<=", new Date()).get();
+        
+
+        const batch = db.batch();        
+        const promises = [];
+        const reserves = [];
+
         for (let doc of reserveSnap.docs){
-            console.log(doc.data());
+            batch.delete(db.doc(`qr_reserves/${doc.id}`));
+            
+            let rdata = doc.data();
+            const path = `stores/${rdata.sid}/seatGroups/${rdata.seat_group_id}`;
+            reserves.push({
+                ...rdata,
+                path
+            });
+            promises.push(db.doc(path).get());
         }
 
-        return res.send("hey");
+        const promiseSnap = await Promise.all(promises);
+        
+
+        let idx = 0;
+        for (let seatgroup of promiseSnap){
+            const data = seatgroup.data();
+
+            const updated_seats = data.seats.map(seat => {
+                if (seat.id === reserves[idx].id){
+                    return {
+                        ...seat,
+                        status: 0
+                    }
+                }
+                else return seat;
+            });
+
+
+            console.log(reserves[idx]);
+            batch.update(db.doc(reserves[idx].path), {
+                seats: updated_seats
+            })
+            idx++;
+        }   
+         
+        await batch.commit();
+        return res.send({
+            success: true, 
+            data: reserves, 
+        });
     })
 })
 
