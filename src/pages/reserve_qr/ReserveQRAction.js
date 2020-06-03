@@ -59,11 +59,11 @@ export const reserveSeat = (info) => async (dispatch, getState) => {
 
     
         const returned_at = moment().add(minutes, "minutes").toDate();
-        
+
         batch.set(firestore.collection(`qr_reserves`).doc(), {
             ...info, 
             returned_at,
-            seat_grou_id: qrState.seats.id, 
+            seat_group_id: qrState.seats.id, 
         });
 
         await batch.commit();

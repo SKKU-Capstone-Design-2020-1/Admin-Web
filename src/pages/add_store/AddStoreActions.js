@@ -8,6 +8,8 @@ export const registerStore = (data, callback) => async (dispatch, getState) => {
     try {
         const state = getState();
         const oid = state.auth.owner.uid;
+        const email = state.auth.owner.email;
+
         const { storeData, maps, seatGroups } = data;
 
         const { img_file, ...storeInfo } = storeData;
@@ -38,6 +40,7 @@ export const registerStore = (data, callback) => async (dispatch, getState) => {
             maps,
             owner_id: oid,
             created_at: new Date(),
+            owner_email: email, 
             ...storeInfo
         });
         for (let group of updatedSeats) {
