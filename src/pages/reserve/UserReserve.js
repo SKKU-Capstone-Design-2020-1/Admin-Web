@@ -39,13 +39,13 @@ const UserReserve = ({ location }) => {
         </Backdrop>
     );
 
-    // if (!verified) return (
-    //     <Container maxWidth="sm" className={classes.container}>
-    //         <Typography variant="body1" align="center">
-    //             Not a valid user token
-    //         </Typography>
-    //     </Container>
-    // )
+    if (!verified) return (
+        <Container maxWidth="sm" className={classes.container}>
+            <Typography variant="body1" align="center">
+                Not a valid user token
+            </Typography>
+        </Container>
+    )
 
     return (
         <div className={classes.root}>
