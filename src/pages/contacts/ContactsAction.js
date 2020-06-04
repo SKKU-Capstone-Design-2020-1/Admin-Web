@@ -23,12 +23,15 @@ export const getContacts = (sid) => async dispatch => {
 export const checkContact = (contact) => async dispatch => {
     try {
         await firestore.doc(`contacts/${contact.id}`).update({
-            checked: true
+            checked: !Boolean(contact.checked)
         });
 
         dispatch({
             type: contactsActionType.update,
-            data: contact
+            data: {
+                ...contact,
+                checked: !Boolean(contact.checked)
+            }
         })
     } catch (err) {
         console.log(err);

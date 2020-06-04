@@ -2,7 +2,7 @@ import { contactsActionType } from "./ContactsAction";
 
 const initState = {
     data: [],
-    loaded: false, 
+    loaded: false,
 }
 
 const contactsReducer = (state = initState, action) => {
@@ -11,12 +11,19 @@ const contactsReducer = (state = initState, action) => {
             return {
                 ...state,
                 data: action.data,
-                loaded: true 
+                loaded: true
             }
         case contactsActionType.update:
             return {
                 ...state,
-                data: state.data.filter(data => data.id !== action.data.id)
+                data: state.data.map(data => {
+                    if (data.id === action.data.id) {
+                        return action.data;
+                    }  
+                    else {
+                        return data;
+                    }
+                })
             }
         default:
             return state;
