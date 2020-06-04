@@ -9,33 +9,43 @@ import MapViewer from "../../layouts/map_builder/MapViewer";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { VIEW_MODE } from "../../layouts/map_builder/util/const";
-import { getUserToken} from "./ReserveActions";
+import { verifyToken } from "./ReserveActions";
+import Container from "@material-ui/core/Container";
 
 const UserReserve = ({ location }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { data, seatGroups } = useSelector(state => state.store);
-    console.log(data, seatGroups);
+    const { verified, loaded } = useSelector(state => state.reserve);
+    
     useEffect(() => {
         let query = qs.parse(location.search);
         batch(() => {
+            console.log('called');
+            dispatch(verifyToken(query.user_token));
             dispatch(subscribeStore(query.sid));
             dispatch(setStore(query.sid));
         })
 
+
         return () => dispatch(unsubscribeAll());
     }, [location])
 
-    useEffect(() => {
-        console.log(data);
-        console.log(seatGroups);
-    }, [data, seatGroups])
 
-    if (!data || !seatGroups || seatGroups.length <= 0) return (
+
+    if (!loaded || !data || !seatGroups || seatGroups.length <= 0) return (
         <Backdrop className={classes.Backdrop} open={true}>
             <CircularProgress color="inherit" />
         </Backdrop>
     );
+
+    if (!verified) return (
+        <Container maxWidth="sm" className={classes.container}>
+            <Typography variant="body1" align="center">
+                Not a valid user token
+            </Typography>
+        </Container>
+    )
     return (
         <div className={classes.root}>
             <div className={classes.mapWrapper}>
@@ -68,6 +78,9 @@ const useStyles = makeStyles(theme => ({
     Backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: theme.palette.primary.dark
+    },
+    container: {
+        paddingTop: `${theme.spacing(3)}px`
     }
 }))
 export default UserReserve;
