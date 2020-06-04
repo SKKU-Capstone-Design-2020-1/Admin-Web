@@ -43,7 +43,7 @@ const ReserveQR = ({ location }) => {
     }
 
     if (!loaded) return null;
-    if (!available || target_seat && target_seat.status > 0) {
+    if (!available || (target_seat && target_seat.status > 0)) {
         return (
             <Container className={classes.root} maxWidth="xs">
                 <Typography variant="body1" align="center">
@@ -93,7 +93,7 @@ const ReserveQR = ({ location }) => {
 
 const useStyles = makeStyles(theme => ({
     root: {
-        padding: `${theme.spacing(3)}px ${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(1)}px`,
+        padding: `${theme.spacing(5)}px ${theme.spacing(3)}px ${theme.spacing(1)}px ${theme.spacing(3)}px`,
     },
     form: {
         width: '100%'

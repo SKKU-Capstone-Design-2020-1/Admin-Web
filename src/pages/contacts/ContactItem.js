@@ -16,8 +16,15 @@ const ContactItem = ({ contact, onClick }) => {
                     {contact.user_id}
                 </Typography>
                 <Typography className={classes.subTitle} variant="body1">
-                    {moment(contact).calendar()}
+                    {moment(contact.created_at.toDate()).calendar()}
                 </Typography>
+                <Button
+                    onClick={() => onClick(contact)}
+                    className={classes.btn}
+                    variant="contained"
+                    color="primary">
+                    Check
+                </Button>
             </div>
 
             <div className={classes.contentRoot}>
@@ -27,13 +34,7 @@ const ContactItem = ({ contact, onClick }) => {
                     </Typography>
                 </div>
 
-                <Button
-                    onClick={() => onClick(contact)}
-                    className={classes.btn}
-                    variant="contained"
-                    color="primary">
-                    Check
-                </Button>
+
             </div>
 
         </Card>
@@ -44,15 +45,17 @@ const useStyles = makeStyles(theme => ({
     contentRoot: {
         display: 'flex',
         marginTop: theme.spacing(1),
+
     },
     textRoot: {
-        flex: 7,
+        flex: 1,
     },
     btn: {
-        flex: 1
+        marginLeft: 'auto'
     },
     root: {
         padding: theme.spacing(1),
+        margin: `${theme.spacing(1)}px 0px`
     },
     title: {
         fontWeight: 600,

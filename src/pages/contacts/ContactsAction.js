@@ -5,7 +5,7 @@ export const contactsActionType = {
 }
 export const getContacts = (sid) => async dispatch => {
     try {
-        let contactsSnap = await firestore.collection(`contacts`).orderBy("checked").where("store_id", "==", sid).get();
+        let contactsSnap = await firestore.collection(`contacts`).orderBy("created_at").where("store_id", "==", sid).get();
 
         let data = [];
         for (let contact of contactsSnap.docs) {
@@ -13,10 +13,8 @@ export const getContacts = (sid) => async dispatch => {
                 ...contact.data(),
                 id: contact.id
             });
-
-
-            dispatch({ type: contactsActionType.get, data })
         }
+        dispatch({ type: contactsActionType.get, data })
     } catch (err) {
         console.log(err);
     }

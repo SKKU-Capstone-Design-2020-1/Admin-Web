@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require("firebase-admin");
-
+const complaints = require("./config/data");
 const serviceAccount = require("./config/seat-reservation-2600f-firebase-adminsdk-jllvn-0943411cf8.json");
 const cors = require('cors')({ origin: true })
 
@@ -18,7 +18,25 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
     response.send("Hello from Firebase!");
 });
 
+exports.addContacts = functions.https.onRequest(async (req, res) => {
+    const batch = db.batch();
+    const info = {
+        store_id: "6j46BJioYNQS0TEYCRoY",
+        user_id : "admin@test.com",
+        option: "Other General Inquiries",
+    }
 
+    for (let content of complaints){
+        batch.set(db.collection(`contacts`).doc(), {
+            ...info, 
+            created_at: new Date(), 
+            contents: content.content 
+        });
+    }
+
+    await batch.commit();
+    res.send(complaints);
+})
 exports.checkToken = functions.https.onRequest((req, res) => {
     cors(req, res, () => { });
     const { idToken } = req.body;
