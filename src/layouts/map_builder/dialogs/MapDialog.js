@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -15,12 +15,21 @@ const defaultValues = {
     height: '',
     width: '',
 }
-const MapDialog = ({ open, handleDialog }) => {
+const MapDialog = ({ open, handleDialog, data }) => {
     const classes = useStyles();
     const [values, setValues] = useState(defaultValues);
     const [errMsg, setErrMsg] = useState('');
+    const [editMode, setEditMode] = useState(false);
+    useEffect(() => {
+        if (data) {
+            setValues(data);
+            setEditMode(true);
+        }
+        else {
+            setEditMode(false);
+        }
+    }, [data])
 
-    
     const handleChange = e => {
         setValues({
             ...values,
@@ -35,7 +44,13 @@ const MapDialog = ({ open, handleDialog }) => {
         })
 
         if (isCompleted) {
-            handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values });
+            if (editMode) {
+                handleDialog({ type: MAP_DIALOGS.EDIT_MAP, data: values })
+            }
+            else {
+                handleDialog({ type: MAP_DIALOGS.ADD_MAP, data: values });
+            }
+
             setValues(defaultValues);
             setErrMsg('');
         }
@@ -48,8 +63,8 @@ const MapDialog = ({ open, handleDialog }) => {
         setErrMsg('');
         handleDialog({ type: MAP_DIALOGS.CLOSE_MAP });
     }
-    
-    
+
+
     return (
         <Dialog
             maxWidth="xs"
@@ -57,11 +72,13 @@ const MapDialog = ({ open, handleDialog }) => {
             open={open}
             onClose={handleClose}
         >
-            <DialogTitle>Create a new map</DialogTitle>
+            <DialogTitle>
+                {!editMode ? `Create a new map` : 'Edit'}
+            </DialogTitle>
             <DialogContent>
                 <form onSubmit={handleSubmit}>
                     <DialogContentText>
-                        Enter name and size of a new map.
+                        {!editMode ? `Enter name and size of a new map` : `Edit name and size of the map`}
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -105,7 +122,7 @@ const MapDialog = ({ open, handleDialog }) => {
                     Cancel
                 </Button>
                 <Button color="primary" onClick={handleSubmit}>
-                    Add
+                    {!editMode ? 'Add' : 'Edit'}
                 </Button>
             </DialogActions>
         </Dialog>

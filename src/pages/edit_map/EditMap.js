@@ -12,16 +12,17 @@ const EditMap = ({ history }) => {
     const [maps, setMaps] = useState([]);
     const [seatGroups, setSeatGroups] = useState([]);
     const [beacons, setBeacons] = useState([]);
+    const [init, setInit] = useState(false);
     const storeState = useSelector(state => state.store);
 
     useEffect(() => {
-        if (!storeState.data) return;
-
-
+        if (!storeState.data || init) return;
+        
+        if (!init) setInit(true);
         setBeacons(storeState.data.beacons);
         setMaps(storeState.data.maps);
         setSeatGroups(storeState.seatGroups);
-    }, [storeState]);
+    }, [storeState, init]);
 
     const handleSubmit = () => {
         const seatWithBeacons = seatGroups.map(seat => {

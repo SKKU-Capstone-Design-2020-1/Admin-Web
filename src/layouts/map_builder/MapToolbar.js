@@ -27,7 +27,9 @@ const MapToolbar = ({ handleDialog, handleEvents, mapIdx }) => {
                     </Button>
                 </Tooltip>
                 <Tooltip title="Edit selected map">
-                    <Button disabled={mapIdx >= 0 ? false : true}>
+                    <Button
+                        onClick={() => handleDialog({ type: MAP_DIALOGS.EDIT_MAP_DIALOG })}
+                        disabled={mapIdx >= 0 ? false : true}>
                         <EditLocationIcon />
                     </Button>
                 </Tooltip>

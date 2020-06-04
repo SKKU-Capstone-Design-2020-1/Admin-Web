@@ -62,7 +62,10 @@ const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGro
     const theme = useTheme();
     const [mapWidth, setWidth] = useState(0);
     const [dialogs, setDialogs] = useState({
-        mapDialog: false,
+        mapDialog: {
+            value: false,
+            data: null, 
+        },
         seatDialog: false,
         beaconDialog: false,
         beacon_ids: [],
@@ -94,13 +97,19 @@ const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGro
             case MAP_DIALOGS.OPEN_MAP:
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: true
+                    mapDialog: {
+                        value: true,
+                        data: null
+                    }
                 }));
                 break;
             case MAP_DIALOGS.CLOSE_MAP:
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: false,
+                    mapDialog: {
+                        value: false,
+                        data: null,
+                    },
                 }));
                 break;
             case MAP_DIALOGS.ADD_MAP:
@@ -110,7 +119,10 @@ const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGro
                 }));
                 setDialogs(prev => ({
                     ...prev,
-                    mapDialog: false,
+                    mapDialog: {
+                        value: false,
+                        data: null
+                    },
                 }));
                 setMapIdx(curMapSize - 1);
                 break;
@@ -188,9 +200,35 @@ const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGro
                 }
 
                 break;
+            case MAP_DIALOGS.EDIT_MAP_DIALOG:
+                setDialogs({
+                    ...dialogs,
+                    mapDialog: {
+                        value: true, 
+                        data: maps[mapIdx]
+                    }
+                })
+                break;
+            case MAP_DIALOGS.EDIT_MAP:
+                setDialogs({
+                    ...dialogs,
+                    mapDialog: {
+                        value: false,
+                        data: null
+                    }
+                });
+
+                setMaps(prev => prev.map(map_data => {
+                    console.log(map_data)
+                    if (map_data.map_id === action.data.map_id){
+                        return action.data;
+                    }
+                    else return map_data
+                }))
             default:
         }
     }
+    console.log(maps);
     const handleEvents = (action) => {
         switch (action.type) {
             case MAP_EVENTS.UPDATE_SEAT_GROUP:
@@ -294,7 +332,7 @@ const MapBuilder = ({ maps, beacons, setBeacons, setMaps, seatGroups, setSeatGro
                 {mapIdx < 0 && <MapNotAddded />}
             </div>
 
-            <MapDialog open={dialogs.mapDialog} handleDialog={handleDialog} />
+            <MapDialog open={dialogs.mapDialog.value} data={dialogs.mapDialog.data} handleDialog={handleDialog} />
             <SeatDialog seatGroups={seatGroups} open={dialogs.seatDialog} handleDialog={handleDialog} />
             <BeaconDialog open={dialogs.beaconDialog} handleDialog={handleDialog} data={dialogs.beacon_ids} />
         </div>
