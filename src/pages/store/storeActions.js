@@ -54,7 +54,7 @@ export const subscribeStore = sid => async (dispatch, getState) => {
                     id: seat_doc.id
                 })
             }
-
+            console.log(seatGroups);
             dispatch({ type: storeActionType.respSeatData, data: seatGroups })
         });
 

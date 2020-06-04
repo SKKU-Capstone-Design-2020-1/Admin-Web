@@ -16,7 +16,7 @@ const UserReserve = ({ location }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { data, seatGroups } = useSelector(state => state.store);
-    const { verified, loaded } = useSelector(state => state.reserve);
+    const { verified, loaded, user } = useSelector(state => state.reserve);
     
     useEffect(() => {
         let query = qs.parse(location.search);
@@ -39,18 +39,22 @@ const UserReserve = ({ location }) => {
         </Backdrop>
     );
 
-    if (!verified) return (
-        <Container maxWidth="sm" className={classes.container}>
-            <Typography variant="body1" align="center">
-                Not a valid user token
-            </Typography>
-        </Container>
-    )
+    // if (!verified) return (
+    //     <Container maxWidth="sm" className={classes.container}>
+    //         <Typography variant="body1" align="center">
+    //             Not a valid user token
+    //         </Typography>
+    //     </Container>
+    // )
+
     return (
         <div className={classes.root}>
             <div className={classes.mapWrapper}>
-                <Typography variant="body1" gutterBottom>
-                    Please select a seat
+                <Typography variant="body1" gutterBottom align="center">
+                    {verified ? 
+                        `${user.email}, please select a seat.` :
+                        `User Token Not Valid`
+                    }
                 </Typography>
                 <MapViewer
                     maps={data.maps}
