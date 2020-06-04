@@ -20,7 +20,6 @@ const Contacts = ({ match }) => {
     useEffect(() => {
         if (loaded) {
             setItems(data);
-
         }
     }, [loaded, data])
 

@@ -18,13 +18,24 @@ const ContactItem = ({ contact, onClick }) => {
                 <Typography className={classes.subTitle} variant="body1">
                     {moment(contact.created_at.toDate()).calendar()}
                 </Typography>
-                <Button
-                    onClick={() => onClick(contact)}
-                    className={classes.btn}
-                    variant="contained"
-                    color="primary">
-                    Check
-                </Button>
+                {!contact.checked ?
+                    <Button
+                        onClick={() => onClick(contact)}
+                        className={classes.btn}
+                        variant="contained"
+                        color="primary">
+                        Check
+                    </Button>
+                    :
+                    <Button
+                        onClick={() => onClick(contact)}
+                        className={classes.btn}
+                        variant="contained"
+                    >
+                        Uncheck
+                    </Button>
+                }
+
             </div>
 
             <div className={classes.contentRoot}>
