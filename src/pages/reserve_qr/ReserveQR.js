@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import moment from "moment";
 
 const getMinutes = () => {
-    const minutes = [];
+    const minutes = [1];
     for (let i = 1; i <= 10; i++) {
         minutes.push(i * 30);
     }
@@ -35,7 +35,8 @@ const ReserveQR = ({ location }) => {
     }, [])
 
     const handleUser = () => {
-        dispatch(reserveSeat({ ...info, minutes}))
+        if (minutes === "") return;
+        dispatch(reserveSeat({ ...info, minutes }))
     }
 
     const handleChange = e => {
@@ -56,7 +57,7 @@ const ReserveQR = ({ location }) => {
         return (
             <Container className={classes.root} maxWidth="xs">
                 <Typography variant="body1" align="center">
-                    {`This seat is occupied until ${moment(completed.returned_at).calendar()}`}
+                    {`This seat will be used until ${moment(completed.returned_at).calendar()}`}
                 </Typography>
             </Container>
         )
@@ -65,6 +66,10 @@ const ReserveQR = ({ location }) => {
     return (
         <Container className={classes.root} maxWidth="xs">
             <div>
+
+                <Typography variant="body1">
+                    {`Reserve seat id: ${info.id}`}
+                </Typography>
                 <FormControl className={classes.form} >
                     <InputLabel >Usage Time (minutes)</InputLabel>
                     <Select id="setMinute" value={minutes} onChange={handleChange}>
